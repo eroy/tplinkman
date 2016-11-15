@@ -1,27 +1,37 @@
 package sergey.zhuravel.tplinkman;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Const {
 
     public static final String TAG = "Sergey";
-    TextView answerText;
-    String key;
 
-    String text;
+    private TextView answerText;
+    private Button btn1,btn2;
+    private EditText etValue;
 
-    String ora="";
+
+
+    private String ip = "213.110.122.91";
+    private String username = "admin";
+    private String password = "trifle_best";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,50 +39,58 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         answerText = (TextView) findViewById(R.id.answer_text);
+        etValue = (EditText) findViewById(R.id.etValue);
+        btn1 = (Button) findViewById(R.id.btn1);
+        btn2 = (Button) findViewById(R.id.btn2);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        final StringBuffer response = new StringBuffer();
-        final StringBuffer response1 = new StringBuffer();
+
+                String t = asyncWifi("0", getKey(), DHCP, DHCP_REFERER);
+                if (t.equals("error")) {
+                    answerText.setText("Error code");
+                }
+                else {
+                    answerText.setText("Successes change wifi ssid to " + t);
+                }
+
+            }
+        });
+
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String t = asyncWifi(etValue.getText().toString(), getKey(), WLAN_PASS, WLAN_PASS_REFERER);
+                if (t.equals("error")) {
+                    answerText.setText("Error code");
+                }
+                else {
+                    answerText.setText("Successes change wifi password to " + t);
+                }
+
+            }
+        });
+
+    }
+
+    private String asyncWifi(final String value, final String key, final String url, final String urlReferer) {
 
 
-
-        Thread thread = new Thread(new Runnable() {
+        class AsyncLink extends AsyncTask<String, Void, String> {
 
             @Override
-            public void run() {
+            protected String doInBackground(String... strings) {
+                String text = null;
+                StringBuffer response = new StringBuffer();
                 try {
-                    String authorization = cockieEncodeMD5("trifle_best");
-                    String stringUrl = "http://213.110.122.91/userRpm/LoginRpm.htm?Save=Save";
-                    URL url = new URL(stringUrl);
-                    URLConnection uc = url.openConnection();
-
-                    uc.setRequestProperty("Cookie", "Authorization=" + authorization);
-
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-                    String inputLine;
-
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-
-                    String responseKey = String.valueOf(response);
-
-                    String[] responseKeyArray = responseKey.split("/");
-
-
-                    key = responseKeyArray[3];
-                    Log.e(TAG, key);
-
-
-
-
-
-
-                    String stringUrl1 = "http://213.110.122.91/" + key + "/userRpm/WlanSecurityRpm.htm?wepSecOpt=3&wpaSecOpt=2&wpaCipher=2&intervalWpa=0&secType=3&pskSecOpt=3&pskCipher=1&interval=0&Save=Save&pskSecret=DDDDDDDDDD";
+                    Log.e(TAG, "key: " + key);
+                    String authorization = cockieEncodeMD5();
+                    String stringUrl1 = "http://" + ip + "/" + key + url + value;
                     URL url1 = new URL(stringUrl1);
-                    URLConnection uc1 = url1.openConnection();
+                    HttpURLConnection uc1 = (HttpURLConnection) url1.openConnection();
 
-                    uc1.setRequestProperty("Referer", "http://213.110.122.91/" + key + "/userRpm/WlanSecurityRpm.htm");
+                    uc1.setRequestProperty("Referer", "http://" + ip + "/" + key + urlReferer);
 
                     uc1.setRequestProperty("Cookie", "Authorization=" + authorization);
 
@@ -81,38 +99,101 @@ public class MainActivity extends AppCompatActivity {
                     String inputLine1;
 
                     while ((inputLine1 = in1.readLine()) != null) {
-                        response1.append(inputLine1);
+                        response.append(inputLine1);
                     }
 
+                    uc1.disconnect();
 
-                    text = String.valueOf(response1);
+                    text = String.valueOf(response);
 
-
-                    Log.e(TAG,text);
+                    Log.e(TAG, "TEXT: " + text);
 
                     if (text.contains("wlanPara")) {
-                        ora="ok";
+                        text = value;
                     } else {
-                        ora="error";
+                        text = "error";
 
                     }
-                    Log.e(TAG,"Ora1: "+ora);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
-            thread.start();
+                return text;
+            }
 
-        Log.e(TAG,ora);
-        answerText.setText(ora);
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+            }
+        }
+        String out = null;
 
+        try {
+            out = new AsyncLink().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.e(TAG, "out: " + out);
+        return out;
+    }
+
+
+    private String getKey() {
+
+
+        class AsyncLink extends AsyncTask<String, Void, String> {
+
+
+            @Override
+            protected String doInBackground(String... strings) {
+                String key = "";
+                StringBuffer response = new StringBuffer();
+                try {
+                    String authorization = cockieEncodeMD5();
+                    String stringUrl = "http://" + ip + "/userRpm/LoginRpm.htm?Save=Save";
+                    URL url = new URL(stringUrl);
+                    URLConnection uc = url.openConnection();
+                    uc.setRequestProperty("Cookie", "Authorization=" + authorization);
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+
+                    String responseKey = String.valueOf(response);
+                    String[] responseKeyArray = responseKey.split("/");
+                    key = responseKeyArray[3];
+                    Log.e(TAG, "getKey: " + key);
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return key;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+            }
+        }
+
+        String out = null;
+        try {
+            out = new AsyncLink().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return out;
 
     }
 
-    public String cockieEncodeMD5(String password) {
-        String md5 = "admin:" + MD5(password);
+    public String cockieEncodeMD5() {
+        String md5 = username + ":" + MD5(password);
 
         byte[] data = new byte[0];
         try {
