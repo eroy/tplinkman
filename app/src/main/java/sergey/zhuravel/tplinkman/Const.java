@@ -12,7 +12,10 @@ public interface Const {
     String WLAN_SSID = "/userRpm/WlanNetworkRpm.htm?broadcast=2&ap=1&region=98&Save=Save&ssid1=";
     String WLAN_SSID_REFERER = "/userRpm/WlanNetworkRpm.htm";
 
-    String DHCP = "/userRpm/LanDhcpServerRpm.htm?ip1=192.168.0.100&ip2=192.168.0.201&gateway=192.168.0.1&Save=Save&dhcpserver=";
+    String DHCP = "/userRpm/LanDhcpServerRpm.htm?ip1=192.168.0.100&ip2=192.168.0.201&Lease=120&gateway=192.168.0.1&Save=Save&dhcpserver=";
     String DHCP_REFERER = "/userRpm/LanDhcpServerRpm.htm";
+
+    String WLAN_CODE="wlanPara";
+    String DHCP_CODE="DHCPPara";
 
 }

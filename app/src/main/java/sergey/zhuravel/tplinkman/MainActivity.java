@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Const {
             public void onClick(View view) {
 
 
-                String t = asyncWifi("0", getKey(), DHCP, DHCP_REFERER);
+                String t = asyncWifi(etValue.getText().toString(), getKey(), WLAN_SSID, WLAN_SSID_REFERER,WLAN_CODE);
                 if (t.equals("error")) {
                     answerText.setText("Error code");
                 }
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements Const {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String t = asyncWifi(etValue.getText().toString(), getKey(), WLAN_PASS, WLAN_PASS_REFERER);
+                String t = asyncWifi(etValue.getText().toString(), getKey(), WLAN_PASS, WLAN_PASS_REFERER,WLAN_CODE);
                 if (t.equals("error")) {
                     answerText.setText("Error code");
                 }
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements Const {
 
     }
 
-    private String asyncWifi(final String value, final String key, final String url, final String urlReferer) {
+    private String asyncWifi(final String value, final String key, final String url, final String urlReferer,final String requestCode) {
 
 
         class AsyncLink extends AsyncTask<String, Void, String> {
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements Const {
 
                     Log.e(TAG, "TEXT: " + text);
 
-                    if (text.contains("wlanPara")) {
+                    if (text.contains(requestCode)) {
                         text = value;
                     } else {
                         text = "error";
