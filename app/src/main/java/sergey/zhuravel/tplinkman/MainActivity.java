@@ -19,6 +19,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
 
+import sergey.zhuravel.tplinkman.fragment.DeviceList;
+
 public class MainActivity extends AppCompatActivity implements Const {
 
     public static final String TAG = "Sergey";
@@ -38,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements Const {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new DeviceList()).commit();
+
+
+        /*
         answerText = (TextView) findViewById(R.id.answer_text);
         etValue = (EditText) findViewById(R.id.etValue);
         btn1 = (Button) findViewById(R.id.btn1);
@@ -70,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements Const {
                 }
 
             }
-        });
+        });*/
 
     }
 
@@ -85,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements Const {
                 StringBuffer response = new StringBuffer();
                 try {
                     Log.e(TAG, "key: " + key);
-                    String authorization = cockieEncodeMD5();
+                    String authorization = cookieEncodeMD5();
                     String stringUrl1 = "http://" + ip + "/" + key + url + value;
                     URL url1 = new URL(stringUrl1);
                     HttpURLConnection uc1 = (HttpURLConnection) url1.openConnection();
@@ -141,16 +149,14 @@ public class MainActivity extends AppCompatActivity implements Const {
 
     private String getKey() {
 
-
         class AsyncLink extends AsyncTask<String, Void, String> {
-
-
+            
             @Override
             protected String doInBackground(String... strings) {
                 String key = "";
                 StringBuffer response = new StringBuffer();
                 try {
-                    String authorization = cockieEncodeMD5();
+                    String authorization = cookieEncodeMD5();
                     String stringUrl = "http://" + ip + "/userRpm/LoginRpm.htm?Save=Save";
                     URL url = new URL(stringUrl);
                     URLConnection uc = url.openConnection();
@@ -192,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements Const {
 
     }
 
-    public String cockieEncodeMD5() {
+    public String cookieEncodeMD5() {
         String md5 = username + ":" + MD5(password);
 
         byte[] data = new byte[0];

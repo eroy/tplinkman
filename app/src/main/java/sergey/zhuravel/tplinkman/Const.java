@@ -2,6 +2,9 @@ package sergey.zhuravel.tplinkman;
 
 
 public interface Const {
+    String REBOOT = "/userRpm/SysRebootRpm.htm?Reboot=Reboot";
+    String REBOOT_REFERER = "/userRpm/SysRebootRpm.htm";
+
     String WLAN_PASS = "/userRpm/WlanSecurityRpm.htm?wepSecOpt=3&wpaSecOpt=2&wpaCipher=2&intervalWpa=0&secType=3&pskSecOpt=3&pskCipher=1&interval=0&Save=Save&pskSecret=";
     String WLAN_PASS_REFERER = "/userRpm/WlanSecurityRpm.htm";
     /*
