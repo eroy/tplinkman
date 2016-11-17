@@ -21,4 +21,6 @@ public interface Const {
     String WLAN_CODE="wlanPara";
     String DHCP_CODE="DHCPPara";
 
+    String INFO = "/userRpm/StatusRpm.htm";
+
 }

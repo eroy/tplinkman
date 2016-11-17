@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import sergey.zhuravel.tplinkman.MainActivity;
@@ -21,7 +22,7 @@ public class ManagementDevice extends AppFragment {
     ArrayList<String> data =new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_managment_device, container, false);
@@ -36,15 +37,27 @@ public class ManagementDevice extends AppFragment {
         Button button = (Button) view.findViewById(R.id.btnReboot);
         final TextView text = (TextView) view.findViewById(R.id.text12);
 
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<String> info;
+                info = asyncInfo(data);
+                String[] name ={"build: ","version: ","ssid: ","mac: ","ip: ","typeVpn: ","mask: ","gateway: ","dns1: ","dns2: "};
+                text.setText("");
+                for (int i=0;i<info.size();i++) {
+                        text.append(name[i] + info.get(i) + "\n");
+
+                }
+
+                /*
                 String t = asyncWifi(data,TYPE_REBBOT,"");
                 if (t.equals("error")) {
-                    text.setText("Error code");
+//                    text.setText("Error code");
                 }
                 else {
-                    text.setText("Successes reboot " + t);
+//                    text.setText("Successes reboot " + t);
 
                     try {
                         Thread.sleep(7000);
@@ -55,6 +68,7 @@ public class ManagementDevice extends AppFragment {
                     startActivity(new Intent(getActivity(), MainActivity.class));
                     getActivity().finish();
                 }
+*/
             }
         });
 

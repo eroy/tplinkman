@@ -1,6 +1,7 @@
 package sergey.zhuravel.tplinkman.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -153,6 +154,19 @@ public class DeviceList extends AppFragment {
     private boolean validatePassword(final String ip, final String key, final String login, final String pass) {
 
         class AsyncLink extends AsyncTask<String, Void, String> {
+            ProgressDialog pd;
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                pd = new ProgressDialog(
+                        getActivity());
+                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                pd.setMessage("Validations data...");
+
+            }
 
             @Override
             protected String doInBackground(String... strings) {
@@ -180,6 +194,7 @@ public class DeviceList extends AppFragment {
 
 
                 } catch (IOException e) {
+                    pd.dismiss();
                     e.printStackTrace();
                 }
                 return code;
@@ -187,8 +202,11 @@ public class DeviceList extends AppFragment {
 
             @Override
             protected void onPostExecute(String s) {
+
+                pd.dismiss();
                 super.onPostExecute(s);
             }
+
         }
 
         String out = null;
@@ -197,6 +215,7 @@ public class DeviceList extends AppFragment {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
         return out.equals("ok");
     }
 
