@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etSSID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SSID"
+            android:inputType="text"
+            android:maxLength="32"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <View
+        style="@style/Line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/regional" />
+
+        <Spinner
+            android:id="@+id/regional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:entries="@array/listRegion"
+            android:spinnerMode="dialog" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chanel" />
+
+        <Spinner
+            android:id="@+id/chanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:entries="@array/listChanel"
+            android:spinnerMode="dialog" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+    </FrameLayout>

@@ -21,10 +21,6 @@ import sergey.zhuravel.tplinkman.Const;
 
 public class AppFragment extends Fragment implements Const {
 
-    public static final String TYPE_REBBOT = "reboot";
-    public static final String TYPE_CHANGE_WIFI = "reboot";
-    public static final String TYPE_CHANGE_SSID = "reboot";
-    public static final String TYPE_INFO = "info";
 
     public static String getKey(final String ip, final String username, final String password) {
 
@@ -190,7 +186,7 @@ public class AppFragment extends Fragment implements Const {
 
     }
 
-    public String asyncWifi(final ArrayList<String> data, final String type, final String value) {
+    public String asyncWifi(final ArrayList<String> data, final String type, final ArrayList<String> value) {
         final String ip = data.get(0);
         final String key = data.get(1);
         final String login = data.get(2);
@@ -218,12 +214,45 @@ public class AppFragment extends Fragment implements Const {
                     String authorization = cookieEncodeMD5(login, pass);
 
                     switch (type) {
-                        case TYPE_REBBOT:
+                        case TYPE_REBOOT:
                             stringUrl = "http://" + ip + "/" + key + REBOOT;
                             urlReferer = REBOOT_REFERER;
                             requestCode = "Reboot";
                             break;
+                        case TYPE_WIFI_SETTINGS:
+                           /* value:
+                            o - region
+                            1 - chanel
+                            2 - ssid
 
+                           */
+                            String channel;
+                            if (value.get(1).equals("auto")) {
+                                channel = "15";
+                            } else {
+                                channel = value.get(1);
+                            }
+
+                            stringUrl = "http://" + ip + "/" + key + "/userRpm/WlanNetworkRpm.htm?broadcast=2&ap=1" +
+                                    "&region=" + getRegionNumber(value.get(0)) + "&channel=" + channel + "&Save=Save&ssid1=" + value.get(2);
+                            urlReferer = WLAN_SETTING_REFERER;
+                            requestCode = WLAN_CODE;
+                            break;
+
+                        case TYPE_WIFI_SEC:
+                            urlReferer = WLAN_SEC_REFERER;
+                            requestCode = WLAN_CODE;
+                            /* value:
+                            o - secMode
+                            1 - password
+                            */
+                            if (value.get(0).equals("0")) {
+                                stringUrl = "http://" + ip + "/" + key + WLAN_SEC_OFF;
+                            } else {
+                                stringUrl = "http://" + ip + "/" + key + WLAN_SEC + value.get(1);
+                            }
+
+                            break;
 
                     }
 
@@ -248,7 +277,7 @@ public class AppFragment extends Fragment implements Const {
 
 
                     if (text.contains(requestCode)) {
-                        text = value;
+                        text = "ok";
                     } else {
                         text = "error";
 
@@ -278,5 +307,109 @@ public class AppFragment extends Fragment implements Const {
 
         return out;
     }
+
+    private String getRegionNumber(String name) {
+        switch (name) {
+            case "Russia":
+                return "83";
+
+            case "Ukraine":
+                return "98";
+
+            case "USA":
+                return "101";
+
+            default:
+                return "98";
+
+        }
+    }
+
+    public ArrayList<String> getInfoWifi(final ArrayList<String> data, final String type) {
+        final String ip = data.get(0);
+        final String key = data.get(1);
+        final String login = data.get(2);
+        final String pass = data.get(3);
+
+        class AsyncLink extends AsyncTask<Void, Void, ArrayList<String>> {
+            ProgressDialog pd;
+
+            @Override
+            protected void onPreExecute() {
+                pd = ProgressDialog.show(getActivity(), "Getting info", "is the collection of information", false, false);
+
+            }
+
+            @Override
+            protected ArrayList<String> doInBackground(Void... voids) {
+                String text = null;
+                ArrayList<String> information = new ArrayList<>();
+                String infoLink = null;
+                StringBuffer response = new StringBuffer();
+                if (type.equals(INFO_WIFI)) {
+                    infoLink = WLAN_SETTING_REFERER;
+                } else {
+                    infoLink = WLAN_SEC_REFERER;
+                }
+
+
+                String stringUrl = "http://" + ip + "/" + key + infoLink;
+
+                try {
+
+                    String authorization = cookieEncodeMD5(login, pass);
+                    URL url = new URL(stringUrl);
+                    HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+                    uc.setRequestProperty("Referer", "http://" + ip + "/" + key + infoLink);
+
+                    uc.setRequestProperty("Cookie", "Authorization=" + authorization);
+
+
+                    BufferedReader in1 = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                    String inputLine1;
+
+                    while ((inputLine1 = in1.readLine()) != null) {
+                        response.append(inputLine1);
+                    }
+
+                    uc.disconnect();
+
+                    text = String.valueOf(response);
+//                    Log.e("SERGEY", text);
+                    String[] responseArray = text.split(",");
+                    if (type.equals(INFO_WIFI)) {
+                        information.add(responseArray[3].replace("\"", "")); //ssid
+                        information.add(responseArray[5]); //region
+                        information.add(responseArray[10]); // chanel
+                    } else {
+                        information.add(responseArray[2].replace(" ", "")); //mode sec
+                        information.add(responseArray[9].replace("\"", "")); // pass
+
+//                        Log.e("Sergey", String.valueOf(information));
+                    }
+
+                } catch (IOException e) {
+                    pd.dismiss();
+                    e.printStackTrace();
+                }
+                return information;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<String> strings) {
+                pd.dismiss();
+                super.onPostExecute(strings);
+            }
+        }
+        ArrayList<String> inf = new ArrayList<>();
+        try {
+            inf = new AsyncLink().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return inf;
+
+    }
+
 
 }

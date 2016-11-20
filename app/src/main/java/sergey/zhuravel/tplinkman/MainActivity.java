@@ -1,9 +1,15 @@
 package sergey.zhuravel.tplinkman;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,178 +19,179 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import sergey.zhuravel.tplinkman.fragment.DeviceList;
+import static sergey.zhuravel.tplinkman.fragment.AppFragment.cookieEncodeMD5;
+import static sergey.zhuravel.tplinkman.fragment.AppFragment.getKey;
 
 public class MainActivity extends AppCompatActivity implements Const {
 
-    public static final String TAG = "Sergey";
-
-    private TextView answerText;
-    private Button btn1,btn2;
-    private EditText etValue;
-
-
-
-    private String ip = "213.110.122.91";
-    private String username = "admin";
-    private String password = "trifle_best";
+    private static final String IPADDRESS_PATTERN =
+            "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    private SharedPreferences sharedPreferences;
+    private EditText etIP, etLogin, etPass;
+    private Button btnIn;
+    private TextInputLayout tilIP;
+    private TextView ipStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        etIP = (EditText) findViewById(R.id.etIP);
+        etLogin = (EditText) findViewById(R.id.etLogin);
+        etPass = (EditText) findViewById(R.id.etPass);
+        tilIP = (TextInputLayout) findViewById(R.id.tilIP);
+        btnIn = (Button) findViewById(R.id.btnIn);
+//        ipStatus = (TextView) findViewById(R.id.ipStatus);
 
 
-        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new DeviceList()).commit();
+        etIP.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!validateIP(etIP.getText().toString())) {
+                    tilIP.setError("Error ip");
+
+                }
+                else {
+                    tilIP.setErrorEnabled(false);
+                }
+            }
+        });
 
 
-        /*
-        answerText = (TextView) findViewById(R.id.answer_text);
-        etValue = (EditText) findViewById(R.id.etValue);
-        btn1 = (Button) findViewById(R.id.btn1);
-        btn2 = (Button) findViewById(R.id.btn2);
-        btn1.setOnClickListener(new View.OnClickListener() {
+
+
+        btnIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                String ip = etIP.getText().toString();
+                String login = etLogin.getText().toString();
+                String pass = etPass.getText().toString();
 
-                String t = asyncWifi(etValue.getText().toString(), getKey(), WLAN_SSID, WLAN_SSID_REFERER,WLAN_CODE);
-                if (t.equals("error")) {
-                    answerText.setText("Error code");
-                }
-                else {
-                    answerText.setText("Successes change wifi ssid to " + t);
-                }
+                validateData(ip, login, pass);
 
             }
         });
 
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String t = asyncWifi(etValue.getText().toString(), getKey(), WLAN_PASS, WLAN_PASS_REFERER,WLAN_CODE);
-                if (t.equals("error")) {
-                    answerText.setText("Error code");
+        loadPref();
+
+
+    }
+
+    private void validateData(String ip, String login, String pass) {
+
+        if (isPing(ip)) {
+            String key = getKey(ip, login, pass);
+
+            int keyLength = key.length();
+            if (keyLength > 10) {
+                Log.e("Sergey", "Validate " + validatePassword(ip, key, login, pass));
+                if (validatePassword(ip, key, login, pass)){
+                    ArrayList<String> data = new ArrayList<>();
+                    Intent intent = new Intent(this,ManagementActivity.class);
+
+                    data.add(ip);
+                    data.add(key);
+                    data.add(login);
+                    data.add(pass);
+                    intent.putStringArrayListExtra("arrayData", (ArrayList<String>) data);
+                    startActivity(intent);
+                    finish();
+
                 }
                 else {
-                    answerText.setText("Successes change wifi password to " + t);
+//                    Snackbar.make(getView(),"Error password",Snackbar.LENGTH_SHORT).show();
                 }
 
+
+            } else {
+                Log.e("Sergey", "OLD");
             }
-        });*/
+        }
+        else {
+//            Snackbar.make(getView(),"Host unreachable",Snackbar.LENGTH_SHORT).show();
+            Log.e("Sergey", "Host unreachable");
+        }
 
     }
 
-    private String asyncWifi(final String value, final String key, final String url, final String urlReferer,final String requestCode) {
-
+    private boolean validatePassword(final String ip, final String key, final String login, final String pass) {
 
         class AsyncLink extends AsyncTask<String, Void, String> {
+            ProgressDialog pd;
+
 
             @Override
-            protected String doInBackground(String... strings) {
-                String text = null;
-                StringBuffer response = new StringBuffer();
-                try {
-                    Log.e(TAG, "key: " + key);
-                    String authorization = cookieEncodeMD5();
-                    String stringUrl1 = "http://" + ip + "/" + key + url + value;
-                    URL url1 = new URL(stringUrl1);
-                    HttpURLConnection uc1 = (HttpURLConnection) url1.openConnection();
+            protected void onPreExecute() {
+                super.onPreExecute();
 
-                    uc1.setRequestProperty("Referer", "http://" + ip + "/" + key + urlReferer);
+                pd = new ProgressDialog(
+                        MainActivity.this);
+                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                pd.setMessage("Validations data...");
 
-                    uc1.setRequestProperty("Cookie", "Authorization=" + authorization);
-
-
-                    BufferedReader in1 = new BufferedReader(new InputStreamReader(uc1.getInputStream()));
-                    String inputLine1;
-
-                    while ((inputLine1 = in1.readLine()) != null) {
-                        response.append(inputLine1);
-                    }
-
-                    uc1.disconnect();
-
-                    text = String.valueOf(response);
-
-                    Log.e(TAG, "TEXT: " + text);
-
-                    if (text.contains(requestCode)) {
-                        text = value;
-                    } else {
-                        text = "error";
-
-                    }
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return text;
             }
 
             @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-            }
-        }
-        String out = null;
-
-        try {
-            out = new AsyncLink().execute().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.e(TAG, "out: " + out);
-        return out;
-    }
-
-
-    private String getKey() {
-
-        class AsyncLink extends AsyncTask<String, Void, String> {
-            
-            @Override
             protected String doInBackground(String... strings) {
-                String key = "";
+                String code = "";
                 StringBuffer response = new StringBuffer();
                 try {
-                    String authorization = cookieEncodeMD5();
-                    String stringUrl = "http://" + ip + "/userRpm/LoginRpm.htm?Save=Save";
+                    String authorization = cookieEncodeMD5(login,pass);
+                    String stringUrl = "http://" + ip + "/" + key + "/userRpm/StatusRpm.htm";
                     URL url = new URL(stringUrl);
                     URLConnection uc = url.openConnection();
+                    uc.setRequestProperty("Referer", "http://" + ip + "/" + key + "/userRpm/StatusRpm.htm");
                     uc.setRequestProperty("Cookie", "Authorization=" + authorization);
-
                     BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
                     String inputLine;
                     while ((inputLine = in.readLine()) != null) {
                         response.append(inputLine);
                     }
 
-
                     String responseKey = String.valueOf(response);
-                    String[] responseKeyArray = responseKey.split("/");
-                    key = responseKeyArray[3];
-                    Log.e(TAG, "getKey: " + key);
+                    if (responseKey.contains("statusPara")) {
+                        code = "ok";
+                    } else {
+                        code = "error";
+                    }
 
 
                 } catch (IOException e) {
+                    pd.dismiss();
                     e.printStackTrace();
                 }
-                return key;
+                return code;
             }
 
             @Override
             protected void onPostExecute(String s) {
+
+                pd.dismiss();
                 super.onPostExecute(s);
             }
+
         }
 
         String out = null;
@@ -194,44 +201,53 @@ public class MainActivity extends AppCompatActivity implements Const {
             e.printStackTrace();
         }
 
-        return out;
-
-    }
-
-    public String cookieEncodeMD5() {
-        String md5 = username + ":" + MD5(password);
-
-        byte[] data = new byte[0];
-        try {
-            data = md5.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-
-        String value = "Basic " + base64;
-        value = value.replaceAll(" ", "%20");
-        value = value.replaceAll("=", "%3d");
-        value = value.replaceAll(System.getProperty("line.separator"), "");
-//        Log.e(TAG,value);
-        return value;
+        return out.equals("ok");
     }
 
 
-    public String MD5(String md5) {
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(md5.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+    private void savePref() {
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ip", etIP.getText().toString());
+        editor.putString("login", etLogin.getText().toString());
+        editor.putString("pass", etPass.getText().toString());
+        editor.apply();
+    }
+
+    private void loadPref() {
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        etIP.setText(sharedPreferences.getString("ip", ""));
+        etLogin.setText(sharedPreferences.getString("login", ""));
+        etPass.setText(sharedPreferences.getString("pass", ""));
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        savePref();
+    }
+
+
+
+    private boolean isPing(String ip) {
+        if (validateIP(ip)) {
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                Process ipProcess = runtime.exec("/system/bin/ping -c 2 " + ip);
+                int exitValue = ipProcess.waitFor();
+                return (exitValue == 0);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
         }
-        return null;
+        return false;
     }
 
+    public boolean validateIP(String ip) {
+        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
+    }
 
 }

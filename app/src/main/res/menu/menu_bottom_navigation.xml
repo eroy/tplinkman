@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_info"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Info"/>
+    <item
+        android:id="@+id/action_wifi"
+        android:icon="@drawable/ic_wifi_white_24dp"
+        android:title="WIFI"/>
+    <item
+        android:id="@+id/action_wan"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="WAN" />
+
+</menu>
