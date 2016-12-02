@@ -16,6 +16,7 @@ import java.util.List;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.adapter.InfoRecyclerAdapter;
 import sergey.zhuravel.tplinkman.model.Info;
+import sergey.zhuravel.tplinkman.model.WifiInfo;
 
 public class FragmentInfo extends AppFragment {
 
@@ -23,7 +24,9 @@ public class FragmentInfo extends AppFragment {
     private List<Info> infoList;
     private RecyclerView recyclerView;
     private InfoRecyclerAdapter infoRecyclerAdapter;
-    ArrayList<String> info;
+    private ArrayList<String> info;
+    private ArrayList<String> listWifiInfo = new ArrayList<>();
+    private ArrayList<String> listWifiSecInfo = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,13 +41,20 @@ public class FragmentInfo extends AppFragment {
 
 
         info = asyncInfo(data);
+        listWifiInfo = getInfoWifi(data, INFO_WIFI);
+        listWifiSecInfo = getInfoWifi(data, INFO_WIFI_SEC);
 
+        String wTitle="Wireless\n" +"SSID:\n" +"PASSWORD";
+        String wSub="\n" + listWifiInfo.get(0)+"\n" +listWifiSecInfo.get(1).substring(1);
 
 //        String[] name ={"build: ","version: ","ssid: ","mac: ","ip: ","typeVpn: "
 //                ,"mask: ","gateway: ","dns1: ","dns2: "};
         infoList.add(new Info("Build:",info.get(0).replace("\"","")));
         infoList.add(new Info("Version:",info.get(1).replace("\"","")));
         infoList.add(new Info("Mac address:",info.get(3).replace("\"","")));
+        ;
+        infoList.add(new Info("SSID:",listWifiInfo.get(0)));
+        infoList.add(new Info("Password wifi:",listWifiSecInfo.get(1).substring(1)));
 
 
         infoRecyclerAdapter = new InfoRecyclerAdapter(getActivity(), infoList);

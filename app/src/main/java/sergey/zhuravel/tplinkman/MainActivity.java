@@ -4,8 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -22,6 +26,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,18 +46,42 @@ public class MainActivity extends AppCompatActivity implements Const {
     private Button btnIn;
     private TextInputLayout tilIP;
     private TextView ipStatus;
+    private String wifiSsid = "";
+    private String wifiPass = "";
+    private ProgressDialog PD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
+        initPD();
+        if (getIntent().getStringExtra("wifiSsid") != null) {
+            wifiSsid = getIntent().getStringExtra("wifiSsid");
+            wifiPass = getIntent().getStringExtra("wifiPass");
+            if (!wifiSsid.equals("")) {
 
-        etIP = (EditText) findViewById(R.id.etIP);
-        etLogin = (EditText) findViewById(R.id.etLogin);
-        etPass = (EditText) findViewById(R.id.etPass);
-        tilIP = (TextInputLayout) findViewById(R.id.tilIP);
-        btnIn = (Button) findViewById(R.id.btnIn);
-//        ipStatus = (TextView) findViewById(R.id.ipStatus);
+
+                connectToAP(wifiSsid, wifiPass);
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                String ip = etIP.getText().toString();
+                String login = etLogin.getText().toString();
+                String pass = etPass.getText().toString();
+
+                validateData(ip, login, pass);
+
+            } else {
+                Log.e("SERGEY", "null");
+            }
+        }
+
+
 
 
         etIP.addTextChangedListener(new TextWatcher() {
@@ -71,14 +100,11 @@ public class MainActivity extends AppCompatActivity implements Const {
                 if (!validateIP(etIP.getText().toString())) {
                     tilIP.setError("Error ip");
 
-                }
-                else {
+                } else {
                     tilIP.setErrorEnabled(false);
                 }
             }
         });
-
-
 
 
         btnIn.setOnClickListener(new View.OnClickListener() {
@@ -99,66 +125,70 @@ public class MainActivity extends AppCompatActivity implements Const {
 
     }
 
+    private void initView() {
+        etIP = (EditText) findViewById(R.id.etIP);
+        etLogin = (EditText) findViewById(R.id.etLogin);
+        etPass = (EditText) findViewById(R.id.etPass);
+        tilIP = (TextInputLayout) findViewById(R.id.tilIP);
+        btnIn = (Button) findViewById(R.id.btnIn);
+    }
+
     private void validateData(String ip, String login, String pass) {
 
-        if (isPing(ip)) {
-            String key = getKey(ip, login, pass);
+        for (int i=0;i<3;i++) {
 
-            int keyLength = key.length();
-            if (keyLength > 10) {
-                Log.e("Sergey", "Validate " + validatePassword(ip, key, login, pass));
-                if (validatePassword(ip, key, login, pass)){
-                    ArrayList<String> data = new ArrayList<>();
-                    Intent intent = new Intent(this,ManagementActivity.class);
+            if (isPing(ip)) {
+                String key = getKey(ip, login, pass);
 
-                    data.add(ip);
-                    data.add(key);
-                    data.add(login);
-                    data.add(pass);
-                    intent.putStringArrayListExtra("arrayData", (ArrayList<String>) data);
-                    startActivity(intent);
-                    finish();
+                int keyLength = key.length();
+                if (keyLength > 10) {
+                    Log.e("Sergey", "Validate " + validatePassword(ip, key, login, pass));
+                    if (validatePassword(ip, key, login, pass)) {
+                        ArrayList<String> data = new ArrayList<>();
+                        Intent intent = new Intent(this, ManagementActivity.class);
 
-                }
-                else {
+                        data.add(ip);
+                        data.add(key);
+                        data.add(login);
+                        data.add(pass);
+                        intent.putStringArrayListExtra("arrayData", (ArrayList<String>) data);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
 //                    Snackbar.make(getView(),"Error password",Snackbar.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Log.e("Sergey", "OLD");
                 }
 
-
+                break;
             } else {
-                Log.e("Sergey", "OLD");
+//            Snackbar.make(getView(),"Host unreachable",Snackbar.LENGTH_SHORT).show();
+                Log.e("Sergey", "Host unreachable");
             }
         }
-        else {
-//            Snackbar.make(getView(),"Host unreachable",Snackbar.LENGTH_SHORT).show();
-            Log.e("Sergey", "Host unreachable");
-        }
-
     }
 
     private boolean validatePassword(final String ip, final String key, final String login, final String pass) {
 
         class AsyncLink extends AsyncTask<String, Void, String> {
-            ProgressDialog pd;
 
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-
-                pd = new ProgressDialog(
-                        MainActivity.this);
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                pd.setMessage("Validations data...");
-
+                PD.show();
             }
 
             @Override
             protected String doInBackground(String... strings) {
+
                 String code = "";
                 StringBuffer response = new StringBuffer();
                 try {
-                    String authorization = cookieEncodeMD5(login,pass);
+                    String authorization = cookieEncodeMD5(login, pass);
                     String stringUrl = "http://" + ip + "/" + key + "/userRpm/StatusRpm.htm";
                     URL url = new URL(stringUrl);
                     URLConnection uc = url.openConnection();
@@ -179,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements Const {
 
 
                 } catch (IOException e) {
-                    pd.dismiss();
+                    PD.dismiss();
                     e.printStackTrace();
                 }
                 return code;
@@ -188,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements Const {
             @Override
             protected void onPostExecute(String s) {
 
-                pd.dismiss();
+                PD.dismiss();
                 super.onPostExecute(s);
             }
 
@@ -229,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements Const {
     }
 
 
-
     private boolean isPing(String ip) {
         if (validateIP(ip)) {
             Runtime runtime = Runtime.getRuntime();
@@ -248,6 +277,108 @@ public class MainActivity extends AppCompatActivity implements Const {
         Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
         Matcher matcher = pattern.matcher(ip);
         return matcher.matches();
+    }
+
+    private void initPD() {
+        PD = new ProgressDialog(this);
+        PD.setMessage("Loading.....");
+        PD.setCancelable(true);
+
+    }
+
+    public void connectToAP(final String ssid, final String passkey) {
+
+        PD.show();
+        Log.e("SERGEY", "* connectToAP");
+
+        for (int i=0;i<3;i++) {
+            WifiConfiguration wifiConfiguration = new WifiConfiguration();
+            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            String networkSSID = ssid;
+            String networkPass = passkey;
+
+            Log.e("SERGEY", "# password " + networkPass);
+
+            for (ScanResult result : wifiManager.getScanResults()) {
+                if (result.SSID.equals(networkSSID)) {
+
+                    String securityMode = getScanResultSecurity(result);
+
+                    if (securityMode.equalsIgnoreCase("OPEN")) {
+
+                        wifiConfiguration.SSID = "\"" + networkSSID + "\"";
+                        wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                        int res = wifiManager.addNetwork(wifiConfiguration);
+                        Log.e("SERGEY", "# add Network returned " + res);
+
+                        boolean b = wifiManager.enableNetwork(res, true);
+                        Log.e("SERGEY", "# enableNetwork returned " + b);
+                        wifiManager.setWifiEnabled(true);
+
+                        PD.dismiss();
+
+                    } else if (securityMode.equalsIgnoreCase("WEP")) {
+
+                        wifiConfiguration.SSID = "\"" + networkSSID + "\"";
+                        wifiConfiguration.wepKeys[0] = "\"" + networkPass + "\"";
+                        wifiConfiguration.wepTxKeyIndex = 0;
+                        wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+                        int res = wifiManager.addNetwork(wifiConfiguration);
+
+
+                        boolean b = wifiManager.enableNetwork(res, true);
+
+
+                        wifiManager.setWifiEnabled(true);
+                        PD.dismiss();
+                    }
+                    else if(securityMode.equalsIgnoreCase("PSK")){
+
+                        wifiConfiguration.SSID = "\"" + networkSSID + "\"";
+                        wifiConfiguration.preSharedKey = "\"" + networkPass + "\"";
+
+                        wifiConfiguration.hiddenSSID = true;
+                        wifiConfiguration.status = WifiConfiguration.Status.ENABLED;
+                        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+                        wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+                        wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+                        wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+                        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+                        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+                        //Adds to the list of network and returns the network id which can be used to enable it later.
+
+                        int res = wifiManager.addNetwork(wifiConfiguration);
+                        wifiManager.disconnect();
+                        wifiManager.setWifiEnabled(true);
+                        wifiManager.enableNetwork(res, true);
+                        wifiManager.reconnect();
+
+
+
+
+                    }
+                    PD.dismiss();
+                }
+            }
+
+        }
+    }
+
+    public String getScanResultSecurity(ScanResult scanResult) {
+
+
+        final String cap = scanResult.capabilities;
+        final String[] securityModes = {"WEP", "PSK", "EAP"};
+
+        for (int i = securityModes.length - 1; i >= 0; i--) {
+            if (cap.contains(securityModes[i])) {
+                return securityModes[i];
+            }
+        }
+
+        return "OPEN";
     }
 
 }

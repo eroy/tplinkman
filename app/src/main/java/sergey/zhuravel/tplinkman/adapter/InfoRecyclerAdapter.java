@@ -1,14 +1,17 @@
 package sergey.zhuravel.tplinkman.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,7 @@ public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapte
 
         holder.titleName.setText(info.getTitleName());
         holder.value.setText(info.getValue());
+
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,12 +66,14 @@ public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapte
         TextView titleName;
         TextView value;
         RelativeLayout rl;
+        CardView cw;
 
         public RVHolder(View view) {
             super(view);
             titleName = (TextView) view.findViewById(R.id.name);
             value = (TextView) view.findViewById(R.id.value);
             rl = (RelativeLayout) view.findViewById(R.id.rl);
+            cw = (CardView) view.findViewById(R.id.cw);
 
 
 

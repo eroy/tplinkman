@@ -2,11 +2,8 @@ package sergey.zhuravel.tplinkman.fragment;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -165,9 +162,12 @@ public class FragmentWifi extends AppFragment {
                 value.add(sec);
                 value.add(etPassword.getText().toString());
                 String request = asyncWifi(data, TYPE_WIFI_SEC, value);
-                Snackbar.make(getView(), request, Snackbar.LENGTH_SHORT).show();
-
-
+                if (!secMode.isChecked()) {
+                    dialogExit(wifiInfo.getSsid(), "");
+                    wifiInfo.setPassword("");
+                } else {
+                    dialogExit(wifiInfo.getSsid(), etPassword.getText().toString());
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -182,15 +182,25 @@ public class FragmentWifi extends AppFragment {
     }
 
 
-    private void dialogExit(final String text) {
+    private void dialogExit(final String ssid, final String pass) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("SSID change to " + text);
+        String message = "SSID: " + ssid + "\n";
+        String message1 = !pass.equals("") ? pass : "No password";
+        builder.setMessage(message + "Password: " + message1);
         builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                enableWifi(text,"");
 
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("wifiSsid", ssid);
+                intent.putExtra("wifiPass", pass);
+                startActivity(intent);
                 getActivity().finish();
             }
         });
@@ -200,19 +210,6 @@ public class FragmentWifi extends AppFragment {
 
     }
 
-    private void enableWifi(String networkSSID, String networkPass) {
-        WifiConfiguration wifiConfig = new WifiConfiguration();
-        wifiConfig.SSID = String.format("\"{0}\"", networkSSID);
-        wifiConfig.preSharedKey = String.format("\"{0}\"", networkPass);
-
-        WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
-
-        // Use ID
-        int netId = wifiManager.addNetwork(wifiConfig);
-        wifiManager.disconnect();
-        wifiManager.enableNetwork(netId, true);
-        wifiManager.reconnect();
-    }
 
     private void editWifiSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -245,7 +242,7 @@ public class FragmentWifi extends AppFragment {
 
                 String request = asyncWifi(data, TYPE_WIFI_SETTINGS, value);
                 Snackbar.make(getView(), request, Snackbar.LENGTH_SHORT).show();
-                dialogExit(etSSID.getText().toString());
+                dialogExit(etSSID.getText().toString(), wifiInfo.getPassword());
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
