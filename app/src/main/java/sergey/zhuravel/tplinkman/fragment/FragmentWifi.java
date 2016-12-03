@@ -49,10 +49,10 @@ public class FragmentWifi extends AppFragment {
         //        get value data
         data = getArguments().getStringArrayList("data");
 
-        listWifiInfo = getInfoWifi(data, INFO_WIFI);
-        listWifiSecInfo = getInfoWifi(data, INFO_WIFI_SEC);
+        listWifiInfo = getInfo(data, INFO_WIFI);
+        listWifiSecInfo = getInfo(data, INFO_WIFI_SEC);
 
-//        getInfoWifi
+//        getInfo
         wifiInfo.setSsid(listWifiInfo.get(0));
         wifiInfo.setRegion(listWifiInfo.get(1));
         wifiInfo.setChanel(listWifiInfo.get(2));
@@ -161,7 +161,7 @@ public class FragmentWifi extends AppFragment {
                 }
                 value.add(sec);
                 value.add(etPassword.getText().toString());
-                String request = asyncWifi(data, TYPE_WIFI_SEC, value);
+                String request = setSettingsRouter(data, TYPE_WIFI_SEC, value);
                 if (!secMode.isChecked()) {
                     dialogExit(wifiInfo.getSsid(), "");
                     wifiInfo.setPassword("");
@@ -240,7 +240,7 @@ public class FragmentWifi extends AppFragment {
                 value.add(chanel.getSelectedItem().toString());
                 value.add(etSSID.getText().toString());
 
-                String request = asyncWifi(data, TYPE_WIFI_SETTINGS, value);
+                String request = setSettingsRouter(data, TYPE_WIFI_SETTINGS, value);
                 Snackbar.make(getView(), request, Snackbar.LENGTH_SHORT).show();
                 dialogExit(etSSID.getText().toString(), wifiInfo.getPassword());
             }

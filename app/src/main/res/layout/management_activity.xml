@@ -21,6 +21,8 @@
             app:menu="@menu/menu_bottom_navigation" />
 
         <FrameLayout
+            android:background="@color/icons"
+
             android:id="@+id/frame_man"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

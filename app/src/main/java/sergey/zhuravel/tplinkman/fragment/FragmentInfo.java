@@ -2,10 +2,8 @@ package sergey.zhuravel.tplinkman.fragment;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import java.util.List;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.adapter.InfoRecyclerAdapter;
 import sergey.zhuravel.tplinkman.model.Info;
-import sergey.zhuravel.tplinkman.model.WifiInfo;
 
 public class FragmentInfo extends AppFragment {
 
@@ -41,20 +38,16 @@ public class FragmentInfo extends AppFragment {
 
 
         info = asyncInfo(data);
-        listWifiInfo = getInfoWifi(data, INFO_WIFI);
-        listWifiSecInfo = getInfoWifi(data, INFO_WIFI_SEC);
+        listWifiInfo = getInfo(data, INFO_WIFI);
+        listWifiSecInfo = getInfo(data, INFO_WIFI_SEC);
 
-        String wTitle="Wireless\n" +"SSID:\n" +"PASSWORD";
-        String wSub="\n" + listWifiInfo.get(0)+"\n" +listWifiSecInfo.get(1).substring(1);
 
-//        String[] name ={"build: ","version: ","ssid: ","mac: ","ip: ","typeVpn: "
-//                ,"mask: ","gateway: ","dns1: ","dns2: "};
-        infoList.add(new Info("Build:",info.get(0).replace("\"","")));
-        infoList.add(new Info("Version:",info.get(1).replace("\"","")));
-        infoList.add(new Info("Mac address:",info.get(3).replace("\"","")));
-        ;
-        infoList.add(new Info("SSID:",listWifiInfo.get(0)));
-        infoList.add(new Info("Password wifi:",listWifiSecInfo.get(1).substring(1)));
+        infoList.add(new Info(getString(R.string.info_build),info.get(0).replace("\"","")));
+        infoList.add(new Info(getString(R.string.info_version),info.get(1).replace("\"","")));
+        infoList.add(new Info(getString(R.string.info_mac),info.get(3).replace("\"","")));
+
+        infoList.add(new Info(getString(R.string.info_ssid),listWifiInfo.get(0)));
+        infoList.add(new Info(getString(R.string.info_pass),listWifiSecInfo.get(1).substring(1)));
 
 
         infoRecyclerAdapter = new InfoRecyclerAdapter(getActivity(), infoList);

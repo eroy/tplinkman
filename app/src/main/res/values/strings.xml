@@ -6,7 +6,36 @@
     <string name="chanel">Chanel</string>
     <string name="regional">Regional</string>
     <string name="password">Password</string>
+    <string name="info_build">Build:</string>
+    <string name="info_version">Version:</string>
+    <string name="info_mac">Mac address:</string>
+    <string name="info_ssid">SSID:</string>
+    <string name="info_pass">Password wifi:</string>
 
+    <string name="dynIP">Dynamic IP</string>
+    <string name="statIP">Static IP</string>
+    <string name="pptp">PPTP</string>
+    <string name="ppoe">PPOE</string>
+
+    <string name="ip">IP</string>
+    <string name="gateway">Gateway</string>
+    <string name="mask">Mask</string>
+    <string name="dns1">Primary DNS</string>
+    <string name="dns2">Secondary DNS</string>
+    <string name="vpn">Vpn server</string>
+    <string name="username">Username</string>
+    <string name="save">Save</string>
+    <string name="enter_settings">Enter settings</string>
+    <string name="set_suc_applied">Settings successfully applied</string>
+
+    <string-array name="typeWan">
+        <item>Dynamic IP</item>
+        <item>Static IP</item>
+        <item>PPTP</item>
+        <item>PPOE</item>
+
+
+    </string-array>
 
     <string-array name="listRegion">
         <item>Ukraine</item>

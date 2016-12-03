@@ -163,6 +163,7 @@ public class AppFragment extends Fragment implements Const {
                     information.add(responseArray[51]); // dns1
                     information.add(responseArray[52]); // dns2
 
+                    Log.e("INF", String.valueOf(information));
                 } catch (IOException e) {
                     pd.dismiss();
                     e.printStackTrace();
@@ -186,7 +187,7 @@ public class AppFragment extends Fragment implements Const {
 
     }
 
-    public String asyncWifi(final ArrayList<String> data, final String type, final ArrayList<String> value) {
+    public String setSettingsRouter(final ArrayList<String> data, final String type, final ArrayList<String> value) {
         final String ip = data.get(0);
         final String key = data.get(1);
         final String login = data.get(2);
@@ -194,13 +195,13 @@ public class AppFragment extends Fragment implements Const {
 
         class AsyncLink extends AsyncTask<String, Void, String> {
 
-            ProgressDialog pd;
+//            ProgressDialog pd;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
 
-                pd = ProgressDialog.show(getActivity(), "Setup type", type, false, false);
+//                pd = ProgressDialog.show(getActivity(), "Setup type", type, false, false);
             }
 
             @Override
@@ -253,6 +254,22 @@ public class AppFragment extends Fragment implements Const {
                             }
 
                             break;
+                        case TYPE_WAN_DYN:
+                            stringUrl = "http://" + ip + "/" + key + WAN_URL_DYN;
+                            urlReferer = WAN_DYN;
+                            requestCode = WAN_DYN_CODE;
+
+                            break;
+                        case TYPE_WAN_STAT:
+
+                            Log.e("VALUE", String.valueOf(value));
+                            stringUrl = "http://" + ip + "/" + key + "/userRpm/WanStaticIpCfgRpm.htm?wantype=1&mtu=1500"
+                                    +"&ip="+value.get(0)+"&mask="+value.get(1)+ "&gateway="+value.get(2)+"&dnsserver="+value.get(3)
+                                    +"&dnsserver2="+value.get(4)+"&Save=Save";
+                            urlReferer = WAN_STAT;
+                            requestCode = WAN_STAT_CODE;
+                            break;
+
 
                     }
 
@@ -285,7 +302,7 @@ public class AppFragment extends Fragment implements Const {
 
 
                 } catch (IOException e) {
-                    pd.dismiss();
+//                    pd.dismiss();
                     e.printStackTrace();
                 }
                 return text;
@@ -293,7 +310,7 @@ public class AppFragment extends Fragment implements Const {
 
             @Override
             protected void onPostExecute(String s) {
-                pd.dismiss();
+//                pd.dismiss();
                 super.onPostExecute(s);
             }
         }
@@ -325,7 +342,7 @@ public class AppFragment extends Fragment implements Const {
         }
     }
 
-    public ArrayList<String> getInfoWifi(final ArrayList<String> data, final String type) {
+    public ArrayList<String> getInfo(final ArrayList<String> data, final String type) {
         final String ip = data.get(0);
         final String key = data.get(1);
         final String login = data.get(2);
@@ -346,10 +363,27 @@ public class AppFragment extends Fragment implements Const {
                 ArrayList<String> information = new ArrayList<>();
                 String infoLink = null;
                 StringBuffer response = new StringBuffer();
-                if (type.equals(INFO_WIFI)) {
-                    infoLink = WLAN_SETTING_REFERER;
-                } else {
-                    infoLink = WLAN_SEC_REFERER;
+
+                switch (type) {
+                    case INFO_WIFI:
+                        infoLink = WLAN_SETTING_REFERER;
+                        break;
+                    case INFO_WIFI_SEC:
+                        infoLink = WLAN_SEC_REFERER;
+                        break;
+                    case INFO_WAN_DYN:
+                        infoLink=WAN_DYN;
+                        break;
+                    case INFO_WAN_STAT:
+                        infoLink = WAN_STAT;
+                        break;
+                    case INFO_WAN_PPTP:
+
+                        break;
+                    case INFO_WAN_PPOE:
+
+                        break;
+
                 }
 
 
@@ -375,18 +409,43 @@ public class AppFragment extends Fragment implements Const {
                     uc.disconnect();
 
                     text = String.valueOf(response);
-//                    Log.e("SERGEY", text);
+                    Log.e("INFO", text);
                     String[] responseArray = text.split(",");
-                    if (type.equals(INFO_WIFI)) {
-                        information.add(responseArray[3].replace("\"", "")); //ssid
-                        information.add(responseArray[5]); //region
-                        information.add(responseArray[10]); // chanel
-                    } else {
-                        information.add(responseArray[2].replace(" ", "")); //mode sec
-                        information.add(responseArray[9].replace("\"", "")); // pass
 
-//                        Log.e("Sergey", String.valueOf(information));
+                    switch (type) {
+                        case INFO_WIFI:
+                            information.add(responseArray[3].replace("\"", "")); //ssid
+                            information.add(responseArray[5]); //region
+                            information.add(responseArray[10]); // chanel
+                            break;
+                        case INFO_WIFI_SEC:
+                            information.add(responseArray[2].replace(" ", "")); //mode sec
+                            information.add(responseArray[9].replace("\"", "")); // pass
+                            break;
+                        case INFO_WAN_DYN:
+                            information.add(responseArray[17].replace("\"", "")); // ip
+                            information.add(responseArray[18].replace("\"", "")); // mask
+                            information.add(responseArray[19].replace("\"", "")); // gateway
+                            information.add(responseArray[24].replace("\"", "")); // dns
+                            break;
+                        case INFO_WAN_STAT:
+                            information.add(responseArray[16].replace("\"", "")); // ip
+                            information.add(responseArray[17].replace("\"", "")); // mask
+                            information.add(responseArray[18].replace("\"", "")); // gateway
+                            information.add(responseArray[20].replace("\"", "")); // dns1
+                            information.add(responseArray[21].replace("\"", "")); // dns2
+
+
+                            break;
+                        case INFO_WAN_PPTP:
+
+                            break;
+                        case INFO_WAN_PPOE:
+
+                            break;
+
                     }
+
 
                 } catch (IOException e) {
                     pd.dismiss();

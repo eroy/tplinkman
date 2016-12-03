@@ -2,23 +2,16 @@ package sergey.zhuravel.tplinkman;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import sergey.zhuravel.tplinkman.fragment.AppFragment;
 import sergey.zhuravel.tplinkman.fragment.FragmentInfo;
 import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
-import sergey.zhuravel.tplinkman.model.WifiInfo;
-
-import static sergey.zhuravel.tplinkman.Const.INFO_WIFI;
-import static sergey.zhuravel.tplinkman.Const.INFO_WIFI_SEC;
+import sergey.zhuravel.tplinkman.fragment.FragmentWan;
 
 
 public class ManagementActivity extends AppCompatActivity {
@@ -39,9 +32,8 @@ public class ManagementActivity extends AppCompatActivity {
         data = getIntent().getStringArrayListExtra("arrayData");
 
 
-
 //        start fragment info
-        goFragmentInfo();
+        goFragment(new FragmentInfo());
 
 
 //        config bnv
@@ -50,14 +42,14 @@ public class ManagementActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_info:
-                        goFragmentInfo();
-
+                        goFragment(new FragmentInfo());
                         break;
                     case R.id.action_wifi:
-                        goFragmentWifi();
-
+                        goFragment(new FragmentWifi());
                         break;
-
+                    case R.id.action_wan:
+                        goFragment(new FragmentWan());
+                        break;
 
                 }
 
@@ -69,20 +61,11 @@ public class ManagementActivity extends AppCompatActivity {
 
     }
 
-    private void goFragmentInfo() {
-        FragmentInfo fragmentInfo = new FragmentInfo();
+
+    private void goFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("data", data);
-        fragmentInfo.setArguments(bundle);
-        ManagementActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragmentInfo).commit();
+        fragment.setArguments(bundle);
+        ManagementActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).commit();
     }
-
-    private void goFragmentWifi() {
-        FragmentWifi fragmentWifi = new FragmentWifi();
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList("data", data);
-        fragmentWifi.setArguments(bundle);
-        ManagementActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragmentWifi).commit();
-    }
-
 }
