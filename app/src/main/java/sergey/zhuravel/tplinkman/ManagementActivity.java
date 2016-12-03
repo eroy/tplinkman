@@ -5,18 +5,27 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import sergey.zhuravel.tplinkman.fragment.AppFragment;
 import sergey.zhuravel.tplinkman.fragment.FragmentInfo;
 import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
 import sergey.zhuravel.tplinkman.fragment.FragmentWan;
 
 
-public class ManagementActivity extends AppCompatActivity {
+public class ManagementActivity extends AppCompatActivity implements Const{
     private BottomNavigationView bottomNavigationView;
     private ArrayList<String> data = new ArrayList<>();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppFragment appFragment = new AppFragment();
+        appFragment.setSettingsRouter(getApplicationContext(),data,TYPE_LOGOUT,new ArrayList<String>());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

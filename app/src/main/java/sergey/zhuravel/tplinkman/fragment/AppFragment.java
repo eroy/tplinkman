@@ -1,6 +1,7 @@
 package sergey.zhuravel.tplinkman.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -109,103 +110,32 @@ public class AppFragment extends Fragment implements Const {
         return null;
     }
 
-    public ArrayList<String> asyncInfo(final ArrayList<String> data) {
-        final String ip = data.get(0);
-        final String key = data.get(1);
-        final String login = data.get(2);
-        final String pass = data.get(3);
+    private void initPD() {
 
-        class AsyncLink extends AsyncTask<Void, Void, ArrayList<String>> {
-            ProgressDialog pd;
-
-            @Override
-            protected void onPreExecute() {
-                pd = ProgressDialog.show(getActivity(), "Getting info", "is the collection of information", false, false);
-
-            }
-
-            @Override
-            protected ArrayList<String> doInBackground(Void... voids) {
-                String text = null;
-                ArrayList<String> information = new ArrayList<>();
-                StringBuffer response = new StringBuffer();
-                String stringUrl = "http://" + ip + "/" + key + INFO;
-                try {
-
-                    String authorization = cookieEncodeMD5(login, pass);
-                    URL url = new URL(stringUrl);
-                    HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-                    uc.setRequestProperty("Referer", "http://" + ip + "/" + key + INFO);
-
-                    uc.setRequestProperty("Cookie", "Authorization=" + authorization);
-
-
-                    BufferedReader in1 = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-                    String inputLine1;
-
-                    while ((inputLine1 = in1.readLine()) != null) {
-                        response.append(inputLine1);
-                    }
-
-                    uc.disconnect();
-
-                    text = String.valueOf(response);
-                    String[] responseArray = text.split(",");
-
-                    information.add(responseArray[5]); //build
-                    information.add(responseArray[6]); // version
-                    information.add(responseArray[16]); //ssid
-                    information.add(responseArray[41]); // mac address
-                    information.add(responseArray[42]); // ip
-                    information.add(responseArray[43]); // type wan
-                    information.add(responseArray[44]); // mask
-                    information.add(responseArray[47]); // gateway
-                    information.add(responseArray[51]); // dns1
-                    information.add(responseArray[52]); // dns2
-
-                    Log.e("INF", String.valueOf(information));
-                } catch (IOException e) {
-                    pd.dismiss();
-                    e.printStackTrace();
-                }
-                return information;
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList<String> strings) {
-                pd.dismiss();
-                super.onPostExecute(strings);
-            }
-        }
-        ArrayList<String> inf = new ArrayList<>();
-        try {
-            inf = new AsyncLink().execute().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return inf;
 
     }
 
-    public String setSettingsRouter(final ArrayList<String> data, final String type, final ArrayList<String> value) {
+    public String setSettingsRouter(final Context context, final ArrayList<String> data, final String type, final ArrayList<String> value) {
         final String ip = data.get(0);
         final String key = data.get(1);
         final String login = data.get(2);
         final String pass = data.get(3);
 
         class AsyncLink extends AsyncTask<String, Void, String> {
-
-//            ProgressDialog pd;
+            ProgressDialog PD;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-
-//                pd = ProgressDialog.show(getActivity(), "Setup type", type, false, false);
+                PD = new ProgressDialog(context);
+                PD.setMessage("Loading.....");
+                PD.setCancelable(true);
+                PD.show();
             }
 
             @Override
             protected String doInBackground(String... strings) {
+
                 String text = null;
                 StringBuffer response = new StringBuffer();
                 String requestCode = null;
@@ -262,15 +192,27 @@ public class AppFragment extends Fragment implements Const {
                             break;
                         case TYPE_WAN_STAT:
 
-                            Log.e("VALUE", String.valueOf(value));
+
                             stringUrl = "http://" + ip + "/" + key + "/userRpm/WanStaticIpCfgRpm.htm?wantype=1&mtu=1500"
-                                    +"&ip="+value.get(0)+"&mask="+value.get(1)+ "&gateway="+value.get(2)+"&dnsserver="+value.get(3)
-                                    +"&dnsserver2="+value.get(4)+"&Save=Save";
+                                    + "&ip=" + value.get(0) + "&mask=" + value.get(1) + "&gateway=" + value.get(2) + "&dnsserver=" + value.get(3)
+                                    + "&dnsserver2=" + value.get(4) + "&Save=Save";
                             urlReferer = WAN_STAT;
                             requestCode = WAN_STAT_CODE;
                             break;
 
+                        case TYPE_WAN_PPTP:
+                            stringUrl = "http://" + ip + "/" + key + "/userRpm/PPTPCfgRpm.htm?wantype=7&PPTPName=" + value.get(0) +
+                                    "&PPTPPwd=" + value.get(1) + "&PPTPPwd_cfm=" + value.get(1) + "&PPTPServerName=" + value.get(2) + "&Save=Save";
+                            urlReferer = WAN_PPTP;
+                            requestCode = WAN_PPTP_CODE;
 
+                            break;
+
+                        case TYPE_LOGOUT:
+                            stringUrl = "http://" + ip + "/" + key + LOGOUT;
+                            urlReferer = LOGOUT;
+                            requestCode = "logout";
+                            break;
                     }
 
                     URL url = new URL(stringUrl);
@@ -302,7 +244,6 @@ public class AppFragment extends Fragment implements Const {
 
 
                 } catch (IOException e) {
-//                    pd.dismiss();
                     e.printStackTrace();
                 }
                 return text;
@@ -310,8 +251,8 @@ public class AppFragment extends Fragment implements Const {
 
             @Override
             protected void onPostExecute(String s) {
-//                pd.dismiss();
                 super.onPostExecute(s);
+                PD.dismiss();
             }
         }
         String out = null;
@@ -372,18 +313,26 @@ public class AppFragment extends Fragment implements Const {
                         infoLink = WLAN_SEC_REFERER;
                         break;
                     case INFO_WAN_DYN:
-                        infoLink=WAN_DYN;
+                        infoLink = WAN_DYN;
                         break;
                     case INFO_WAN_STAT:
                         infoLink = WAN_STAT;
                         break;
                     case INFO_WAN_PPTP:
-
+                        infoLink = WAN_PPTP;
                         break;
                     case INFO_WAN_PPOE:
 
                         break;
-
+                    case INFO_WAN_TYPE:
+                        infoLink = WAN_TYPE;
+                        break;
+                    case INFO_FIRMWARE:
+                        infoLink = FIRMWARE;
+                        break;
+                    case INFO_MAC_WAN:
+                        infoLink = MAC_WAN;
+                        break;
                 }
 
 
@@ -438,12 +387,37 @@ public class AppFragment extends Fragment implements Const {
 
                             break;
                         case INFO_WAN_PPTP:
+                            information.add(responseArray[4].replace("\"", "")); // vpn server
+                            information.add(responseArray[5].replace("\"", "")); // username
+                            information.add(responseArray[6].replace("\"", "")); // password
+                            information.add(responseArray[9].replace("\"", "")); // ip
+                            information.add(responseArray[10].replace("\"", "")); // mask
+                            information.add(responseArray[11].replace("\"", "")); // gateway
 
                             break;
                         case INFO_WAN_PPOE:
 
                             break;
 
+                        case INFO_WAN_TYPE:
+                            String[] responseArray1 = text.split("/");
+                            information.add(responseArray1[2]); //region
+                            break;
+
+                        case INFO_FIRMWARE:
+                            String[] responseArray2 = text.split("\\(");
+                            String[] responseArray3 = responseArray2[1].split(",");
+                            information.add(responseArray3[0].replace("\"", "")); // build
+                            information.add(responseArray3[1].replace("\"", "")); // verison
+
+                            break;
+                        case INFO_MAC_WAN:
+                            String[] responseArray4 = text.split("\\(");
+                            String[] responseArray5 = responseArray4[1].split(",");
+                            information.add(responseArray5[0].replace("\"", "")); // mac address
+
+
+                            break;
                     }
 
 

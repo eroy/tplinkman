@@ -69,7 +69,7 @@ public class WanStaticRA extends RecyclerView.Adapter<WanStaticRA.RVHolder> impl
                 value.add(holder.dns1.getText().toString());
                 value.add(holder.dns2.getText().toString());
 
-                String request = appFragment.setSettingsRouter(data,TYPE_WAN_STAT,value);
+                String request = appFragment.setSettingsRouter(context,data,TYPE_WAN_STAT,value);
                 if (request.equals("ok")) {
                     Snackbar.make(view, R.string.set_suc_applied,Snackbar.LENGTH_LONG).show();
                 }

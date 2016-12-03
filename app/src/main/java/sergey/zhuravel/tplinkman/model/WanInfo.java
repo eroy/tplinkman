@@ -21,6 +21,15 @@ public class WanInfo {
     private String stGateway;
     private String stDns;
 
+    public WanInfo(String vpnServer, String username, String password, String ip, String mask, String gateway) {
+        this.vpnServer = vpnServer;
+        this.username = username;
+        this.password = password;
+        this.ip = ip;
+        this.mask = mask;
+        this.gateway = gateway;
+    }
+
     public WanInfo(String username, String password, String vpnServer, String typeDynOrStat, String stIp, String stMask, String stGateway, String stDns) {
         this.username = username;
         this.password = password;

@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements Const {
 
     private void validateData(String ip, String login, String pass) {
 
-        for (int i=0;i<3;i++) {
+        for (int i=0;i<5;i++) {
 
             if (isPing(ip)) {
                 String key = getKey(ip, login, pass);

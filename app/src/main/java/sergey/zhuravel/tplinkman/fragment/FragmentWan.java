@@ -16,6 +16,7 @@ import java.util.List;
 
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.adapter.WanDynamicRA;
+import sergey.zhuravel.tplinkman.adapter.WanPptpRa;
 import sergey.zhuravel.tplinkman.adapter.WanStaticRA;
 import sergey.zhuravel.tplinkman.model.Info;
 import sergey.zhuravel.tplinkman.model.WanInfo;
@@ -30,6 +31,7 @@ public class FragmentWan extends AppFragment {
     private List<Info> infoList;
     private ArrayList<String> data =new ArrayList<>();
     private ArrayList<String> infoWanDyn = new ArrayList<>();
+    private ArrayList<String> infoWanType = new ArrayList<>();
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -41,6 +43,9 @@ public class FragmentWan extends AppFragment {
         infoList = new ArrayList<>();
 
         initView(view);
+        infoWanType = getInfo(data, INFO_WAN_TYPE);
+        getWanTypeInfo(infoWanType.get(0),spinner);
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -67,7 +72,12 @@ public class FragmentWan extends AppFragment {
                         break;
 
                     case "PPTP":
-
+                        wanInfoList.clear();
+                        infoWanDyn = getInfo(data,INFO_WAN_PPTP);
+                        wanInfoList.add(new WanInfo(infoWanDyn.get(0),infoWanDyn.get(1),infoWanDyn.get(2),infoWanDyn.get(3),infoWanDyn.get(4),infoWanDyn.get(5)));
+                        WanPptpRa wanPptpRa = new WanPptpRa(wanInfoList,data,getActivity());
+                        recyclerView.setAdapter(wanPptpRa);
+                        wanPptpRa.notifyDataSetChanged();
                         break;
                     case "PPOE":
 
@@ -95,4 +105,17 @@ public class FragmentWan extends AppFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+    private void getWanTypeInfo(String name,Spinner spinner) {
+        if (name.contains("WanDynamicIpCfgRpm")) {
+            spinner.setSelection(0);
+        }
+        else if(name.contains("WanStaticIpCfgRpm")) {
+            spinner.setSelection(1);
+        }
+        else if (name.contains("PPTPCfgRpm")){
+            spinner.setSelection(2);
+        }
+
+
+    }
 }
