@@ -1,22 +1,23 @@
-package sergey.zhuravel.tplinkman;
+package sergey.zhuravel.tplinkman.ui.main;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import sergey.zhuravel.tplinkman.Const;
+import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.fragment.AppFragment;
 import sergey.zhuravel.tplinkman.fragment.FragmentInfo;
-import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
 import sergey.zhuravel.tplinkman.fragment.FragmentWan;
+import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
 
 
-public class ManagementActivity extends AppCompatActivity implements Const{
+public class ManagementActivity extends AppCompatActivity implements Const {
     private BottomNavigationView bottomNavigationView;
     private ArrayList<String> data = new ArrayList<>();
 
@@ -24,7 +25,7 @@ public class ManagementActivity extends AppCompatActivity implements Const{
     protected void onDestroy() {
         super.onDestroy();
         AppFragment appFragment = new AppFragment();
-        appFragment.setSettingsRouter(getApplicationContext(),data,TYPE_LOGOUT,new ArrayList<String>());
+        appFragment.setSettingsRouter(getApplicationContext(), data, TYPE_LOGOUT, new ArrayList<String>());
     }
 
     @Override
