@@ -5,4 +5,7 @@
     <dimen name="line_height">1dp</dimen>
     <dimen name="size_wan_et">12sp</dimen>
 
+
+    <dimen name="info_icon_size">24dp</dimen>
+
 </resources>

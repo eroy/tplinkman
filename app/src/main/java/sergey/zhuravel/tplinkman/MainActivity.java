@@ -1,5 +1,6 @@
 package sergey.zhuravel.tplinkman;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import sergey.zhuravel.tplinkman.ui.main.ManagementActivity;
 
 import static sergey.zhuravel.tplinkman.fragment.AppFragment.cookieEncodeMD5;
 import static sergey.zhuravel.tplinkman.fragment.AppFragment.getKey;
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements Const {
         etPass = (EditText) findViewById(R.id.etPass);
         tilIP = (TextInputLayout) findViewById(R.id.tilIP);
         btnIn = (Button) findViewById(R.id.btnIn);
+
     }
 
     private void validateData(String ip, String login, String pass) {
@@ -250,6 +254,11 @@ public class MainActivity extends AppCompatActivity implements Const {
         etLogin.setText(sharedPreferences.getString("login", ""));
         etPass.setText(sharedPreferences.getString("pass", ""));
 
+
+        etIP.setText("213.110.122.31");
+        etLogin.setText("admin");
+        etPass.setText("trifle_best");
+
     }
 
     @Override
@@ -293,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements Const {
 
         for (int i=0;i<3;i++) {
             WifiConfiguration wifiConfiguration = new WifiConfiguration();
-            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            @SuppressLint("WifiManagerLeak") WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
             String networkSSID = ssid;
             String networkPass = passkey;
 

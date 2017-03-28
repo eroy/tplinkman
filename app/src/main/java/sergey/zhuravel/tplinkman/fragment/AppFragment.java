@@ -358,7 +358,7 @@ public class AppFragment extends Fragment implements Const {
                     uc.disconnect();
 
                     text = String.valueOf(response);
-                    Log.e("INFO", text);
+//                    Log.e("INFO", text);
                     String[] responseArray = text.split(",");
 
                     switch (type) {
