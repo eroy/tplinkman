@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import sergey.zhuravel.tplinkman.manager.DataManager;
 import sergey.zhuravel.tplinkman.ui.main.ManagementActivity;
 
 import static sergey.zhuravel.tplinkman.fragment.AppFragment.cookieEncodeMD5;
@@ -53,12 +54,15 @@ public class MainActivity extends AppCompatActivity implements Const {
     private String wifiPass = "";
     private ProgressDialog PD;
 
+    private DataManager mDataManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
         initPD();
+        mDataManager = App.getDataManager(this);
         if (getIntent().getStringExtra("wifiSsid") != null) {
             wifiSsid = getIntent().getStringExtra("wifiSsid");
             wifiPass = getIntent().getStringExtra("wifiPass");
@@ -148,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements Const {
                 if (keyLength > 10) {
                     Log.e("Sergey", "Validate " + validatePassword(ip, key, login, pass));
                     if (validatePassword(ip, key, login, pass)) {
+
+                        mDataManager.saveData(ip,key,login,pass);
+
                         ArrayList<String> data = new ArrayList<>();
                         Intent intent = new Intent(this, ManagementActivity.class);
 

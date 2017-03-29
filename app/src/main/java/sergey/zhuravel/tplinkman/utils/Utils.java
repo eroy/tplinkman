@@ -81,7 +81,9 @@ public class Utils {
                     String[] responseArray2 = text.split("\\(");
                     String[] responseArray3 = responseArray2[1].split(",");
                     information.add(responseArray3[0].replace("\"", "")); // build
-                    information.add(responseArray3[1].replace("\"", "")); // verison
+                    String[] responseArray31 =responseArray3[1].replace("\"", "").split(" ");
+
+                    information.add(responseArray31[0] + " " + responseArray31[1]); // verison
 
                     break;
                 case TypeConstant.INFO_MAC_WAN:

@@ -27,6 +27,14 @@
     <string name="save">Save</string>
     <string name="enter_settings">Enter settings</string>
     <string name="set_suc_applied">Settings successfully applied</string>
+    <string name="wireless_settings">Wireless settings</string>
+    <string name="internet_settings">Internet settings</string>
+    <string name="dhcp_settings">DHCP settings</string>
+    <string name="remote_access">Remote access</string>
+    <string name="reboot_router">Reboot router</string>
+    <string name="more">More</string>
+    <string name="wireless_information">Wireless information</string>
+    <string name="ssid">SSID:</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

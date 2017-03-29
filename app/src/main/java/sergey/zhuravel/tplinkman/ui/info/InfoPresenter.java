@@ -3,12 +3,8 @@ package sergey.zhuravel.tplinkman.ui.info;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import sergey.zhuravel.tplinkman.R;
+import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.constant.TypeConstant;
-import sergey.zhuravel.tplinkman.model.Info;
 
 public class InfoPresenter implements InfoContract.Presenter {
     private InfoContract.View mView;
@@ -20,15 +16,45 @@ public class InfoPresenter implements InfoContract.Presenter {
     }
 
     @Override
-    public void getFirmwareInfo(String cookie, String referer) {
-        mModel.getInfoFirmware(cookie, referer, TypeConstant.INFO_FIRMWARE)
+    public void getFirmwareInfo() {
+        mModel.getInfoFirmware(ApiConstant.INFO_FIRMWARE, TypeConstant.INFO_FIRMWARE)
                 .subscribe(strings -> {
-//                   List<Info> infos = new ArrayList<>();
-//                    infos.add(new Info(mView.resourceIdToString(R.string.info_build), strings.get(0)));
-//                    infos.add(new Info(mView.resourceIdToString(R.string.info_version), strings.get(1)));
 
                     mView.setInfoFirmware(strings);
 
                 }, throwable -> Log.e("SERJ", throwable.getMessage()));
     }
+
+
+
+    @Override
+    public void getMacInfo() {
+        mModel.getInfoMac(ApiConstant.INFO_MAC, TypeConstant.INFO_MAC_WAN)
+                .subscribe(strings -> {
+
+                    mView.setInfoMac(strings.get(0));
+
+                }, throwable -> Log.e("SERJ", throwable.getMessage()));
+    }
+
+    @Override
+    public void getWifiNameInfo() {
+        mModel.getInfoWifiName(ApiConstant.INFO_WIFI_NAME, TypeConstant.INFO_WIFI)
+                .subscribe(strings -> {
+
+                    mView.setInfoWifiName(strings.get(0));
+
+                }, throwable -> Log.e("SERJ", throwable.getMessage()));
+    }
+
+    @Override
+    public void getWifiPassInfo() {
+        mModel.getInfoWifiPass(ApiConstant.INFO_WIFI_PASS, TypeConstant.INFO_WIFI_SEC)
+                .subscribe(strings -> {
+
+                    mView.setInfoWifiPass(strings.get(1).substring(1));
+
+                }, throwable -> Log.e("SERJ", throwable.getMessage()));
+    }
+
 }

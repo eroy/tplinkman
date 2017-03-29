@@ -10,17 +10,27 @@ import sergey.zhuravel.tplinkman.model.Info;
 
 public interface InfoContract {
     interface Model {
-        Observable<List<String>> getInfoFirmware(String cookie, String referer,String type);
+        Observable<List<String>> getInfoFirmware(String link, String type);
+        Observable<List<String>> getInfoMac(String link, String type);
+        Observable<List<String>> getInfoWifiName(String link, String type);
+        Observable<List<String>> getInfoWifiPass(String link, String type);
 
     }
 
     interface View {
 
+        void setInfoMac(String mac);
+        void setInfoWifiName(String ssid);
+        void setInfoWifiPass(String pass);
         void setInfoFirmware(List<String> lists);
 
     }
 
     interface Presenter {
-        void getFirmwareInfo(String cookie, String referer);
+        void getMacInfo();
+        void getFirmwareInfo();
+
+        void getWifiNameInfo();
+        void getWifiPassInfo();
     }
 }

@@ -10,7 +10,7 @@
         android:title="WIFI"/>
     <item
         android:id="@+id/action_wan"
-        android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="WAN" />
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Settings" />
 
 </menu>

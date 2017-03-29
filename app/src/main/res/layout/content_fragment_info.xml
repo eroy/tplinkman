@@ -14,8 +14,9 @@
         android:paddingStart="20dp">
 
         <ImageView
+            android:layout_centerInParent="true"
             android:id="@+id/build_icon"
-            android:src="@drawable/ic_build_black_24dp"
+            android:src="@drawable/wrench"
             android:layout_alignParentStart="true"
             android:layout_width="@dimen/info_icon_size"
             android:layout_height="@dimen/info_icon_size" />
@@ -47,7 +48,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/version_info_rl"
+        android:id="@+id/mac_info_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -55,23 +56,24 @@
         android:paddingStart="20dp">
 
         <ImageView
-            android:id="@+id/email_icon"
-            android:src="@drawable/ic_info_outline_black_24dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/mac_icon"
+            android:src="@drawable/mac"
             android:layout_alignParentStart="true"
             android:layout_width="@dimen/info_icon_size"
             android:layout_height="@dimen/info_icon_size" />
         <TextView
-            android:id="@+id/version_title"
-            android:layout_toEndOf="@id/email_icon"
+            android:id="@+id/mac_title"
+            android:layout_toEndOf="@id/mac_icon"
             android:layout_marginStart="32dp"
             android:layout_width="wrap_content"
             android:textSize="12sp"
-            android:text="@string/info_version"
+            android:text="@string/info_mac"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/version_build"
-            android:layout_below="@id/version_title"
-            android:layout_alignStart="@id/version_title"
+            android:id="@+id/info_mac"
+            android:layout_below="@id/mac_title"
+            android:layout_alignStart="@id/mac_title"
             android:layout_marginTop="8dp"
             android:textSize="16sp"
             android:textColor="@color/colorBlack"
@@ -79,8 +81,83 @@
             android:layout_height="wrap_content" />
         <View
             android:layout_marginTop="20dp"
-            android:layout_alignStart="@id/version_title"
-            android:layout_below="@id/version_build"
+            android:layout_alignStart="@id/mac_title"
+            android:layout_below="@id/info_mac"
+            style="@style/Line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wifi_info_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingTop="20dp"
+        android:paddingStart="20dp">
+
+        <ImageView
+            android:layout_centerInParent="true"
+            android:id="@+id/email_icon"
+            android:src="@drawable/wifi"
+            android:layout_alignParentStart="true"
+            android:layout_width="@dimen/info_icon_size"
+            android:layout_height="@dimen/info_icon_size" />
+        <TextView
+            android:id="@+id/wifi_title"
+            android:layout_toEndOf="@id/email_icon"
+            android:layout_marginStart="32dp"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/wireless_information"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/ssid"
+            android:id="@+id/ssid_title"
+            android:layout_below="@id/wifi_title"
+            android:layout_alignStart="@id/wifi_title"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/info_ssid"
+            android:layout_toEndOf="@id/ssid_title"
+            android:layout_below="@id/wifi_title"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Password:"
+            android:id="@+id/pass_title"
+            android:layout_below="@id/ssid_title"
+            android:layout_alignStart="@id/ssid_title"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/info_pass"
+            android:layout_toEndOf="@id/pass_title"
+            android:layout_below="@id/info_ssid"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@id/wifi_title"
+            android:layout_below="@id/pass_title"
             style="@style/Line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height" />

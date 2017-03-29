@@ -2,40 +2,26 @@ package sergey.zhuravel.tplinkman.ui.info;
 
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.adapter.InfoRecyclerAdapter;
-import sergey.zhuravel.tplinkman.constant.ApiConstant;
-import sergey.zhuravel.tplinkman.fragment.AppFragment;
-import sergey.zhuravel.tplinkman.model.Info;
+import sergey.zhuravel.tplinkman.ui.BaseFragment;
 
-public class InfoFragment extends AppFragment implements InfoContract.View {
-
-    private ArrayList<String> data = new ArrayList<>();
-    private List<Info> infoList;
-    private RecyclerView recyclerView;
-    private InfoRecyclerAdapter infoRecyclerAdapter;
-    private ArrayList<String> info;
-    private ArrayList<String> listWifiInfo = new ArrayList<>();
-    private ArrayList<String> listWifiSecInfo = new ArrayList<>();
-    private ArrayList<String> listWanTypeInfo = new ArrayList<>();
-    private ArrayList<String> listFirmwareInfo = new ArrayList<>();
-    private ArrayList<String> listMacWanInfo = new ArrayList<>();
+public class InfoFragment extends BaseFragment implements InfoContract.View {
 
     private TextView mTvBuild;
-    private TextView mTvVersion;
+    private TextView mTvMac;
+    private TextView mTvWifiSsid;
+    private TextView mTvWifiPass;
+    private ImageView mImageToolbar;
 
     private Toolbar mToolbar;
 
@@ -46,36 +32,16 @@ public class InfoFragment extends AppFragment implements InfoContract.View {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmnet_info, container, false);
 
-//        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        infoList = new ArrayList<>();
-//        get value data
-        data = getArguments().getStringArrayList("data");
 
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Info");
-        }
-        mTvBuild = (TextView) view.findViewById(R.id.info_build);
-        mTvVersion = (TextView) view.findViewById(R.id.version_build);
+        initView(view);
 
 
-        String baseUrl = ApiConstant.SERVER + data.get(0) + "/" + data.get(1) + "/";
+        mPresenter = new InfoPresenter(this, new InfoModel(App.getDataManager(getActivity())));
 
-        mPresenter = new InfoPresenter(this, new InfoModel(App.getApiManager(baseUrl).getInfoService()));
-
-        String refer = ApiConstant.SERVER + data.get(0) + "/" + data.get(1) + "/" + ApiConstant.INFO_FIRMWARE;
-        String cookie = "Authorization=" + cookieEncodeMD5(data.get(2), data.get(3));
-
-        mPresenter.getFirmwareInfo(cookie, refer);
-
-//        info = asyncInfo(data);
-//        listWifiInfo = getInfo(data, INFO_WIFI);
-//        listWifiSecInfo = getInfo(data, INFO_WIFI_SEC);
-//        listWanTypeInfo = getInfo(data, INFO_WAN_TYPE);
-//        listFirmwareInfo = getInfo(data, INFO_FIRMWARE);
-//        listMacWanInfo = getInfo(data, INFO_MAC_WAN);
+        mPresenter.getFirmwareInfo();
+        mPresenter.getMacInfo();
+        mPresenter.getWifiNameInfo();
+        mPresenter.getWifiPassInfo();
 
 //        infoList.add(new Info(getString(R.string.info_build), listFirmwareInfo.get(0)));
 //        infoList.add(new Info(getString(R.string.info_version), listFirmwareInfo.get(1)));
@@ -86,25 +52,44 @@ public class InfoFragment extends AppFragment implements InfoContract.View {
 //        infoList.add(new Info(getString(R.string.info_pass), listWifiSecInfo.get(1).substring(1)));
 
 
-//        infoRecyclerAdapter = new InfoRecyclerAdapter(getActivity());
-//        recyclerView.setAdapter(infoRecyclerAdapter);
-
-//        setInfoList(infoList);
         return view;
     }
 
+    private void initView(View view) {
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        mTvBuild = (TextView) view.findViewById(R.id.info_build);
+        mTvMac = (TextView) view.findViewById(R.id.info_mac);
+        mTvWifiSsid = (TextView) view.findViewById(R.id.info_ssid);
+        mTvWifiPass = (TextView) view.findViewById(R.id.info_pass);
+        mImageToolbar = (ImageView) view.findViewById(R.id.toolbar_image);
 
-    private void setInfoList(List<Info> infoList) {
-        infoRecyclerAdapter.addInfo(infoList);
+
     }
+
 
     @Override
     public void setInfoFirmware(List<String> lists) {
         mTvBuild.setText(lists.get(0));
-        mTvVersion.setText(lists.get(1));
+//        mTvVersion.setText(lists.get(1));
 
+        initToolbar(mToolbar, lists.get(1), false);
+        mImageToolbar.setImageResource(R.drawable.router_1);
     }
 
+    @Override
+    public void setInfoMac(String mac) {
+        mTvMac.setText(mac);
+    }
+
+    @Override
+    public void setInfoWifiName(String ssid) {
+        mTvWifiSsid.setText(ssid);
+    }
+
+    @Override
+    public void setInfoWifiPass(String pass) {
+        mTvWifiPass.setText(pass);
+    }
 
     private String getWanTypeInfo(String name) {
         if (name.contains("WanDynamicIpCfgRpm")) {

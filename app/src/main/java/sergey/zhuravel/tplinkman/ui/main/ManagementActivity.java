@@ -14,6 +14,7 @@ import sergey.zhuravel.tplinkman.fragment.AppFragment;
 import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.fragment.FragmentWan;
 import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
+import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
 
 
 public class ManagementActivity extends AppCompatActivity implements Const {
@@ -33,7 +34,7 @@ public class ManagementActivity extends AppCompatActivity implements Const {
         setContentView(R.layout.management_activity);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
- ;
+
 
 
 //        get value with previous activity
@@ -54,7 +55,7 @@ public class ManagementActivity extends AppCompatActivity implements Const {
                     goFragment(new FragmentWifi());
                     break;
                 case R.id.action_wan:
-                    goFragment(new FragmentWan());
+                    goFragment(new SettingFragment());
                     break;
 
             }
