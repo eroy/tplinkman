@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/build_info_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingTop="20dp">
 
         <ImageView
-            android:layout_centerInParent="true"
             android:id="@+id/build_icon"
-            android:src="@drawable/wrench"
-            android:layout_alignParentStart="true"
             android:layout_width="@dimen/info_icon_size"
-            android:layout_height="@dimen/info_icon_size" />
+            android:layout_height="@dimen/info_icon_size"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/wrench" />
+
         <TextView
             android:id="@+id/build_title"
-            android:layout_toEndOf="@id/build_icon"
-            android:layout_marginStart="32dp"
             android:layout_width="wrap_content"
-            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_toEndOf="@id/build_icon"
             android:text="@string/info_build"
-            android:layout_height="wrap_content" />
+            android:textSize="12sp" />
+
         <TextView
             android:id="@+id/info_build"
-            android:layout_below="@id/build_title"
-            android:layout_alignStart="@id/build_title"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <View
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
             android:layout_alignStart="@id/build_title"
-            android:layout_below="@id/info_build"
+            android:layout_below="@id/build_title"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+
+        <View
             style="@style/Line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height" />
+            android:layout_height="@dimen/line_height"
+            android:layout_alignStart="@id/build_title"
+            android:layout_below="@id/info_build"
+            android:layout_marginTop="20dp" />
     </RelativeLayout>
 
 
@@ -52,40 +54,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingTop="20dp">
 
         <ImageView
-            android:layout_centerInParent="true"
             android:id="@+id/mac_icon"
-            android:src="@drawable/mac"
-            android:layout_alignParentStart="true"
             android:layout_width="@dimen/info_icon_size"
-            android:layout_height="@dimen/info_icon_size" />
+            android:layout_height="@dimen/info_icon_size"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/mac" />
+
         <TextView
             android:id="@+id/mac_title"
-            android:layout_toEndOf="@id/mac_icon"
-            android:layout_marginStart="32dp"
             android:layout_width="wrap_content"
-            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_toEndOf="@id/mac_icon"
             android:text="@string/info_mac"
-            android:layout_height="wrap_content" />
+            android:textSize="12sp" />
+
         <TextView
             android:id="@+id/info_mac"
-            android:layout_below="@id/mac_title"
-            android:layout_alignStart="@id/mac_title"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <View
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
             android:layout_alignStart="@id/mac_title"
-            android:layout_below="@id/info_mac"
+            android:layout_below="@id/mac_title"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+
+        <View
             style="@style/Line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height" />
+            android:layout_height="@dimen/line_height"
+            android:layout_alignStart="@id/mac_title"
+            android:layout_below="@id/info_mac"
+            android:layout_marginTop="20dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,74 +98,183 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingTop="20dp">
 
         <ImageView
-            android:layout_centerInParent="true"
             android:id="@+id/email_icon"
-            android:src="@drawable/wifi"
-            android:layout_alignParentStart="true"
             android:layout_width="@dimen/info_icon_size"
-            android:layout_height="@dimen/info_icon_size" />
-        <TextView
-            android:id="@+id/wifi_title"
-            android:layout_toEndOf="@id/email_icon"
-            android:layout_marginStart="32dp"
-            android:layout_width="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/wireless_information"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/info_icon_size"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/wifi" />
 
         <TextView
-            android:text="@string/ssid"
-            android:id="@+id/ssid_title"
-            android:layout_below="@id/wifi_title"
-            android:layout_alignStart="@id/wifi_title"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
+            android:id="@+id/wifi_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_toEndOf="@id/email_icon"
+            android:text="@string/wireless_information"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/ssid_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/wifi_title"
+            android:layout_below="@id/wifi_title"
+            android:layout_marginTop="8dp"
+            android:text="@string/ssid"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/info_ssid"
-            android:layout_toEndOf="@id/ssid_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/wifi_title"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"
+            android:layout_toEndOf="@id/ssid_title"
             android:textColor="@color/colorBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="16sp" />
 
         <TextView
-            android:text="Password:"
             android:id="@+id/pass_title"
-            android:layout_below="@id/ssid_title"
-            android:layout_alignStart="@id/ssid_title"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/ssid_title"
+            android:layout_below="@id/ssid_title"
+            android:layout_marginTop="8dp"
+            android:text="Password:"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/info_pass"
-            android:layout_toEndOf="@id/pass_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/info_ssid"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"
+            android:layout_toEndOf="@id/pass_title"
             android:textColor="@color/colorBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="16sp" />
 
         <View
-            android:layout_marginTop="20dp"
-            android:layout_alignStart="@id/wifi_title"
-            android:layout_below="@id/pass_title"
             style="@style/Line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height" />
+            android:layout_height="@dimen/line_height"
+            android:layout_alignStart="@id/wifi_title"
+            android:layout_below="@id/pass_title"
+            android:layout_marginTop="20dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/traffic_info_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp">
+
+        <LinearLayout
+            android:id="@+id/speed_ll"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/download_info_rl"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/download_icon"
+                    android:layout_width="@dimen/info_icon_size"
+                    android:layout_height="@dimen/info_icon_size"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_download" />
+
+                <TextView
+                    android:id="@+id/download_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_toEndOf="@id/download_icon"
+                    android:text="@string/download"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/info_download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/download_title"
+                    android:layout_below="@id/download_title"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view1"
+                style="@style/Line"
+                android:layout_width="@dimen/line_height"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+
+            <RelativeLayout
+                android:id="@+id/upload_info_rl"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/upload_icon"
+                    android:layout_width="@dimen/info_icon_size"
+                    android:layout_height="@dimen/info_icon_size"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_upload" />
+
+                <TextView
+                    android:id="@+id/upload_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_toEndOf="@id/upload_icon"
+                    android:text="@string/upload"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/info_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/upload_title"
+                    android:layout_below="@id/upload_title"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:layout_below="@id/speed_ll"
+            android:layout_marginTop="20dp" />
     </RelativeLayout>
 
 </LinearLayout>

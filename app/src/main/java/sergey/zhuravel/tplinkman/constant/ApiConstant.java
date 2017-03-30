@@ -17,5 +17,6 @@ public class ApiConstant {
     public static final String INFO_MAC = "userRpm/MacCloneCfgRpm.htm";
     public static final String INFO_WIFI_NAME = "userRpm/WlanNetworkRpm.htm";
     public static final String INFO_WIFI_PASS = "userRpm/WlanSecurityRpm.htm";
+    public static final String INFO_STATUS = "userRpm/StatusRpm.htm";
 
 }

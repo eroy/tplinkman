@@ -35,6 +35,8 @@
     <string name="more">More</string>
     <string name="wireless_information">Wireless information</string>
     <string name="ssid">SSID:</string>
+    <string name="download">Download</string>
+    <string name="upload">Upload</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

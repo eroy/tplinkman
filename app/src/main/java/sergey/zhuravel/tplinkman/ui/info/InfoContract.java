@@ -14,6 +14,7 @@ public interface InfoContract {
         Observable<List<String>> getInfoMac(String link, String type);
         Observable<List<String>> getInfoWifiName(String link, String type);
         Observable<List<String>> getInfoWifiPass(String link, String type);
+        Observable<List<String>> getInfoStatus(String link, String type);
 
     }
 
@@ -24,13 +25,20 @@ public interface InfoContract {
         void setInfoWifiPass(String pass);
         void setInfoFirmware(List<String> lists);
 
+        void setInfoDownload(String download);
+        void setInfoUpload(String upload);
     }
 
     interface Presenter {
+        void onDestroy();
         void getMacInfo();
         void getFirmwareInfo();
 
         void getWifiNameInfo();
         void getWifiPassInfo();
+
+        void getStatusInfo();
+
+        void updateTraffic();
     }
 }

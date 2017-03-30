@@ -69,4 +69,16 @@ public class InfoModel implements InfoContract.Model {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<List<String>> getInfoStatus(String link, String type) {
+        String referer = LinkGenerate.referer(mDataManager.getIp(), mDataManager.getKey(), link);
+        String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
+
+        return mInfoService.getInfoStatus(cookie, referer)
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }

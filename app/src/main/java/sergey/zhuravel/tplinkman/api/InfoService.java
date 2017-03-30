@@ -24,4 +24,8 @@ public interface InfoService {
     @GET(ApiConstant.INFO_WIFI_PASS)
     Observable<Response<ResponseBody>> getInfoWifiPass(@Header("Cookie") String cookie,
                                                        @Header("Referer") String referer);
+
+    @GET(ApiConstant.INFO_STATUS)
+    Observable<Response<ResponseBody>> getInfoStatus(@Header("Cookie") String cookie,
+                                                     @Header("Referer") String referer);
 }

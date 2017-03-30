@@ -1,9 +1,12 @@
 package sergey.zhuravel.tplinkman.utils;
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +84,7 @@ public class Utils {
                     String[] responseArray2 = text.split("\\(");
                     String[] responseArray3 = responseArray2[1].split(",");
                     information.add(responseArray3[0].replace("\"", "")); // build
-                    String[] responseArray31 =responseArray3[1].replace("\"", "").split(" ");
+                    String[] responseArray31 = responseArray3[1].replace("\"", "").split(" ");
 
                     information.add(responseArray31[0] + " " + responseArray31[1]); // verison
 
@@ -91,6 +94,12 @@ public class Utils {
                     String[] responseArray5 = responseArray4[1].split(",");
                     information.add(responseArray5[0].replace("\"", "")); // mac address
 
+                    break;
+                case TypeConstant.INFO_STATUS:
+                    String[] responseStatus = text.split("\\(");
+                    String[] responseStatus1 = responseStatus[4].split("\",");
+                    information.add(convertBytes(responseStatus1[0].replace("\"", "").replace(",", "")));
+                    information.add(convertBytes(responseStatus1[1].replace("\"", "").replace(",", "")));
 
                     break;
             }
@@ -99,4 +108,31 @@ public class Utils {
         });
     }
 
+
+    public static String convertBytes(String bytes) {
+        String hrSize = null;
+        if (bytes!=null) {
+            double size = Double.parseDouble(bytes);
+            double k = size / 1024.0;
+            double m = ((size / 1024.0) / 1024.0);
+            double g = (((size / 1024.0) / 1024.0) / 1024.0);
+            double t = ((((size / 1024.0) / 1024.0) / 1024.0) / 1024.0);
+
+            DecimalFormat dec = new DecimalFormat("0.00");
+
+            if (t > 1) {
+                hrSize = dec.format(t).concat(" TB");
+            } else if (g > 1) {
+                hrSize = dec.format(g).concat(" GB");
+            } else if (m > 1) {
+                hrSize = dec.format(m).concat(" MB");
+            } else if (k > 1) {
+                hrSize = dec.format(k).concat(" KB");
+            } else {
+                hrSize = dec.format(size).concat(" Bytes");
+            }
+        }
+        return hrSize;
+
+    }
 }
