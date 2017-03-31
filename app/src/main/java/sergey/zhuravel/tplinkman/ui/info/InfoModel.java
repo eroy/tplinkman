@@ -32,6 +32,7 @@ public class InfoModel implements InfoContract.Model {
         String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
 
         return mInfoService.getInfoFirmware(cookie, referer)
+                .retry(3)
                 .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -43,6 +44,7 @@ public class InfoModel implements InfoContract.Model {
         String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
 
         return mInfoService.getInfoMac(cookie, referer)
+                .retry(3)
                 .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -54,6 +56,7 @@ public class InfoModel implements InfoContract.Model {
         String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
 
         return mInfoService.getInfoWifiName(cookie, referer)
+                .retry(3)
                 .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -65,6 +68,7 @@ public class InfoModel implements InfoContract.Model {
         String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
 
         return mInfoService.getInfoWifiPass(cookie, referer)
+                .retry(3)
                 .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -76,6 +80,7 @@ public class InfoModel implements InfoContract.Model {
         String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
 
         return mInfoService.getInfoStatus(cookie, referer)
+                .retry(3)
                 .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
