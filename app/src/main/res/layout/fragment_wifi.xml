@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
-    android:orientation="vertical"
-    tools:context="sergey.zhuravel.tplinkman.fragment.FragmentWifi">
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardUseCompatPadding="true">
+
 
         <LinearLayout
             android:id="@+id/llInfoWifi"
@@ -18,13 +18,38 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_wi_fi_2_4_ghz" />
+
+                <Switch
+                    android:checked="true"
+                    android:id="@+id/textRegional1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <View
+                style="@style/Line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height" />
+
             <TextView
                 android:id="@+id/ssid"
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
                 android:gravity="center"
+                android:text="#42423423"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -44,12 +69,11 @@
                     android:text="@string/regional" />
 
                 <TextView
-                    android:textStyle="bold"
                     android:id="@+id/textRegional"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                   />
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -64,12 +88,11 @@
                     android:text="@string/chanel" />
 
                 <TextView
-                    android:textStyle="bold"
                     android:id="@+id/textChanel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                     />
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -103,18 +126,16 @@
                     android:id="@+id/textStatusSec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/rlPassword"
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,12 +143,11 @@
                     android:text="@string/password" />
 
                 <TextView
-                    android:textStyle="bold"
                     android:id="@+id/textPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    />
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
