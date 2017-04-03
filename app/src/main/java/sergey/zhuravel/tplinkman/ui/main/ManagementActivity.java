@@ -4,28 +4,26 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import sergey.zhuravel.tplinkman.Const;
+import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.fragment.AppFragment;
-import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
-import sergey.zhuravel.tplinkman.fragment.FragmentWan;
 import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
+import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
 
 
-public class ManagementActivity extends AppCompatActivity implements Const {
+public class ManagementActivity extends AppCompatActivity implements MainContract.View {
     private BottomNavigationView bottomNavigationView;
     private ArrayList<String> data = new ArrayList<>();
+    private MainContract.Presenter mPresenter;
 
     @Override
     protected void onDestroy() {
+        mPresenter.onDestroy();
         super.onDestroy();
-        AppFragment appFragment = new AppFragment();
-        appFragment.setSettingsRouter(getApplicationContext(), data, TYPE_LOGOUT, new ArrayList<String>());
     }
 
     @Override
@@ -33,9 +31,7 @@ public class ManagementActivity extends AppCompatActivity implements Const {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.management_activity);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-
-
+        mPresenter = new MainPresenter(this, new MainModel(App.getDataManager(this)));
 
 //        get value with previous activity
         data = getIntent().getStringArrayListExtra("arrayData");
@@ -50,13 +46,15 @@ public class ManagementActivity extends AppCompatActivity implements Const {
             switch (item.getItemId()) {
                 case R.id.action_info:
                     goFragment(new InfoFragment());
-                    break;
+                    return true;
+
                 case R.id.action_wifi:
                     goFragment(new FragmentWifi());
-                    break;
+                    return true;
+
                 case R.id.action_wan:
                     goFragment(new SettingFragment());
-                    break;
+                    return true;
 
             }
 
@@ -67,6 +65,10 @@ public class ManagementActivity extends AppCompatActivity implements Const {
 
     }
 
+    @Override
+    public void setToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     private void goFragment(Fragment fragment) {
         Bundle bundle = new Bundle();

@@ -1,12 +1,11 @@
 package sergey.zhuravel.tplinkman.ui.setting;
 
-/**
- * Created by serj on 29.03.2017.
- */
+
+import rx.Observable;
 
 public interface SettingContract {
     interface Model {
-
+        Observable<String> setRebootRouter(String link, String refererLink);
 
     }
 
@@ -16,7 +15,8 @@ public interface SettingContract {
     }
 
     interface Presenter {
-
+        void setRebootRouter();
+        void onDestroy();
 
     }
 }

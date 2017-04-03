@@ -1,8 +1,6 @@
 package sergey.zhuravel.tplinkman.utils;
 
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +15,26 @@ import sergey.zhuravel.tplinkman.constant.TypeConstant;
 
 public class Utils {
 
-    public static Observable<List<String>> replaceResponseToObservable(Response<ResponseBody> response, String type) {
+    public static Observable<String> replaceResponseToText(Response<ResponseBody> response) {
+        return Observable.fromCallable(() -> {
+            StringBuffer message = new StringBuffer();
+            try {
+                BufferedReader in1 = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+                String inputLine1;
+
+                while ((inputLine1 = in1.readLine()) != null) {
+                    message.append(inputLine1);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return String.valueOf(message);
+        });
+    }
+
+    public static Observable<List<String>> replaceResponseToObservableList(Response<ResponseBody> response, String type) {
         return Observable.fromCallable(() -> {
             List<String> information = new ArrayList<>();
 
@@ -111,7 +128,7 @@ public class Utils {
 
     public static String convertBytes(String bytes) {
         String hrSize = null;
-        if (bytes!=null) {
+        if (bytes != null) {
             double size = Double.parseDouble(bytes);
             double k = size / 1024.0;
             double m = ((size / 1024.0) / 1024.0);

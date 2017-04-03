@@ -10,12 +10,12 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import sergey.zhuravel.tplinkman.constant.ApiConstant;
 
 
 public class ApiManager {
     private Retrofit mRetrofit;
     private InfoService infoService;
+    private SettingService settingService;
 
 
     public ApiManager(String baseUrl) {
@@ -24,7 +24,7 @@ public class ApiManager {
     }
 
     private void initRetrofit(String baseUrl) {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor((message -> Log.e("LOGGING",message)));
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor((message -> Log.e("LOGGING", message)));
 //        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 //        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 //        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
@@ -45,9 +45,14 @@ public class ApiManager {
         return infoService;
     }
 
+    public SettingService getSettingService() {
+        return settingService;
+    }
+
     private void initServices() {
         if (mRetrofit != null) {
-        infoService = mRetrofit.create(InfoService.class);
+            infoService = mRetrofit.create(InfoService.class);
+            settingService = mRetrofit.create(SettingService.class);
 
 
         }

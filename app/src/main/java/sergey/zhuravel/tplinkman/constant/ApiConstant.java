@@ -1,7 +1,6 @@
 package sergey.zhuravel.tplinkman.constant;
 
 
-
 public class ApiConstant {
     public static final String SCHEME = "http://";
     public static final String HOSTNAME = "";
@@ -13,10 +12,17 @@ public class ApiConstant {
 
     public static final String IP_KEY = "{ip}/{key}";
 
+    /*info url*/
     public static final String INFO_FIRMWARE = "userRpm/SoftwareUpgradeRpm.htm";
     public static final String INFO_MAC = "userRpm/MacCloneCfgRpm.htm";
     public static final String INFO_WIFI_NAME = "userRpm/WlanNetworkRpm.htm";
     public static final String INFO_WIFI_PASS = "userRpm/WlanSecurityRpm.htm";
     public static final String INFO_STATUS = "userRpm/StatusRpm.htm";
 
+    /*settings url*/
+    public static final String LOGOUT = "userRpm/LogoutRpm.htm";
+    public static final String REBOOT = "userRpm/SysRebootRpm.htm?Reboot=Reboot";
+
+    /*settings referer url*/
+    public static final String REBOOT_REFERER = "userRpm/SysRebootRpm.htm";
 }

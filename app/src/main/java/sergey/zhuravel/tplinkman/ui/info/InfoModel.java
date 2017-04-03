@@ -1,8 +1,6 @@
 package sergey.zhuravel.tplinkman.ui.info;
 
 
-import android.util.Log;
-
 import java.util.List;
 
 import rx.Observable;
@@ -33,7 +31,7 @@ public class InfoModel implements InfoContract.Model {
 
         return mInfoService.getInfoFirmware(cookie, referer)
                 .retry(3)
-                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -45,7 +43,7 @@ public class InfoModel implements InfoContract.Model {
 
         return mInfoService.getInfoMac(cookie, referer)
                 .retry(3)
-                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -57,7 +55,7 @@ public class InfoModel implements InfoContract.Model {
 
         return mInfoService.getInfoWifiName(cookie, referer)
                 .retry(3)
-                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -69,7 +67,7 @@ public class InfoModel implements InfoContract.Model {
 
         return mInfoService.getInfoWifiPass(cookie, referer)
                 .retry(3)
-                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -81,7 +79,7 @@ public class InfoModel implements InfoContract.Model {
 
         return mInfoService.getInfoStatus(cookie, referer)
                 .retry(3)
-                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservable(responseBodyResponse, type))
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

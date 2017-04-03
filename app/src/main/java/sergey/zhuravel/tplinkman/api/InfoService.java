@@ -28,4 +28,6 @@ public interface InfoService {
     @GET(ApiConstant.INFO_STATUS)
     Observable<Response<ResponseBody>> getInfoStatus(@Header("Cookie") String cookie,
                                                      @Header("Referer") String referer);
+
+
 }

@@ -87,7 +87,7 @@ public class InfoPresenter implements InfoContract.Presenter {
 
     @Override
     public void updateTraffic() {
-        mCompositeSubscription.add(Observable.interval(5, TimeUnit.SECONDS)
+        mCompositeSubscription.add(Observable.interval(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(v -> getStatusInfo(),
                         e -> Log.e("TIMER", e.getMessage())));
