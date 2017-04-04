@@ -22,7 +22,10 @@ public class ApiConstant {
     /*settings url*/
     public static final String LOGOUT = "userRpm/LogoutRpm.htm";
     public static final String REBOOT = "userRpm/SysRebootRpm.htm?Reboot=Reboot";
+    public static final String WIFI_MODE_SETTING = "userRpm/WlanNetworkRpm.htm?broadcast=2&Save=Save";
 
     /*settings referer url*/
     public static final String REBOOT_REFERER = "userRpm/SysRebootRpm.htm";
+    public static final String WIFI_SETTING_REFERER = "userRpm/WlanNetworkRpm.htm";
+
 }

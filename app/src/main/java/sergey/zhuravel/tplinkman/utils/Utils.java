@@ -1,11 +1,14 @@
 package sergey.zhuravel.tplinkman.utils;
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -56,9 +59,12 @@ public class Utils {
 
             switch (type) {
                 case TypeConstant.INFO_WIFI:
+
                     information.add(responseArray[3].replace("\"", "")); //ssid
                     information.add(responseArray[5]); //region
                     information.add(responseArray[10]); // chanel
+                    information.add(responseArray[8]); // isEnable wifi
+                    Log.e("WIFI", responseArray[8]);
                     break;
                 case TypeConstant.INFO_WIFI_SEC:
                     information.add(responseArray[2].replace(" ", "")); //mode sec

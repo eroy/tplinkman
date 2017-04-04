@@ -21,14 +21,11 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onDestroy() {
+        setLogout();
+
         mView = null;
         mModel = null;
         RxUtils.unsubscribeIfNotNull(mCompositeSubscription);
-    }
-
-    @Override
-    public void onStop() {
-        setLogout();
     }
 
     private void setLogout() {

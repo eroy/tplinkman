@@ -1,6 +1,9 @@
 package sergey.zhuravel.tplinkman.ui.wireless;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
@@ -28,10 +32,18 @@ public class WirelessFragment extends BaseFragment implements WirelessContract.V
     private TextView mPassword;
 
     private ImageView mStatusSec;
+
     private RelativeLayout mRlPassword;
     private LinearLayout mLlInfoWifi;
     private LinearLayout mLlInfoWifiSec;
+
     private Toolbar mToolbar;
+
+    private CardView mCwWifiSecurity;
+
+    private SwitchCompat mSwitchMainWifi;
+
+    private ProgressDialog mProgressDialog;
 
 
     @Override
@@ -46,11 +58,29 @@ public class WirelessFragment extends BaseFragment implements WirelessContract.V
         initView(view);
         mPresenter = new WirelessPresenter(this, new WirelessModel(App.getDataManager(getActivity())));
 
+        initProgressDialog();
 
-        mPresenter.setWifiParameters();
-        mPresenter.setWifiSecurity();
+        mSwitchMainWifi.setOnCheckedChangeListener(null);
 
+        mPresenter.getWifiParameters();
+        mPresenter.getWifiSecurity();
+
+        mSwitchMainWifi.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                setMainWifiVisible(true);
+                mPresenter.setWifiMode("1");
+            } else {
+                setMainWifiVisible(false);
+                mPresenter.setWifiMode("0");
+            }
+        });
         return view;
+    }
+
+    private void initProgressDialog() {
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage(getString(R.string.dialog_applay));
     }
 
     private void initView(View view) {
@@ -62,7 +92,8 @@ public class WirelessFragment extends BaseFragment implements WirelessContract.V
         mLlInfoWifi = (LinearLayout) view.findViewById(R.id.llInfoWifi);
         mLlInfoWifiSec = (LinearLayout) view.findViewById(R.id.llInfoWifiSec);
         mRlPassword = (RelativeLayout) view.findViewById(R.id.rlPassword);
-
+        mCwWifiSecurity = (CardView) view.findViewById(R.id.cwWifiSec);
+        mSwitchMainWifi = (SwitchCompat) view.findViewById(R.id.switchMainWifi);
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
         initToolbar(mToolbar, "Wireless Settings", true);
@@ -92,6 +123,26 @@ public class WirelessFragment extends BaseFragment implements WirelessContract.V
     }
 
     @Override
+    public void setCheckedSwitchMain(boolean checked) {
+        if (checked) {
+            mSwitchMainWifi.setChecked(true);
+        } else {
+            mSwitchMainWifi.setChecked(false);
+        }
+    }
+
+    @Override
+    public void setMainWifiVisible(boolean visible) {
+        if (visible) {
+            mLlInfoWifi.setVisibility(View.VISIBLE);
+            mCwWifiSecurity.setVisibility(View.VISIBLE);
+        } else {
+            mLlInfoWifi.setVisibility(View.GONE);
+            mCwWifiSecurity.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -104,6 +155,25 @@ public class WirelessFragment extends BaseFragment implements WirelessContract.V
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void showToastMessage(int resId) {
+        String message = getString(resId);
+        if (message != null) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showProgressDialog() {
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        mProgressDialog.dismiss();
+    }
+
 }
 
 

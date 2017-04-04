@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements Const {
         etLogin.setText(sharedPreferences.getString("login", ""));
         etPass.setText(sharedPreferences.getString("pass", ""));
 
-        etIP.setText("213.110.121.221");
+        etIP.setText("213.110.122.31");
         etLogin.setText("admin");
         etPass.setText("trifle_best");
 

@@ -50,5 +50,15 @@ public class WirelessModel implements WirelessContract.Model {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Observable<String> setWifiMode(String link, String refererLink,String ap) {
+        String referer = LinkGenerate.referer(mDataManager.getIp(), mDataManager.getKey(), refererLink);
+        String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
 
+        return mSettingService.setWifiMode(cookie, referer,ap)
+                .retry(3)
+                .flatMap(Utils::replaceResponseToText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

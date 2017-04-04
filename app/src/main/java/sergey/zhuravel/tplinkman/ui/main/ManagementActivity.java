@@ -23,16 +23,11 @@ public class ManagementActivity extends AppCompatActivity implements MainContrac
 
     @Override
     protected void onDestroy() {
+        Log.e("SERJ","ManagementActivity -- onDestroy");
         mPresenter.onDestroy();
         super.onDestroy();
     }
 
-    @Override
-    protected void onStop() {
-        Log.e("SERJ","ManagementActivity -- onStop");
-        mPresenter.onStop();
-        super.onStop();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +52,7 @@ public class ManagementActivity extends AppCompatActivity implements MainContrac
                     return true;
 
                 case R.id.action_wifi:
-                    goFragment(new FragmentWifi());
+                    goFragment(new SettingFragment());
                     return true;
 
                 case R.id.action_wan:
