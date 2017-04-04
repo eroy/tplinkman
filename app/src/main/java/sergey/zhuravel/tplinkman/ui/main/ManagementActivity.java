@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +25,13 @@ public class ManagementActivity extends AppCompatActivity implements MainContrac
     protected void onDestroy() {
         mPresenter.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.e("SERJ","ManagementActivity -- onStop");
+        mPresenter.onStop();
+        super.onStop();
     }
 
     @Override

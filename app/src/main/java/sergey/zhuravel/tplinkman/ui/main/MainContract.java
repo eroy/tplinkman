@@ -19,7 +19,7 @@ public interface MainContract {
 
     interface Presenter {
         void onDestroy();
-
+        void onStop();
     }
 
 }
