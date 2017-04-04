@@ -152,4 +152,21 @@ public class Utils {
         return hrSize;
 
     }
+
+    public static String getRegionName(String number) {
+        switch (number) {
+            case "83":
+                return "Russia";
+
+            case "98":
+                return "Ukraine";
+
+            case "101":
+                return "USA";
+
+            default:
+                return "Ukraine";
+
+        }
+    }
 }

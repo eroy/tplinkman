@@ -301,8 +301,6 @@ public class FragmentWifi extends AppFragment {
         llInfoWifi = (LinearLayout) view.findViewById(R.id.llInfoWifi);
         llInfoWifiSec = (LinearLayout) view.findViewById(R.id.llInfoWifiSec);
         rlPassword = (RelativeLayout) view.findViewById(R.id.rlPassword);
-
-
     }
 
 }
