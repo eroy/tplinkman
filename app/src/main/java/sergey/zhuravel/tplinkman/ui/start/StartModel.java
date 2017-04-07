@@ -6,6 +6,7 @@ import rx.schedulers.Schedulers;
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.api.InputService;
 import sergey.zhuravel.tplinkman.api.SettingService;
+import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.manager.DataManager;
 import sergey.zhuravel.tplinkman.utils.LinkGenerate;
@@ -40,4 +41,21 @@ public class StartModel implements StartContract.Model {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<String> inputValidate(String ip, String username, String password, String key) {
+
+        mInputService = App.getApiManager(LinkGenerate.baseLink(ip, key)).getInputService();
+        String referer = LinkGenerate.referer(ip, key, ApiConstant.INPUT_VALIDATE);
+        String cookie = LinkGenerate.cookie(username, password);
+
+
+        return mInputService.validateInput(cookie, referer)
+                .retry(3)
+                .flatMap(Utils::replaceResponseToText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
 }

@@ -29,10 +29,38 @@ public class StartPresenter implements StartContract.Presenter {
     @Override
     public void validateAndInput(String ip, String username, String password) {
         mCompositeSubscription.add(mModel.getKey(ip, username, password)
-                .subscribe(s -> {
-                            Log.e("SERJ", s);
+                .subscribe(key -> {
+                            if (key.equals("old")) {
+                                Log.e("SERJ-key", "input for old version router");
+
+//                                input for old version router
+                            } else {
+                                if (key.length() < 10) {
+                                    Log.e("SERJ-key", "repeat later");
+//                                    message repeat later
+                                } else {
+                                    validatePassword(ip, username, password, key);
+                                }
+                            }
+
+
                         },
-                        throwable -> Log.e("SERJ-error", throwable.getMessage())));
+                        throwable -> Log.e("SERJ-key-error", throwable.getMessage())));
+    }
+
+
+    private void validatePassword(String ip, String username, String password, String key) {
+        Log.e("SERJ", key);
+        mCompositeSubscription.add(mModel.inputValidate(ip, username, password, key)
+                .subscribe(validate -> {
+                            if (validate.contains("statusPara")) {
+                                Log.e("SERJ", "password ok");
+                            } else {
+                                Log.e("SERJ", "password error");
+                            }
+                        },
+                        throwable -> Log.e("SERJ-validate-error", throwable.getMessage())));
     }
 
 }
+

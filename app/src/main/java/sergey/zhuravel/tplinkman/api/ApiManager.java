@@ -27,8 +27,8 @@ public class ApiManager {
     private void initRetrofit(String baseUrl) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor((message -> Log.e("LOGGING", message)));
 //        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(logging)
                 .build();

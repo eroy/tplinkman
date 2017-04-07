@@ -137,11 +137,12 @@ public class Utils {
                         break;
 
                     case TypeConstant.INFO_KEY:
-                        Log.e("TEST", text);
+
                         String[] responseKeyArray = text.split("/");
                         information.add(responseKeyArray[3]);
 
                         break;
+
                 }
             } else {
                 information.add("old");

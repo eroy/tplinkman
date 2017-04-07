@@ -14,6 +14,7 @@ public class ApiConstant {
 
     /*input url*/
     public static final String INPUT_KEY = "userRpm/LoginRpm.htm?Save=Save";
+    public static final String INPUT_VALIDATE = "userRpm/StatusRpm.htm";
 
 
     /*info url*/

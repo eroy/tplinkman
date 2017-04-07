@@ -6,6 +6,9 @@ import rx.Observable;
 public interface StartContract {
     interface Model {
         Observable<String> getKey(String ip, String username, String password);
+
+        Observable<String> inputValidate(String ip, String username, String password, String key);
+
     }
 
     interface View {

@@ -7,6 +7,7 @@ public interface SettingContract {
     interface Model {
         Observable<String> setRebootRouter(String link, String refererLink);
 
+
     }
 
     interface View {
