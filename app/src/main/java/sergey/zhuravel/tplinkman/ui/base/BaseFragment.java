@@ -1,4 +1,4 @@
-package sergey.zhuravel.tplinkman.ui;
+package sergey.zhuravel.tplinkman.ui.base;
 
 
 import android.os.Bundle;
