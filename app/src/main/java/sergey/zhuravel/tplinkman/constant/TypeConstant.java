@@ -12,4 +12,6 @@ public class TypeConstant {
     public static final String INFO_FIRMWARE = "info_firmware";
     public static final String INFO_MAC_WAN = "info_mac_wan";
     public static final String INFO_STATUS = "info_status";
+    public static final String INFO_WIFI_STATION = "info_wifi_station";
+    public static final String INFO_KEY = "info_key";
 }

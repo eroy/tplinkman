@@ -11,13 +11,15 @@ public class App extends Application {
     private static DataManager sDataManager;
 
     public static ApiManager getApiManager(String baseUrl) {
-        if (sApiManager == null) {
-            sApiManager = new ApiManager(baseUrl);
+        if (sApiManager != null) {
+            sApiManager = null;
         }
+        sApiManager = new ApiManager(baseUrl);
+
         return sApiManager;
     }
 
-    public static DataManager getDataManager(Context context){
+    public static DataManager getDataManager(Context context) {
         if (sDataManager == null) {
             sDataManager = new DataManager(context);
         }

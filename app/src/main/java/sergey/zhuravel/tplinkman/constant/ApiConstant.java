@@ -12,12 +12,17 @@ public class ApiConstant {
 
     public static final String IP_KEY = "{ip}/{key}";
 
+    /*input url*/
+    public static final String INPUT_KEY = "userRpm/LoginRpm.htm?Save=Save";
+
+
     /*info url*/
     public static final String INFO_FIRMWARE = "userRpm/SoftwareUpgradeRpm.htm";
     public static final String INFO_MAC = "userRpm/MacCloneCfgRpm.htm";
     public static final String INFO_WIFI_NAME = "userRpm/WlanNetworkRpm.htm";
     public static final String INFO_WIFI_PASS = "userRpm/WlanSecurityRpm.htm";
     public static final String INFO_STATUS = "userRpm/StatusRpm.htm";
+    public static final String INFO_WIFI_STATION = "userRpm/WlanStationRpm.htm";
 
     /*settings url*/
     public static final String LOGOUT = "userRpm/LogoutRpm.htm";
