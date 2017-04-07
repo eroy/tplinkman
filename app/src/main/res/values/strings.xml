@@ -42,9 +42,18 @@
     <string name="alert_yes">Yes</string>
     <string name="alert_no">No</string>
     <string name="main_wi_fi_2_4_ghz">Main Wi-fi 2.4 GHz</string>
-    <string name="dialog_applay">Applying new parameters ...</string>
+    <string name="dialog_applay">Applying new parameters …</string>
     <string name="setting_apply">Settings successfully applied</string>
     <string name="error">Error</string>
+    <string name="local_device">Local device</string>
+    <string name="not_found">Not found</string>
+    <string name="ip_address">IP address:</string>
+    <string name="remote_conect_to">Remote connect to …</string>
+    <string name="name_connection">Name connection</string>
+    <string name="remote_ip">Remote ip</string>
+    <string name="connect">Connect</string>
+    <string name="cancel">Cancel</string>
+    <string name="connecting">Connecting …</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

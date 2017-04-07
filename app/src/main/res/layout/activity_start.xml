@@ -1,0 +1,124 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="sergey.zhuravel.tplinkman.ui.start.StartActivity">
+
+        <include layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/local_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/local_device"
+                    android:textSize="14sp" />
+
+
+                <View
+                    android:id="@+id/view_local"
+                    style="@style/Line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:layout_below="@id/local_title"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/ip_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_local"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_not_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_local"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/not_found"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <View
+                    android:id="@+id/view_rl"
+                    style="@style/Line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/history_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_rl"
+                    android:layout_marginTop="8dp"
+                    android:text="History connections"
+                    android:textSize="14sp" />
+
+
+                <View
+                    android:id="@+id/view_history"
+                    style="@style/Line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:layout_below="@id/history_title"
+                    android:layout_marginTop="8dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_history"
+                    android:layout_marginTop="8dp" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/remoute_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_language_black_24dp"
+            app:backgroundTint="@color/white"
+            app:elevation="8dp"
+            app:fabSize="normal" />
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

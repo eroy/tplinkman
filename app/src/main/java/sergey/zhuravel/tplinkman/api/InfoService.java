@@ -30,4 +30,9 @@ public interface InfoService {
                                                      @Header("Referer") String referer);
 
 
+    @GET(ApiConstant.INFO_WIFI_STATION)
+    Observable<Response<ResponseBody>> getInfoWifiStation(@Header("Cookie") String cookie,
+                                                          @Header("Referer") String referer);
+
+
 }

@@ -1,10 +1,8 @@
 package sergey.zhuravel.tplinkman.ui.info;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import sergey.zhuravel.tplinkman.model.Info;
 
 
 
@@ -16,6 +14,7 @@ public interface InfoContract {
         Observable<List<String>> getInfoWifiPass(String link, String type);
         Observable<List<String>> getInfoStatus(String link, String type);
 
+        Observable<List<String>> getInfoWifiStation(String link, String type);
     }
 
     interface View {
@@ -40,5 +39,7 @@ public interface InfoContract {
         void getStatusInfo();
 
         void updateTraffic();
+
+        void getWifiStationInfo();
     }
 }

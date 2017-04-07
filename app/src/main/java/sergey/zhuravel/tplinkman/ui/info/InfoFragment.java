@@ -15,7 +15,7 @@ import java.util.List;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.ui.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 
 public class InfoFragment extends BaseFragment implements InfoContract.View {
 
@@ -57,6 +57,7 @@ public class InfoFragment extends BaseFragment implements InfoContract.View {
         mPresenter.getWifiNameInfo();
         mPresenter.getWifiPassInfo();
         mPresenter.getStatusInfo();
+        mPresenter.getWifiStationInfo();
 
         mPresenter.updateTraffic();
         mLlTrafficInfo.setOnClickListener(v -> mPresenter.getStatusInfo());

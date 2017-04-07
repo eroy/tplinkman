@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.ui.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 
 
 public class WirelessFragment extends BaseFragment implements WirelessContract.View {

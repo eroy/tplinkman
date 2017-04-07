@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import sergey.zhuravel.tplinkman.MainActivity;
+import sergey.zhuravel.tplinkman.OldActivity;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.model.WifiInfo;
 
@@ -197,7 +197,7 @@ public class FragmentWifi extends AppFragment {
                     e.printStackTrace();
                 }
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), OldActivity.class);
                 intent.putExtra("wifiSsid", ssid);
                 intent.putExtra("wifiPass", pass);
                 startActivity(intent);

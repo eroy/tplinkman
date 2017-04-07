@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.ui.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 import sergey.zhuravel.tplinkman.ui.wireless.WirelessFragment;
 
 public class SettingFragment extends BaseFragment implements SettingContract.View {

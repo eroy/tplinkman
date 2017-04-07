@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/ip_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/ip_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ip_name"
+        android:text="192.168.1.1 -- [AA:FF:SS:DD:AA:EE]"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/iv_visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_visibility_off_black_24dp" />
+
+</RelativeLayout>

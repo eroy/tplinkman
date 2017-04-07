@@ -16,6 +16,7 @@ public class ApiManager {
     private Retrofit mRetrofit;
     private InfoService infoService;
     private SettingService settingService;
+    private InputService inputService;
 
 
     public ApiManager(String baseUrl) {
@@ -26,8 +27,8 @@ public class ApiManager {
     private void initRetrofit(String baseUrl) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor((message -> Log.e("LOGGING", message)));
 //        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(logging)
                 .build();
@@ -49,10 +50,15 @@ public class ApiManager {
         return settingService;
     }
 
+    public InputService getInputService() {
+        return inputService;
+    }
+
     private void initServices() {
         if (mRetrofit != null) {
             infoService = mRetrofit.create(InfoService.class);
             settingService = mRetrofit.create(SettingService.class);
+            inputService = mRetrofit.create(InputService.class);
 
 
         }

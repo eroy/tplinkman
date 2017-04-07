@@ -84,4 +84,16 @@ public class InfoModel implements InfoContract.Model {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Observable<List<String>> getInfoWifiStation(String link, String type) {
+        String referer = LinkGenerate.referer(mDataManager.getIp(), mDataManager.getKey(), link);
+        String cookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
+
+        return mInfoService.getInfoWifiStation(cookie, referer)
+                .retry(3)
+                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, type))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }
