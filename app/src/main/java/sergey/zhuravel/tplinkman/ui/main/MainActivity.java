@@ -11,19 +11,18 @@ import java.util.ArrayList;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.fragment.FragmentWifi;
 import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
 
 
-public class ManagementActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
     private BottomNavigationView bottomNavigationView;
     private ArrayList<String> data = new ArrayList<>();
     private MainContract.Presenter mPresenter;
 
     @Override
     protected void onDestroy() {
-        Log.e("SERJ","ManagementActivity -- onDestroy");
+        Log.e("SERJ","MainActivity -- onDestroy");
         mPresenter.onDestroy();
         super.onDestroy();
     }
@@ -77,6 +76,6 @@ public class ManagementActivity extends AppCompatActivity implements MainContrac
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("data", data);
         fragment.setArguments(bundle);
-        ManagementActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).commit();
+        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).commit();
     }
 }

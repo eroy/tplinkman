@@ -10,7 +10,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -27,18 +26,17 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sergey.zhuravel.tplinkman.manager.DataManager;
-import sergey.zhuravel.tplinkman.ui.main.ManagementActivity;
+import sergey.zhuravel.tplinkman.ui.main.MainActivity;
 
 import static sergey.zhuravel.tplinkman.fragment.AppFragment.cookieEncodeMD5;
 import static sergey.zhuravel.tplinkman.fragment.AppFragment.getKey;
 
-public class MainActivity extends AppCompatActivity implements Const {
+public class OldActivity extends AppCompatActivity implements Const {
 
     private static final String IPADDRESS_PATTERN =
             "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -156,8 +154,8 @@ public class MainActivity extends AppCompatActivity implements Const {
                         mDataManager.saveData(ip,key,login,pass);
 
                         ArrayList<String> data = new ArrayList<>();
-                        Intent intent = new Intent(this, ManagementActivity.class);
-
+                        Intent intent = new Intent(this, MainActivity.class);
+                        
                         data.add(ip);
                         data.add(key);
                         data.add(login);
