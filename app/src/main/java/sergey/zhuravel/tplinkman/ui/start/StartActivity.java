@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -26,6 +28,8 @@ import java.util.List;
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
+import sergey.zhuravel.tplinkman.ui.main.MainActivity;
+import sergey.zhuravel.tplinkman.utils.NetworkUtils;
 
 public class StartActivity extends BaseActivity implements StartContract.View {
 
@@ -42,6 +46,8 @@ public class StartActivity extends BaseActivity implements StartContract.View {
     private RelativeLayout mRlHistory;
     private ProgressDialog mProgressDialog;
 
+    private SharedPreferences mSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +60,9 @@ public class StartActivity extends BaseActivity implements StartContract.View {
         setLocalIp();
         setRefreshLayout();
 
-
+        mIp.setOnClickListener(v -> {
+            mPresenter.validateAndInput("192.168.0.1", "admin", "trifle_best");
+        });
         mFabAddNewConnect.setOnClickListener(v -> showRemoteConnectionDialog());
 
     }
@@ -173,4 +181,41 @@ public class StartActivity extends BaseActivity implements StartContract.View {
         mProgressDialog.dismiss();
     }
 
+
+    @Override
+    public void navigateToMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public boolean isReachableHost(String host) {
+        if (NetworkUtils.isReachable(host)) {
+            return true;
+        } else {
+            showDialogMessage(getString(R.string.host_is_unreachable));
+            return false;
+        }
+    }
+
+
+    @Override
+    public void showDialogErrorInput() {
+        showDialogMessage(getString(R.string.error_input_data));
+    }
+
+    @Override
+    public void showDialogRepeat() {
+        showDialogMessage(getString(R.string.try_again_later));
+    }
+
+    private void showDialogMessage(String message) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage(message);
+        dialog.setPositiveButton("Ok", (dialog1, which) -> dialog1.dismiss());
+        dialog
+                .setCancelable(false)
+                .create()
+                .show();
+    }
 }

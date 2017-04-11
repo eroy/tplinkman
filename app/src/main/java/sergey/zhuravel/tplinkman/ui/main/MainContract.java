@@ -1,8 +1,6 @@
 package sergey.zhuravel.tplinkman.ui.main;
 
 
-import java.util.List;
-
 import rx.Observable;
 
 public interface MainContract {
@@ -10,6 +8,7 @@ public interface MainContract {
     interface Model {
         Observable<String> setLogout(String link);
 
+        void clearSaveAll();
     }
 
     interface View {

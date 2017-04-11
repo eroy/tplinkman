@@ -15,9 +15,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ApiManager {
     private Retrofit mRetrofit;
     private InfoService infoService;
+    private InfoOldService infoOldService;
     private SettingService settingService;
     private InputService inputService;
-
+    private SettingOldService settingOldService;
 
     public ApiManager(String baseUrl) {
         initRetrofit(baseUrl);
@@ -46,6 +47,7 @@ public class ApiManager {
         return infoService;
     }
 
+
     public SettingService getSettingService() {
         return settingService;
     }
@@ -54,11 +56,22 @@ public class ApiManager {
         return inputService;
     }
 
+    public InfoOldService getInfoOldService() {
+        return infoOldService;
+    }
+
+    public SettingOldService getSettingOldService() {
+        return settingOldService;
+    }
+
     private void initServices() {
         if (mRetrofit != null) {
             infoService = mRetrofit.create(InfoService.class);
             settingService = mRetrofit.create(SettingService.class);
             inputService = mRetrofit.create(InputService.class);
+            infoOldService = mRetrofit.create(InfoOldService.class);
+            settingOldService = mRetrofit.create(SettingOldService.class);
+
 
 
         }

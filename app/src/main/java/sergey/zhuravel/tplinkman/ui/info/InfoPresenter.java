@@ -86,7 +86,7 @@ public class InfoPresenter implements InfoContract.Presenter {
                     mView.setInfoUpload(strings.get(0));
                     mView.setInfoDownload(strings.get(1));
 
-                }, throwable -> Log.e("SERJ", throwable.getMessage())));
+                }, throwable -> Log.e("SERJ-error-status-info", throwable.getMessage())));
     }
 
     @Override

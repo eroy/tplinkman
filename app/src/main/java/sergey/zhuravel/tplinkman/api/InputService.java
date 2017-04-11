@@ -17,4 +17,9 @@ public interface InputService {
     Observable<Response<ResponseBody>> validateInput(@Header("Cookie") String cookie,
                                                      @Header("Referer") String referer);
 
+
+    @GET(ApiConstant.INPUT_VALIDATE_OLD)
+    Observable<Response<ResponseBody>> validateInputOld(@Header("Referer") String referer,
+                                                        @Header("Authorization") String authorization);
+
 }

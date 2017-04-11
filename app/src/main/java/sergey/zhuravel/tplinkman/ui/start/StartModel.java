@@ -5,9 +5,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.api.InputService;
-import sergey.zhuravel.tplinkman.api.SettingService;
 import sergey.zhuravel.tplinkman.constant.ApiConstant;
-import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.manager.DataManager;
 import sergey.zhuravel.tplinkman.utils.LinkGenerate;
 import sergey.zhuravel.tplinkman.utils.Utils;
@@ -16,13 +14,10 @@ import sergey.zhuravel.tplinkman.utils.Utils;
 public class StartModel implements StartContract.Model {
 
     private DataManager mDataManager;
-    private SettingService mSettingService;
     private InputService mInputService;
 
     public StartModel(DataManager dataManager) {
         this.mDataManager = dataManager;
-
-//        mSettingService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getSettingService();
     }
 
 
@@ -36,8 +31,7 @@ public class StartModel implements StartContract.Model {
 
         return mInputService.getKey(cookie)
                 .retry(3)
-                .flatMap(responseBodyResponse -> Utils.replaceResponseToObservableList(responseBodyResponse, TypeConstant.INFO_KEY))
-                .flatMap(lists -> Observable.just(lists.get(0)))
+                .flatMap(Utils::replaceResponseKeyToText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -55,6 +49,30 @@ public class StartModel implements StartContract.Model {
                 .flatMap(Utils::replaceResponseToText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<String> inputValidateOld(String ip, String username, String password) {
+
+        mInputService = App.getApiManager(LinkGenerate.baseLink(ip)).getInputService();
+        String referer = LinkGenerate.referer(ip, ApiConstant.INPUT_VALIDATE_OLD);
+        String authorization = LinkGenerate.authorization(username, password);
+
+        return mInputService.validateInputOld(referer, authorization)
+                .retry(3)
+                .flatMap(Utils::replaceResponseToText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public void savePreference(String ip, String key, String username, String password) {
+        mDataManager.saveData(ip, key, username, password);
+    }
+
+    @Override
+    public void savePreference(String ip, String username, String password) {
+        mDataManager.saveData(ip, username, password);
     }
 
 

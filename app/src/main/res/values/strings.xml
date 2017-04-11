@@ -54,6 +54,9 @@
     <string name="connect">Connect</string>
     <string name="cancel">Cancel</string>
     <string name="connecting">Connecting …</string>
+    <string name="host_is_unreachable">Host is unreachable</string>
+    <string name="error_input_data">Error input username or password</string>
+    <string name="try_again_later">Please try again later</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

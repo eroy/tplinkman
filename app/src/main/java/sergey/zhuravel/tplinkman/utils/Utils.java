@@ -36,14 +36,11 @@ public class Utils {
         });
     }
 
-
-    public static Observable<List<String>> replaceResponseToObservableList(Response<ResponseBody> response, String type) {
+    public static Observable<String> replaceResponseKeyToText(Response<ResponseBody> response) {
         return Observable.fromCallable(() -> {
-            List<String> information = new ArrayList<>();
-
+            StringBuffer message = new StringBuffer();
+            String text = "";
             if (response.code() == 200) {
-
-                StringBuffer message = new StringBuffer();
                 try {
                     BufferedReader in1 = new BufferedReader(new InputStreamReader(response.body().byteStream()));
                     String inputLine1;
@@ -55,124 +52,154 @@ public class Utils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                String[] responseKeyArray = String.valueOf(message).split("/");
+                text = responseKeyArray[3];
+            } else {
+                text = "old";
+            }
 
 
-                String text = String.valueOf(message);
-                String[] responseArray = text.split(",");
+            return text;
+        });
+    }
 
-                switch (type) {
-                    case TypeConstant.INFO_WIFI:
-
-                        information.add(responseArray[3].replace("\"", "")); //ssid
-                        information.add(responseArray[5]); //region
-                        information.add(responseArray[10]); // chanel
-                        information.add(responseArray[8]); // isEnable wifi
-                        Log.e("WIFI", responseArray[8]);
-                        break;
-                    case TypeConstant.INFO_WIFI_SEC:
-                        information.add(responseArray[2].replace(" ", "")); //mode sec
-                        information.add(responseArray[9].replace("\"", "")); // pass
-                        break;
-                    case TypeConstant.INFO_WAN_DYN:
-                        information.add(responseArray[17].replace("\"", "")); // ip
-                        information.add(responseArray[18].replace("\"", "")); // mask
-                        information.add(responseArray[19].replace("\"", "")); // gateway
-                        information.add(responseArray[24].replace("\"", "")); // dns
-                        break;
-                    case TypeConstant.INFO_WAN_STAT:
-                        information.add(responseArray[16].replace("\"", "")); // ip
-                        information.add(responseArray[17].replace("\"", "")); // mask
-                        information.add(responseArray[18].replace("\"", "")); // gateway
-                        information.add(responseArray[20].replace("\"", "")); // dns1
-                        information.add(responseArray[21].replace("\"", "")); // dns2
+    public static Observable<List<String>> replaceResponseToObservableList(Response<ResponseBody> response, String type) {
+        return Observable.fromCallable(() -> {
+            List<String> information = new ArrayList<>();
 
 
-                        break;
-                    case TypeConstant.INFO_WAN_PPTP:
-                        information.add(responseArray[4].replace("\"", "")); // vpn server
-                        information.add(responseArray[5].replace("\"", "")); // username
-                        information.add(responseArray[6].replace("\"", "")); // password
-                        information.add(responseArray[9].replace("\"", "")); // ip
-                        information.add(responseArray[10].replace("\"", "")); // mask
-                        information.add(responseArray[11].replace("\"", "")); // gateway
+            StringBuffer message = new StringBuffer();
+            try {
+                BufferedReader in1 = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+                String inputLine1;
 
-                        break;
-                    case TypeConstant.INFO_WAN_PPOE:
+                while ((inputLine1 = in1.readLine()) != null) {
+                    message.append(inputLine1);
+                }
 
-                        break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-                    case TypeConstant.INFO_WAN_TYPE:
-                        String[] responseArray1 = text.split("/");
-                        information.add(responseArray1[2]); //region
-                        break;
 
-                    case TypeConstant.INFO_FIRMWARE:
-                        String[] responseArray2 = text.split("\\(");
-                        String[] responseArray3 = responseArray2[1].split(",");
-                        information.add(responseArray3[0].replace("\"", "")); // build
-                        String[] responseArray31 = responseArray3[1].replace("\"", "").split(" ");
+            String text = String.valueOf(message);
+            String[] responseArray = text.split(",");
 
-                        information.add(responseArray31[0] + " " + responseArray31[1]); // verison
+            switch (type) {
+                case TypeConstant.INFO_WIFI:
 
-                        break;
-                    case TypeConstant.INFO_MAC_WAN:
-                        String[] responseArray4 = text.split("\\(");
-                        String[] responseArray5 = responseArray4[1].split(",");
-                        information.add(responseArray5[0].replace("\"", "")); // mac address
+                    information.add(responseArray[3].replace("\"", "")); //ssid
+                    information.add(responseArray[5]); //region
+                    information.add(responseArray[10]); // chanel
+                    information.add(responseArray[8]); // isEnable wifi
+                    Log.e("WIFI", responseArray[8]);
+                    break;
+                case TypeConstant.INFO_WIFI_SEC:
+                    information.add(responseArray[2].replace(" ", "")); //mode sec
+                    information.add(responseArray[9].replace("\"", "")); // pass
+                    break;
+                case TypeConstant.INFO_WAN_DYN:
+                    information.add(responseArray[17].replace("\"", "")); // ip
+                    information.add(responseArray[18].replace("\"", "")); // mask
+                    information.add(responseArray[19].replace("\"", "")); // gateway
+                    information.add(responseArray[24].replace("\"", "")); // dns
+                    break;
+                case TypeConstant.INFO_WAN_STAT:
+                    information.add(responseArray[16].replace("\"", "")); // ip
+                    information.add(responseArray[17].replace("\"", "")); // mask
+                    information.add(responseArray[18].replace("\"", "")); // gateway
+                    information.add(responseArray[20].replace("\"", "")); // dns1
+                    information.add(responseArray[21].replace("\"", "")); // dns2
 
-                        break;
-                    case TypeConstant.INFO_STATUS:
-                        String[] responseStatus = text.split("\\(");
-                        String[] responseStatus1 = responseStatus[4].split("\",");
+
+                    break;
+                case TypeConstant.INFO_WAN_PPTP:
+                    information.add(responseArray[4].replace("\"", "")); // vpn server
+                    information.add(responseArray[5].replace("\"", "")); // username
+                    information.add(responseArray[6].replace("\"", "")); // password
+                    information.add(responseArray[9].replace("\"", "")); // ip
+                    information.add(responseArray[10].replace("\"", "")); // mask
+                    information.add(responseArray[11].replace("\"", "")); // gateway
+
+                    break;
+                case TypeConstant.INFO_WAN_PPOE:
+
+                    break;
+
+                case TypeConstant.INFO_WAN_TYPE:
+                    String[] responseArray1 = text.split("/");
+                    information.add(responseArray1[2]); //region
+                    break;
+
+                case TypeConstant.INFO_FIRMWARE:
+
+                    String[] responseArray2 = text.split("\\(");
+                    String[] responseArray3 = responseArray2[1].split(",");
+                    information.add(responseArray3[0].replace("\"", "")); // build
+                    String[] responseArray31 = responseArray3[1].replace("\"", "").split(" ");
+
+                    information.add(responseArray31[0] + " " + responseArray31[1]); // verison
+
+                    break;
+                case TypeConstant.INFO_MAC_WAN:
+                    String[] responseArray4 = text.split("\\(");
+                    String[] responseArray5 = responseArray4[1].split(",");
+                    information.add(responseArray5[0].replace("\"", "")); // mac address
+
+                    break;
+                case TypeConstant.INFO_STATUS:
+
+                    String[] responseStatus = text.split("\\(");
+                    String[] responseStatus1 = responseStatus[4].split("\",");
+
+                    if (responseStatus1.length > 1) {
                         information.add(convertBytes(responseStatus1[0].replace("\"", "").replace(",", "")));
                         information.add(convertBytes(responseStatus1[1].replace("\"", "").replace(",", "")));
+                    } else {
+                        information.add("0");
+                        information.add("0");
+                    }
 
-                        break;
-                    case TypeConstant.INFO_WIFI_STATION:
+                    break;
+                case TypeConstant.INFO_WIFI_STATION:
 
-                        String[] responseWifi = text.split("\\(");
-                        String[] responseWifi1 = responseWifi[2].split("\\)");
-                        information.add(responseWifi1[0]);
+                    String[] responseWifi = text.split("\\(");
+                    String[] responseWifi1 = responseWifi[2].split("\\)");
+                    information.add(responseWifi1[0]);
 
-                        break;
+                    break;
 
-                    case TypeConstant.INFO_KEY:
 
-                        String[] responseKeyArray = text.split("/");
-                        information.add(responseKeyArray[3]);
-
-                        break;
-
-                }
-            } else {
-                information.add("old");
             }
+
             return information;
         });
     }
 
 
     public static String convertBytes(String bytes) {
-        String hrSize = null;
+        String hrSize = "0";
         if (bytes != null) {
-            double size = Double.parseDouble(bytes);
-            double k = size / 1024.0;
-            double m = ((size / 1024.0) / 1024.0);
-            double g = (((size / 1024.0) / 1024.0) / 1024.0);
-            double t = ((((size / 1024.0) / 1024.0) / 1024.0) / 1024.0);
+            if (bytes.length() < 50) {
+                double size = Double.parseDouble(bytes);
+                double k = size / 1024.0;
+                double m = ((size / 1024.0) / 1024.0);
+                double g = (((size / 1024.0) / 1024.0) / 1024.0);
+                double t = ((((size / 1024.0) / 1024.0) / 1024.0) / 1024.0);
 
-            DecimalFormat dec = new DecimalFormat("0.00");
+                DecimalFormat dec = new DecimalFormat("0.00");
 
-            if (t > 1) {
-                hrSize = dec.format(t).concat(" TB");
-            } else if (g > 1) {
-                hrSize = dec.format(g).concat(" GB");
-            } else if (m > 1) {
-                hrSize = dec.format(m).concat(" MB");
-            } else if (k > 1) {
-                hrSize = dec.format(k).concat(" KB");
-            } else {
-                hrSize = dec.format(size).concat(" Bytes");
+                if (t > 1) {
+                    hrSize = dec.format(t).concat(" TB");
+                } else if (g > 1) {
+                    hrSize = dec.format(g).concat(" GB");
+                } else if (m > 1) {
+                    hrSize = dec.format(m).concat(" MB");
+                } else if (k > 1) {
+                    hrSize = dec.format(k).concat(" KB");
+                } else {
+                    hrSize = dec.format(size).concat(" Bytes");
+                }
             }
         }
         return hrSize;

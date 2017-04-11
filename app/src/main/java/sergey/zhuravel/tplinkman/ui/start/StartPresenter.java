@@ -28,35 +28,60 @@ public class StartPresenter implements StartContract.Presenter {
 
     @Override
     public void validateAndInput(String ip, String username, String password) {
-        mCompositeSubscription.add(mModel.getKey(ip, username, password)
-                .subscribe(key -> {
-                            if (key.equals("old")) {
-                                Log.e("SERJ-key", "input for old version router");
-
+        if (mView.isReachableHost(ip)) {
+            mCompositeSubscription.add(mModel.getKey(ip, username, password)
+                    .doOnRequest(request -> mView.showProgressDialog())
+                    .doOnUnsubscribe(() -> mView.hideProgressDialog())
+                    .subscribe(key -> {
+                                if (key.equals("old")) {
+                                    Log.e("SERJ-key", "input for old version router");
+                                    validatePasswordOld(ip, username, password);
 //                                input for old version router
-                            } else {
-                                if (key.length() < 10) {
-                                    Log.e("SERJ-key", "repeat later");
-//                                    message repeat later
                                 } else {
-                                    validatePassword(ip, username, password, key);
+                                    if (key.length() < 10) {
+                                        mView.showDialogRepeat();
+                                    } else {
+                                        validatePassword(ip, username, password, key);
+                                    }
                                 }
-                            }
 
 
-                        },
-                        throwable -> Log.e("SERJ-key-error", throwable.getMessage())));
+                            },
+                            throwable -> Log.e("SERJ-key-error", throwable.getMessage())));
+        }
+
     }
 
 
     private void validatePassword(String ip, String username, String password, String key) {
         Log.e("SERJ", key);
         mCompositeSubscription.add(mModel.inputValidate(ip, username, password, key)
+                .doOnRequest(request -> mView.showProgressDialog())
+                .doOnUnsubscribe(() -> mView.hideProgressDialog())
                 .subscribe(validate -> {
                             if (validate.contains("statusPara")) {
-                                Log.e("SERJ", "password ok");
+                                mModel.savePreference(ip, key, username, password);
+                                mView.navigateToMainActivity();
                             } else {
-                                Log.e("SERJ", "password error");
+                                mView.showDialogErrorInput();
+                            }
+                        },
+                        throwable -> Log.e("SERJ-validate-error", throwable.getMessage())));
+    }
+
+
+    private void validatePasswordOld(String ip, String username, String password) {
+
+        mCompositeSubscription.add(mModel.inputValidateOld(ip, username, password)
+                .doOnRequest(request -> mView.showProgressDialog())
+                .doOnUnsubscribe(() -> mView.hideProgressDialog())
+                .subscribe(validate -> {
+
+                            if (validate.contains("statusPara")) {
+                                mModel.savePreference(ip, username, password);
+                                mView.navigateToMainActivity();
+                            } else {
+                                mView.showDialogErrorInput();
                             }
                         },
                         throwable -> Log.e("SERJ-validate-error", throwable.getMessage())));

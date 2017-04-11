@@ -9,6 +9,11 @@ public interface StartContract {
 
         Observable<String> inputValidate(String ip, String username, String password, String key);
 
+        Observable<String> inputValidateOld(String ip, String username, String password);
+
+        void savePreference(String ip, String key, String username, String password);
+
+        void savePreference(String ip, String username, String password);
     }
 
     interface View {
@@ -16,6 +21,13 @@ public interface StartContract {
 
         void hideProgressDialog();
 
+        void navigateToMainActivity();
+
+        boolean isReachableHost(String host);
+
+        void showDialogErrorInput();
+
+        void showDialogRepeat();
     }
 
     interface Presenter {

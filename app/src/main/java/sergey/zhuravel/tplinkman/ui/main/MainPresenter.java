@@ -22,6 +22,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onDestroy() {
         setLogout();
+        mModel.clearSaveAll();
 
         mView = null;
         mModel = null;

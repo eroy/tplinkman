@@ -3,9 +3,6 @@ package sergey.zhuravel.tplinkman.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by serj on 29.03.2017.
- */
 
 public class DataManager {
     public static final String APP_PREFERENCES = "preferences";
@@ -57,6 +54,23 @@ public class DataManager {
         editor.putString(KEY,key);
         editor.putString(USERNAME,username);
         editor.putString(PASS,pass);
+        editor.apply();
+    }
+
+    public void saveData(String ip, String username, String pass) {
+        this.ip = ip;
+        this.username = username;
+        this.pass = pass;
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(IP, ip);
+        editor.putString(USERNAME, username);
+        editor.putString(PASS, pass);
+        editor.apply();
+    }
+
+    public void clearAll() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.clear();
         editor.apply();
     }
 

@@ -3,21 +3,19 @@ package sergey.zhuravel.tplinkman.ui.main;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
+import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
 import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
 
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View {
     private BottomNavigationView bottomNavigationView;
-    private ArrayList<String> data = new ArrayList<>();
+
     private MainContract.Presenter mPresenter;
 
     @Override
@@ -35,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mPresenter = new MainPresenter(this, new MainModel(App.getDataManager(this)));
 
-//        get value with previous activity
-        data = getIntent().getStringArrayListExtra("arrayData");
 
 
 //        start fragment info
@@ -73,9 +69,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void goFragment(Fragment fragment) {
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList("data", data);
-        fragment.setArguments(bundle);
         MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).commit();
     }
 }
