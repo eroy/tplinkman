@@ -27,7 +27,7 @@ public class MainModel implements MainContract.Model {
         mSettingService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getSettingService();
         mSettingOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getSettingOldService();
 
-        if (dataManager.getKey() != null) {
+        if (dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
             mCookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
         } else {
@@ -37,7 +37,7 @@ public class MainModel implements MainContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsLogout(String referer) {
-        if (mDataManager.getKey() != null) {
+        if (mDataManager.getKey().length() > 0) {
             return mSettingService.setLogout(mCookie, referer);
         } else {
             return mSettingOldService.setLogout(mCookie, referer);

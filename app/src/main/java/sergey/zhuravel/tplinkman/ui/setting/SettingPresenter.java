@@ -32,9 +32,10 @@ public class SettingPresenter implements SettingContract.Presenter {
         mCompositeSubscription.add(mModel.setRebootRouter(ApiConstant.REBOOT, ApiConstant.REBOOT_REFERER)
                 .subscribe(s -> {
                             if (s.contains("Reboot")) {
-                                Log.e("SERJ", "Reboot ok");
+                                mView.showRebootSuccessToast();
+                                mView.navigateToStartActivity();
                             } else {
-                                Log.e("SERJ", "Reboot fail");
+                                mView.showRebootErrorToast();
                             }
                         },
                         throwable -> Log.e("SERJ", throwable.getMessage())));

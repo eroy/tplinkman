@@ -11,7 +11,11 @@ public interface SettingContract {
     }
 
     interface View {
+        void navigateToStartActivity();
 
+        void showRebootSuccessToast();
+
+        void showRebootErrorToast();
 
     }
 

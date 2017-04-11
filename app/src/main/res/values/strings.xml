@@ -57,6 +57,8 @@
     <string name="host_is_unreachable">Host is unreachable</string>
     <string name="error_input_data">Error input username or password</string>
     <string name="try_again_later">Please try again later</string>
+    <string name="reboot_success">Reboot success</string>
+    <string name="reboot_error">Reboot error. Try again.</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

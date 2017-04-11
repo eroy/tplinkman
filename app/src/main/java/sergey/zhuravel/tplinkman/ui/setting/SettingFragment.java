@@ -1,6 +1,7 @@
 package sergey.zhuravel.tplinkman.ui.setting;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -8,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.start.StartActivity;
 import sergey.zhuravel.tplinkman.ui.wireless.WirelessFragment;
 
 public class SettingFragment extends BaseFragment implements SettingContract.View {
@@ -66,5 +69,21 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     private void navigateNextFragment(Fragment fragment) {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).addToBackStack(null).commit();
 
+    }
+
+    @Override
+    public void navigateToStartActivity() {
+        startActivity(new Intent(getActivity(), StartActivity.class));
+        getActivity().finish();
+    }
+
+    @Override
+    public void showRebootSuccessToast() {
+        Toast.makeText(getActivity(), R.string.reboot_success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showRebootErrorToast() {
+        Toast.makeText(getActivity(), R.string.reboot_error, Toast.LENGTH_SHORT).show();
     }
 }
