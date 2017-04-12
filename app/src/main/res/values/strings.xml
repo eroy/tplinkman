@@ -47,7 +47,7 @@
     <string name="error">Error</string>
     <string name="local_device">Local device</string>
     <string name="not_found">Not found</string>
-    <string name="ip_address">IP address:</string>
+    <string name="ip_address">IP address</string>
     <string name="remote_conect_to">Remote connect to …</string>
     <string name="name_connection">Name connection</string>
     <string name="remote_ip">Remote ip</string>
@@ -59,6 +59,13 @@
     <string name="try_again_later">Please try again later</string>
     <string name="reboot_success">Reboot success</string>
     <string name="reboot_error">Reboot error. Try again.</string>
+    <string name="automatic">Automatic</string>
+    <string name="manual">Manual</string>
+    <string name="type_dynamic_ip">Dynamic IP</string>
+    <string name="type_static_ip">Static IP</string>
+    <string name="type_pptp">PPTP</string>
+    <string name="type_ppoe">PPOE</string>
+    <string name="save_settings">Save settings</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

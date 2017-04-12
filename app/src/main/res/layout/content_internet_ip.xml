@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_internet_ip"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+
+        android:id="@+id/input_layout_ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/etIP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/ip_address"
+            android:inputType="phone"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="@dimen/text_ip" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_mask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/etMask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mask"
+            android:inputType="phone"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="@dimen/text_ip" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_gateway"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/etGateway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/gateway"
+            android:inputType="phone"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="@dimen/text_ip" />
+    </android.support.design.widget.TextInputLayout>
+
+    <View
+        android:id="@+id/view_history"
+        style="@style/Line"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp" />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_dns1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/etDns1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dns1"
+            android:inputType="phone"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="@dimen/text_ip" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_dns2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/etDns2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dns2"
+            android:inputType="phone"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="@dimen/text_ip" />
+
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>

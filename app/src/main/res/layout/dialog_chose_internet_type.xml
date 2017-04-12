@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <ImageView
+        android:id="@+id/img_cancel"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_cancel_white_24dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_dyn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_dyn"
+                android:layout_width="@dimen/img_type_inet_width"
+                android:layout_height="@dimen/img_type_inet_height"
+                android:src="@drawable/type_dyn_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_dyn"
+                android:layout_centerInParent="true"
+                android:text="@string/type_dynamic_ip"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_static"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/rl_dyn">
+
+            <ImageView
+                android:id="@+id/img_stat"
+                android:layout_width="@dimen/img_type_inet_width"
+                android:layout_height="@dimen/img_type_inet_height"
+                android:src="@drawable/type_static_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_stat"
+                android:layout_centerInParent="true"
+                android:text="@string/type_static_ip"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_pptp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_dyn"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/img_pptp"
+                android:layout_width="@dimen/img_type_inet_width"
+                android:layout_height="@dimen/img_type_inet_height"
+                android:src="@drawable/type_pptp_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_pptp"
+                android:layout_centerInParent="true"
+                android:text="@string/type_pptp"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_ppoe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_static"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/rl_pptp">
+
+            <ImageView
+                android:id="@+id/img_ppoe"
+                android:layout_width="@dimen/img_type_inet_width"
+                android:layout_height="@dimen/img_type_inet_height"
+                android:src="@drawable/type_ppoe_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_ppoe"
+                android:layout_centerInParent="true"
+                android:text="@string/type_ppoe"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

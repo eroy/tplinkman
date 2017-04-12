@@ -14,4 +14,7 @@
     <color name="background">#3c445b</color>
 
     <color name="colorBlack">#000000</color>
+
+    <color name="transparent">#bf3c445b</color>
+
 </resources>
