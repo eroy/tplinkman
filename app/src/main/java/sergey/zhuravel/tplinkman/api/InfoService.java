@@ -34,5 +34,24 @@ public interface InfoService {
     Observable<Response<ResponseBody>> getInfoWifiStation(@Header("Cookie") String cookie,
                                                           @Header("Referer") String referer);
 
+    @GET(ApiConstant.INFO_WAN_DYNAMIC)
+    Observable<Response<ResponseBody>> getInfoWanDynamic(@Header("Cookie") String cookie,
+                                                         @Header("Referer") String referer);
+
+    @GET(ApiConstant.INFO_WAN_STATIC)
+    Observable<Response<ResponseBody>> getInfoWanStatic(@Header("Cookie") String cookie,
+                                                        @Header("Referer") String referer);
+
+    @GET(ApiConstant.INFO_WAN_PPTP)
+    Observable<Response<ResponseBody>> getInfoWanPptp(@Header("Cookie") String cookie,
+                                                      @Header("Referer") String referer);
+
+    @GET(ApiConstant.INFO_WAN_PPPOE)
+    Observable<Response<ResponseBody>> getInfoWanPppoe(@Header("Cookie") String cookie,
+                                                       @Header("Referer") String referer);
+
+    @GET(ApiConstant.INFO_WAN_TYPE)
+    Observable<Response<ResponseBody>> getInfoWanType(@Header("Cookie") String cookie,
+                                                      @Header("Referer") String referer);
 
 }

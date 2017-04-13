@@ -56,8 +56,6 @@ public class StartPresenter implements StartContract.Presenter {
     private void validatePassword(String ip, String username, String password, String key) {
         Log.e("SERJ", key);
         mCompositeSubscription.add(mModel.inputValidate(ip, username, password, key)
-                .doOnRequest(request -> mView.showProgressDialog())
-                .doOnUnsubscribe(() -> mView.hideProgressDialog())
                 .subscribe(validate -> {
                             if (validate.contains("statusPara")) {
                                 mModel.savePreference(ip, key, username, password);
@@ -73,8 +71,6 @@ public class StartPresenter implements StartContract.Presenter {
     private void validatePasswordOld(String ip, String username, String password) {
 
         mCompositeSubscription.add(mModel.inputValidateOld(ip, username, password)
-                .doOnRequest(request -> mView.showProgressDialog())
-                .doOnUnsubscribe(() -> mView.hideProgressDialog())
                 .subscribe(validate -> {
 
                             if (validate.contains("statusPara")) {

@@ -122,13 +122,22 @@ public class Utils {
                     information.add(responseArray[11].replace("\"", "")); // gateway
 
                     break;
-                case TypeConstant.INFO_WAN_PPOE:
+                case TypeConstant.INFO_WAN_PPPOE:
+                    String[] respPppoe = text.split("\\(");
+                    String[] respPppoe1 = respPppoe[2].split("\",");
+                    String[] respPppoe3 = respPppoe1[0].split("\"");
+                    String[] respPppoe4 = respPppoe1[1].split("\"");
+
+                    information.add(respPppoe3[1]);
+                    information.add(respPppoe4[1]);
 
                     break;
 
                 case TypeConstant.INFO_WAN_TYPE:
                     String[] responseArray1 = text.split("/");
-                    information.add(responseArray1[2]); //region
+                    String[] responseArray12 = responseArray1[2].split("\"");
+
+                    information.add(responseArray12[0]); // type wan
                     break;
 
                 case TypeConstant.INFO_FIRMWARE:

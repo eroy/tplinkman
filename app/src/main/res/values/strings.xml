@@ -67,6 +67,9 @@
     <string name="type_ppoe">PPOE</string>
     <string name="save_settings">Save settings</string>
 
+    <string name="success_apply_wan">Success apply new type wan.</string>
+    <string name="error_apply_wan">Error. Try Again.</string>
+
     <string-array name="typeWan">
         <item>Dynamic IP</item>
         <item>Static IP</item>

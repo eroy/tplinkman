@@ -18,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
+import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 
 
@@ -49,6 +51,8 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
 
     private ProgressDialog mProgressDialog;
 
+    private String mTypeWan;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,31 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
 
         mFabTypeInternet.setOnClickListener(v -> showChoseTypeInternetDialog());
 
+        mPresenter.getWanType();
+
+
         return view;
+    }
+
+    @Override
+    public void setWanType(String type) {
+        switch (type) {
+            case "WanDynamicIpCfgRpm.htm":
+                setTypeDynamicIp(true);
+                break;
+            case "WanStaticIpCfgRpm.htm":
+                setTypeStaticIp(true);
+                break;
+            case "PPTPCfgRpm.htm":
+                setTypePptp(true);
+                break;
+            case "PPPoECfgRpm.htm":
+                setTypePpoe(true);
+                break;
+            default:
+                setTypeDynamicIp(true);
+                break;
+        }
     }
 
     private void initProgressDialog() {
@@ -117,10 +145,33 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
                 getActivity().onBackPressed();
                 break;
             case R.id.save_setting:
-                Log.e("MENU", mEtIp.getText().toString());
-                Log.e("MENU", mEtGateway.getText().toString());
-                Log.e("MENU", mEtUsername.getText().toString());
-                Log.e("MENU", mEtVpn.getText().toString());
+                String ip = mEtIp.getText().toString();
+                String mask = mEtMask.getText().toString();
+                String gateway = mEtGateway.getText().toString();
+                String dns1 = mEtDns1.getText().toString();
+                String dns2 = mEtDns2.getText().toString();
+                String username = mEtUsername.getText().toString();
+                String password = mEtPassword.getText().toString();
+                String server = mEtVpn.getText().toString();
+
+                switch (mTypeWan) {
+                    case TypeConstant.WAN_DYNAMIC:
+                        mPresenter.setWanDynamic();
+                        break;
+                    case TypeConstant.WAN_STATIC:
+                        mPresenter.setWanStatic(ip, mask, gateway, dns1, dns2);
+                        break;
+                    case TypeConstant.WAN_PPTP:
+                        mPresenter.setWanPptp(username, password, server);
+                        break;
+                    case TypeConstant.WAN_PPPOE:
+                        mPresenter.setWanPppoe(username, password);
+                        break;
+                    default:
+                        Log.e("MENU", "error");
+                        break;
+                }
+
                 break;
         }
 
@@ -130,6 +181,7 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
 
 
     public void setTypeDynamicIp(boolean reset) {
+        mTypeWan = TypeConstant.WAN_DYNAMIC;
         if (reset) {
             resetVariables();
         }
@@ -137,9 +189,12 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
         mLlInternetData.setVisibility(View.GONE);
         isEnableIpSetting(false);
 
+
+        mPresenter.getDynamicSetting();
     }
 
     public void setTypeStaticIp(boolean reset) {
+        mTypeWan = TypeConstant.WAN_STATIC;
         if (reset) {
             resetVariables();
         }
@@ -147,27 +202,42 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
         mLlInternetData.setVisibility(View.GONE);
         isEnableIpSetting(true);
         setAccessibilityDns2(true);
+
+        mPresenter.getStaticSetting();
     }
 
     public void setTypePptp(boolean reset) {
+        mTypeWan = TypeConstant.WAN_PPTP;
         if (reset) {
             resetVariables();
         }
-        mLlInternetIp.setVisibility(View.GONE);
+        isEnableIpSetting(false);
+        mLlInternetIp.setVisibility(View.VISIBLE);
         mLlInternetData.setVisibility(View.VISIBLE);
         setAccessibilityVpnServer(true);
 
+        mPresenter.getPptpSetting();
     }
 
     public void setTypePpoe(boolean reset) {
+        mTypeWan = TypeConstant.WAN_PPPOE;
         if (reset) {
             resetVariables();
         }
         mLlInternetIp.setVisibility(View.GONE);
         mLlInternetData.setVisibility(View.VISIBLE);
         setAccessibilityVpnServer(false);
+
+        mPresenter.getPppoeSetting();
     }
 
+    private void setAccessibilityDns1(boolean visible) {
+        if (visible) {
+            mInputDns1.setVisibility(View.VISIBLE);
+        } else {
+            mInputDns1.setVisibility(View.GONE);
+        }
+    }
 
     private void setAccessibilityDns2(boolean visible) {
         if (visible) {
@@ -202,6 +272,54 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
         mEtUsername.setText("");
         mEtPassword.setText("");
         mEtVpn.setText("");
+    }
+
+
+    @Override
+    public void setIpSettings(String ip, String mask, String gateway, String dns1, String dns2) {
+        mEtIp.setText(ip);
+        mEtMask.setText(mask);
+        mEtGateway.setText(gateway);
+        mEtDns1.setText(dns1);
+        mEtDns2.setText(dns2);
+
+        setAccessibilityDns1(true);
+        if (dns2.equals("")) {
+            setAccessibilityDns2(false);
+        } else {
+            setAccessibilityDns2(true);
+        }
+
+    }
+
+
+    @Override
+    public void setIpSettings(String ip, String mask, String gateway) {
+        mEtIp.setText(ip);
+        mEtMask.setText(mask);
+        mEtGateway.setText(gateway);
+
+        setAccessibilityDns1(false);
+        setAccessibilityDns2(false);
+    }
+
+
+    @Override
+    public void setDataSettings(String username, String password, String vpn) {
+        mEtUsername.setText(username);
+        mEtPassword.setText(password);
+        mEtVpn.setText(vpn);
+
+        setAccessibilityVpnServer(true);
+    }
+
+    @Override
+    public void setDataSettings(String username, String password) {
+        mEtUsername.setText(username);
+        mEtPassword.setText(password);
+
+
+        setAccessibilityVpnServer(false);
     }
 
     @Override
@@ -254,6 +372,21 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
         imgCancel.setOnClickListener(v -> alertDialog.dismiss());
 
         alertDialog.show();
+    }
+
+    @Override
+    public void navigateSettingMenu() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void showSuccessToast() {
+        Toast.makeText(getActivity(), R.string.success_apply_wan, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorToast() {
+        Toast.makeText(getActivity(), R.string.error_apply_wan, Toast.LENGTH_SHORT).show();
     }
 
 }

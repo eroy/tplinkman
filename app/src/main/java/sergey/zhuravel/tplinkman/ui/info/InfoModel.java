@@ -1,8 +1,6 @@
 package sergey.zhuravel.tplinkman.ui.info;
 
 
-import android.util.Log;
-
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -34,11 +32,7 @@ public class InfoModel implements InfoContract.Model {
 
         mInfoService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getInfoService();
         mInfoOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getInfoOldService();
-        Log.e("SERJ", dataManager.getKey());
-        Log.e("SERJ", String.valueOf(dataManager.getKey().length()));
-        Log.e("SERJ", dataManager.getIp());
-        Log.e("SERJ", dataManager.getUsername());
-        Log.e("SERJ", dataManager.getPass());
+
 
         if (dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
@@ -70,10 +64,6 @@ public class InfoModel implements InfoContract.Model {
     @Override
     public Observable<List<String>> getInfoFirmware(String link, String type) {
         String referer = mReferer + link;
-
-        Log.e("INFO", referer);
-        Log.e("INFO", mCookie);
-
 
         return getObsFirm(referer)
                 .retry(3)
