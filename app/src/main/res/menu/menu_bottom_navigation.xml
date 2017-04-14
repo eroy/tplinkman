@@ -3,11 +3,11 @@
     <item
         android:id="@+id/action_info"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:title="Info"/>
+        android:title="Status" />
     <item
         android:id="@+id/action_wifi"
         android:icon="@drawable/ic_wifi_white_24dp"
-        android:title="WIFI"/>
+        android:title="Clients wifi" />
     <item
         android:id="@+id/action_wan"
         android:icon="@drawable/ic_settings_black_24dp"
