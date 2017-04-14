@@ -9,6 +9,7 @@ import android.widget.Toast;
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
+import sergey.zhuravel.tplinkman.ui.client.ClientFragment;
 import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
 
@@ -47,7 +48,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                     return true;
 
                 case R.id.action_wifi:
-                    goFragment(new SettingFragment());
+                    goFragment(new ClientFragment());
                     return true;
 
                 case R.id.action_wan:

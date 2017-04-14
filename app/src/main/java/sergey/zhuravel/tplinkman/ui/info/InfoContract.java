@@ -40,6 +40,6 @@ public interface InfoContract {
 
         void updateTraffic();
 
-        void getWifiStationInfo();
+
     }
 }

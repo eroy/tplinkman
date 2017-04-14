@@ -25,6 +25,7 @@ public class ApiConstant {
     public static final String INFO_WIFI_PASS = "userRpm/WlanSecurityRpm.htm";
     public static final String INFO_STATUS = "userRpm/StatusRpm.htm";
     public static final String INFO_WIFI_STATION = "userRpm/WlanStationRpm.htm";
+    public static final String INFO_WIFI_STATION_NAME = "userRpm/AssignedIpAddrListRpm.htm";
     public static final String INFO_WAN_DYNAMIC = "userRpm/WanDynamicIpCfgRpm.htm";
     public static final String INFO_WAN_STATIC = "userRpm/WanStaticIpCfgRpm.htm";
     public static final String INFO_WAN_PPTP = "userRpm/PPTPCfgRpm.htm";

@@ -17,6 +17,7 @@ import sergey.zhuravel.tplinkman.constant.TypeConstant;
 
 public class Utils {
 
+
     public static Observable<String> replaceResponseToText(Response<ResponseBody> response) {
         return Observable.fromCallable(() -> {
             StringBuffer message = new StringBuffer();
@@ -171,13 +172,16 @@ public class Utils {
 
                     break;
                 case TypeConstant.INFO_WIFI_STATION:
-
                     String[] responseWifi = text.split("\\(");
                     String[] responseWifi1 = responseWifi[2].split("\\)");
                     information.add(responseWifi1[0]);
-
                     break;
+                case TypeConstant.INFO_WIFI_STATION_NAME:
 
+                    String[] responseWifiName = text.split("\\(");
+                    String[] responseWifiName1 = responseWifiName[1].split("\\)");
+                    information.add(responseWifiName1[0]);
+                    break;
 
             }
 

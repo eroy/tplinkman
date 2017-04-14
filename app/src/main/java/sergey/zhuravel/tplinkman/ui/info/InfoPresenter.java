@@ -3,11 +3,7 @@ package sergey.zhuravel.tplinkman.ui.info;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -97,54 +93,6 @@ public class InfoPresenter implements InfoContract.Presenter {
                         e -> Log.e("TIMER", e.getMessage())));
     }
 
-    @Override
-    public void getWifiStationInfo() {
-        mCompositeSubscription.add(mModel.getInfoWifiStation(ApiConstant.INFO_WIFI_STATION, TypeConstant.INFO_WIFI_STATION)
-                .subscribe(strings -> {
-                    parseWifiStation(strings.get(0));
 
-                }, throwable -> Log.e("SERJ", throwable.getMessage())));
-    }
-
-
-    private void parseWifiStation(String str) {
-
-        String[] a = parseStringMac(str);
-        for (String b : a) {
-            Log.e("PARSE", getPackageMac(str, b).toString());
-
-        }
-
-
-    }
-
-    private List<String> getPackageMac(String str, String mac) {
-        String[] response = str.split(mac);
-        String[] response1 = response[1].split(",");
-
-        List<String> result = new ArrayList<>();
-        result.add(mac);
-        result.add(response1[2].replace(" ", ""));
-        result.add(response1[3].replace(" ", ""));
-        return result;
-    }
-
-    private String[] parseStringMac(String str) {
-
-        Pattern pattern = Pattern.compile("\"(.*?)\"");
-        Matcher matcher = pattern.matcher(str);
-        str = "";
-        while (matcher.find()) {
-            str += matcher.group(0);
-        }
-        str = str.replace("\"\"", ",");
-        str = str.replace("\"", "");
-        String[] list = str.split(",");
-
-//        Log.e("PARSE", str.replace("\"\"",","));
-
-
-        return list;
-    }
 
 }

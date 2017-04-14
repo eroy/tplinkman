@@ -57,7 +57,7 @@ public class InfoFragment extends BaseFragment implements InfoContract.View {
         mPresenter.getWifiNameInfo();
         mPresenter.getWifiPassInfo();
         mPresenter.getStatusInfo();
-        mPresenter.getWifiStationInfo();
+
 
         mPresenter.updateTraffic();
         mLlTrafficInfo.setOnClickListener(v -> mPresenter.getStatusInfo());
