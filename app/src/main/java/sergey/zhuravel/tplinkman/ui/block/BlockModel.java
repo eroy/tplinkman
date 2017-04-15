@@ -89,4 +89,24 @@ public class BlockModel implements BlockContract.Model {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+
+    private Observable<Response<ResponseBody>> getObsBlockClient(String referer, String mac, String reason) {
+        if (mDataManager.getKey().length() > 0) {
+            return mSettingService.setBlockClient(mCookie, referer, mac, reason);
+        } else {
+            return mSettingOldService.setBlockClient(mCookie, referer, mac, reason);
+        }
+    }
+
+
+    @Override
+    public Observable<String> setBlockClient(String linkReferer, String mac, String reason) {
+        String referer = mReferer + linkReferer;
+
+        return getObsBlockClient(referer, mac, reason)
+                .retry(3)
+                .flatMap(Utils::replaceResponseToText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

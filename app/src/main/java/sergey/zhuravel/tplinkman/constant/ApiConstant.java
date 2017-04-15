@@ -42,9 +42,11 @@ public class ApiConstant {
     public static final String WAN_PPTP = "userRpm/PPTPCfgRpm.htm?wantype=7&Save=Save";
     public static final String WAN_PPPOE = "userRpm/PPPoECfgRpm.htm?wantype=2&Save=Save";
     public static final String WIFI_FILTER = "userRpm/WlanMacFilterRpm.htm";
+    public static final String WIFI_BLOCKED = "userRpm/WlanMacFilterRpm.htm?Type=1&entryEnabled=1&Changed=0&SelIndex=0&Save=Save";
 
     /*settings referer url*/
     public static final String REBOOT_REFERER = "userRpm/SysRebootRpm.htm";
     public static final String WIFI_SETTING_REFERER = "userRpm/WlanNetworkRpm.htm";
+    public static final String WIFI_BLOCKED_REFERER = "userRpm/WlanMacFilterRpm.htm?Add=Add";
 
 }

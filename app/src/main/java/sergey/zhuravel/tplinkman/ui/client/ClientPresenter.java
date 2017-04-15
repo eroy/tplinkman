@@ -15,6 +15,7 @@ import rx.subscriptions.CompositeSubscription;
 import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.model.Client;
+import sergey.zhuravel.tplinkman.utils.MacFormating;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
 import sergey.zhuravel.tplinkman.utils.Utils;
 
@@ -88,9 +89,37 @@ public class ClientPresenter implements ClientContract.Presenter {
     public void blockClient(int position) {
         Client client = mClientList.get(position);
         Log.e("BLOCK", client.getMac());
+        String reason = client.getName() + " / " + " blocked across app";
 
+        setBlockClient(client.getMac().toLowerCase(), reason);
 
     }
+
+    public void setBlockClient(String mac, String reason) {
+
+        if (MacFormating.macValidate(mac) && !mac.equals(mView.getMacDevice())) {
+            mCompositeSubscription.add(mModel.setBlockClient(ApiConstant.WIFI_BLOCKED_REFERER, mac, reason)
+                    .subscribe(s -> {
+
+                                Log.e("BLOCK", s);
+                                if (s.contains(TypeConstant.CLIENT_UNBLOCK)) {
+                                    mView.showSuccessToast(mac);
+
+                                } else {
+                                    mView.showErrorToast();
+                                }
+
+                            },
+                            throwable -> Log.e("Block-error-po", throwable.getMessage())));
+
+            updateClientList();
+
+        } else {
+            mView.showNoValidateMacToast();
+        }
+
+    }
+
 
     private List<Client> getClient(String strWifiStationName, String strWifiStation) {
         List<Client> clients = new ArrayList<>();

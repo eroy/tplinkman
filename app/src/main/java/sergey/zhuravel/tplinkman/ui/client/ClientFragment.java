@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.model.Client;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 import sergey.zhuravel.tplinkman.ui.block.BlockFragment;
+import sergey.zhuravel.tplinkman.ui.main.MacDevice;
 
 
 public class ClientFragment extends BaseFragment implements ClientContract.View {
@@ -36,12 +38,14 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
     private Toolbar mToolbar;
     private ClientAdapter mClientAdapter;
     private RecyclerView mRecyclerView;
+    private MacDevice mMacDevice;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mMacDevice = ((MacDevice) getActivity());
     }
 
     @Override
@@ -185,6 +189,28 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+
+    @Override
+    public void showSuccessToast(String mac) {
+        String text = getString(R.string.success_block) + " " + mac;
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorToast() {
+        Toast.makeText(getActivity(), getString(R.string.error_toast), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showNoValidateMacToast() {
+        Toast.makeText(getActivity(), getString(R.string.mac_is_not_valid), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getMacDevice() {
+        return mMacDevice.getMacDevice().replace(":", "-").toLowerCase();
     }
 
 }

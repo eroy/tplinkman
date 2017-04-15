@@ -3,6 +3,8 @@ package sergey.zhuravel.tplinkman.ui.block;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +24,8 @@ import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.model.Blocked;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.main.MacDevice;
+import sergey.zhuravel.tplinkman.utils.MacFormating;
 
 
 public class BlockFragment extends BaseFragment implements BlockContract.View {
@@ -30,13 +34,17 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
     private BlockContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
     private TextView mTvNoBlocked;
+    private MacDevice mMacDevice;
 
     private BlockAdapter mBlockAdapter;
+
+    private FloatingActionButton mFabBlock;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mMacDevice = ((MacDevice) getActivity());
     }
 
     @Override
@@ -54,6 +62,11 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
         mRecyclerView.setAdapter(mBlockAdapter);
 
         mPresenter.getWifiFilterInfo();
+
+
+        mFabBlock.setOnClickListener(v -> {
+            showBlockDialog();
+        });
         return view;
     }
 
@@ -62,6 +75,7 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_client);
         mTvNoBlocked = (TextView) view.findViewById(R.id.tv_no_blocked);
+        mFabBlock = (FloatingActionButton) view.findViewById(R.id.blocked_fab);
 
         initToolbar(mToolbar, "Blocked list", true);
     }
@@ -124,7 +138,7 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
     @Override
     public void showConfirmUnBlockDialog(String mac, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Do you want unblocked " + mac + " ?");
+        builder.setMessage(getString(R.string.do_you_want_unblocked) + " " + mac + " ?");
 
         builder.
                 setPositiveButton(R.string.dialog_unblock, (dialog, which) ->
@@ -133,5 +147,46 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
                         dialog.dismiss()).setCancelable(false).show();
     }
 
+
+    private void showBlockDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setTitle(R.string.dialog_title_block);
+        View viewDialog = getActivity().getLayoutInflater().inflate(R.layout.dialog_block, null);
+        dialog.setView(viewDialog);
+
+        AppCompatEditText etMac = (AppCompatEditText) viewDialog.findViewById(R.id.input_mac);
+        AppCompatEditText etDesc = (AppCompatEditText) viewDialog.findViewById(R.id.input_reason);
+
+
+        MacFormating.automaticMacAddressFormating(etMac);
+
+
+        dialog.setPositiveButton(R.string.dialog_block, (dialog1, which) -> {
+            mPresenter.setBlockClient(etMac.getText().toString().toLowerCase(), etDesc.getText().toString());
+
+        });
+
+        dialog.setNegativeButton(R.string.cancel, (dialog1, which) ->
+                dialog1.dismiss());
+
+
+        dialog
+                .setCancelable(false)
+                .create()
+                .show();
+
+
+    }
+
+
+    @Override
+    public void showNoValidateMacToast() {
+        Toast.makeText(getActivity(), getString(R.string.mac_is_not_valid), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getMacDevice() {
+        return mMacDevice.getMacDevice().replace(":", "-").toLowerCase();
+    }
 
 }

@@ -10,6 +10,7 @@ import rx.subscriptions.CompositeSubscription;
 import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.model.Blocked;
+import sergey.zhuravel.tplinkman.utils.MacFormating;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
 import sergey.zhuravel.tplinkman.utils.Utils;
 
@@ -25,6 +26,7 @@ public class BlockPresenter implements BlockContract.Presenter {
         this.mModel = mModel;
         this.mView = mView;
         mMacList = new ArrayList<>();
+
 
         mCompositeSubscription = RxUtils.getNewCompositeSubIfUnsubscribed(mCompositeSubscription);
     }
@@ -75,7 +77,6 @@ public class BlockPresenter implements BlockContract.Presenter {
     public void setUnBlockClient(String mac, int position) {
         mCompositeSubscription.add(mModel.setUnblockClient(ApiConstant.INFO_WIFI_FILTER, position)
                 .subscribe(s -> {
-
                             if (s.contains(TypeConstant.CLIENT_UNBLOCK)) {
                                 mView.showSuccessToast(mac);
 
@@ -83,10 +84,38 @@ public class BlockPresenter implements BlockContract.Presenter {
                                 mView.showErrorToast();
                             }
 
-
                         },
                         throwable -> Log.e("UnBlock-error-po", throwable.getMessage())));
 
+        reloadList();
+    }
+
+    @Override
+    public void setBlockClient(String mac, String reason) {
+        if (MacFormating.macValidate(mac) && !mac.equals(mView.getMacDevice())) {
+
+            mCompositeSubscription.add(mModel.setBlockClient(ApiConstant.WIFI_BLOCKED_REFERER, mac, reason)
+                    .subscribe(s -> {
+
+                                if (s.contains(TypeConstant.CLIENT_UNBLOCK)) {
+                                    mView.showSuccessToast(mac);
+
+                                    reloadList();
+                                } else {
+                                    mView.showErrorToast();
+                                }
+
+                            },
+                            throwable -> Log.e("Block-error-po", throwable.getMessage())));
+
+
+        } else {
+            mView.showNoValidateMacToast();
+        }
+
+    }
+
+    private void reloadList() {
         mCurrentPage = 1;
         mView.clearBlockedList();
         getWifiFilterInfo();
@@ -103,20 +132,5 @@ public class BlockPresenter implements BlockContract.Presenter {
         return data;
     }
 
-
-    private int getPage(int size) {
-        int page = 0;
-
-        while (size > 0) {
-            if (size < 9) {
-                page = 1;
-                break;
-            } else {
-
-            }
-        }
-
-        return page;
-    }
 
 }

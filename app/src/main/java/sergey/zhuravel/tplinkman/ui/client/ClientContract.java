@@ -12,12 +12,21 @@ public interface ClientContract {
         Observable<List<String>> getInfoWifiStation(String link, String type);
         Observable<List<String>> getInfoWifiStationName(String link, String type);
 
+        Observable<String> setBlockClient(String linkReferer, String mac, String reason);
     }
 
     interface View {
         void addClientToList(List<Client> list);
 
         void clearClientList();
+
+        void showSuccessToast(String mac);
+
+        void showErrorToast();
+
+        void showNoValidateMacToast();
+
+        String getMacDevice();
     }
 
     interface Presenter {

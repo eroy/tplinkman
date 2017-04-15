@@ -59,4 +59,11 @@ public interface SettingService {
     Observable<Response<ResponseBody>> setUnBlockClient(@Header(GetValueConst.COOKIE) String cookie,
                                                         @Header(GetValueConst.REFERER) String referer,
                                                         @Query(GetValueConst.DELETE) int id);
+
+    @GET(ApiConstant.WIFI_BLOCKED)
+    Observable<Response<ResponseBody>> setBlockClient(@Header(GetValueConst.COOKIE) String cookie,
+                                                      @Header(GetValueConst.REFERER) String referer,
+                                                      @Query(GetValueConst.MAC) String mac,
+                                                      @Query(GetValueConst.DESC) String reason);
+
 }

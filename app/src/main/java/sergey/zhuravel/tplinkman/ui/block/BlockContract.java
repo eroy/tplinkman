@@ -12,6 +12,7 @@ public interface BlockContract {
 
         Observable<String> setUnblockClient(String linkReferer, int id);
 
+        Observable<String> setBlockClient(String linkReferer, String mac, String reason);
     }
 
     interface View {
@@ -26,6 +27,10 @@ public interface BlockContract {
         void showErrorToast();
 
         void showConfirmUnBlockDialog(String mac, int position);
+
+        void showNoValidateMacToast();
+
+        String getMacDevice();
     }
 
     interface Presenter {
@@ -35,6 +40,9 @@ public interface BlockContract {
         void getWifiFilterInfo();
 
         void setUnBlockClient(String mac, int position);
+
+        void setBlockClient(String mac, String reason);
+
 
     }
 }
