@@ -16,12 +16,14 @@ import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.model.Client;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
+import sergey.zhuravel.tplinkman.utils.Utils;
 
 public class ClientPresenter implements ClientContract.Presenter {
 
     private ClientContract.View mView;
     private ClientContract.Model mModel;
     private CompositeSubscription mCompositeSubscription;
+    private int mCurrentPage = 1;
 
     public ClientPresenter(ClientContract.View mView, ClientContract.Model mModel) {
         this.mView = mView;
@@ -43,9 +45,13 @@ public class ClientPresenter implements ClientContract.Presenter {
     public void getWifiStationInfo() {
         mCompositeSubscription.add(mModel.getInfoWifiStation(ApiConstant.INFO_WIFI_STATION, TypeConstant.INFO_WIFI_STATION)
                 .subscribe(strings -> {
+                    if (Integer.parseInt(strings.get(1)) == mCurrentPage) {
+                        getWifiStationNameInfo(strings.get(0));
 
-                    getWifiStationNameInfo(strings.get(0));
 
+                        ++mCurrentPage;
+                        getWifiStationInfo();
+                    }
                 }, throwable -> Log.e("SERJ", throwable.getMessage())));
     }
 
@@ -66,7 +72,12 @@ public class ClientPresenter implements ClientContract.Presenter {
     public void updateClientList() {
         mCompositeSubscription.add(Observable.interval(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(v -> getWifiStationInfo(),
+                .subscribe(v -> {
+                            mView.clearClientList();
+                            mCurrentPage = 1;
+                            getWifiStationInfo();
+
+                        },
                         e -> Log.e("TIMER", e.getMessage())));
     }
 
@@ -74,8 +85,7 @@ public class ClientPresenter implements ClientContract.Presenter {
     private List<Client> getClient(String strWifiStationName, String strWifiStation) {
         List<Client> clients = new ArrayList<>();
 
-        String[] macs = parseStringMac(strWifiStation);
-        for (String mac : macs) {
+        for (String mac : Utils.getMacByString(strWifiStation)) {
 
             String[] response = strWifiStationName.split(mac);
             List<String> listName = new ArrayList<>();
@@ -95,15 +105,15 @@ public class ClientPresenter implements ClientContract.Presenter {
             client.setName(listName.get(listName.size() - 1));
             client.setIp(listIp.get(0));
             client.setMac(mac);
-            client.setDownload(getPackageMac(strWifiStation, mac).get(0));
-            client.setUpload(getPackageMac(strWifiStation, mac).get(1));
+            client.setDownload(getPackageByMac(strWifiStation, mac).get(0));
+            client.setUpload(getPackageByMac(strWifiStation, mac).get(1));
             clients.add(client);
         }
         return clients;
     }
 
 
-    private List<String> getPackageMac(String str, String mac) {
+    private List<String> getPackageByMac(String str, String mac) {
         String[] response = str.split(mac);
         String[] response1 = response[1].split(",");
 
@@ -111,20 +121,6 @@ public class ClientPresenter implements ClientContract.Presenter {
         result.add(response1[2].replace(" ", ""));
         result.add(response1[3].replace(" ", ""));
         return result;
-    }
-
-    private String[] parseStringMac(String str) {
-
-        Pattern pattern = Pattern.compile("\"(.*?)\"");
-        Matcher matcher = pattern.matcher(str);
-        str = "";
-        while (matcher.find()) {
-            str += matcher.group(0);
-        }
-        str = str.replace("\"\"", ",");
-        str = str.replace("\"", "");
-        String[] list = str.split(",");
-        return list;
     }
 
 

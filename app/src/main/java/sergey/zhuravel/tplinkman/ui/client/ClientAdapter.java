@@ -28,15 +28,13 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder
     }
 
     public void addClients(List<Client> list) {
-        clearClient();
         mListClient.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void clearClient() {
+    public void clearClients() {
         mListClient.clear();
-        notifyDataSetChanged();
-
+//        notifyDataSetChanged();
     }
 
 
@@ -49,13 +47,13 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Client client = mListClient.get(position);
-        if (client != null) {
-            holder.mTvName.setText(client.getName());
-            holder.mTvMac.setText(client.getMac());
-            holder.mTvIp.setText(client.getIp());
-            holder.mTvDownload.setText(client.getDownload());
-            holder.mTvUpload.setText(client.getUpload());
-        }
+
+        holder.mTvName.setText(client.getName());
+        holder.mTvMac.setText(client.getMac());
+        holder.mTvIp.setText(client.getIp());
+        holder.mTvDownload.setText(client.getDownload());
+        holder.mTvUpload.setText(client.getUpload());
+
         holder.mRlClient.setOnClickListener(v -> {
             Log.e("TEST-CLICK", client.getMac());
         });

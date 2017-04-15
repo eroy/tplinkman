@@ -10,7 +10,6 @@ public interface ClientContract {
 
     interface Model {
         Observable<List<String>> getInfoWifiStation(String link, String type);
-
         Observable<List<String>> getInfoWifiStationName(String link, String type);
 
     }
@@ -18,6 +17,7 @@ public interface ClientContract {
     interface View {
         void addClientToList(List<Client> list);
 
+        void clearClientList();
     }
 
     interface Presenter {

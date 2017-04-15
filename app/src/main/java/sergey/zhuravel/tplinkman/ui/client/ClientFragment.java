@@ -6,7 +6,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +20,7 @@ import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.model.Client;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.block.BlockFragment;
 
 
 public class ClientFragment extends BaseFragment implements ClientContract.View {
@@ -25,13 +30,16 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
     private ClientAdapter mClientAdapter;
     private RecyclerView mRecyclerView;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onDestroy() {
+        Log.e("DESTROY-clients", "onDestroy");
         mPresenter.onDestroy();
         super.onDestroy();
     }
@@ -64,6 +72,10 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
         mClientAdapter.addClients(list);
     }
 
+    @Override
+    public void clearClientList() {
+        mClientAdapter.clearClients();
+    }
 
     private void initView(View view) {
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -72,5 +84,26 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
 
         initToolbar(mToolbar, "Client list", false);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_client_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.block_list:
+                mPresenter.onDestroy();
+                navigateToNextFragment(new BlockFragment());
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

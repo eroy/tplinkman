@@ -78,4 +78,6 @@ public class ClientModel implements ClientContract.Model {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
 }
