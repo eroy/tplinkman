@@ -1,5 +1,8 @@
 package sergey.zhuravel.tplinkman.ui.main;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -14,14 +17,14 @@ import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
 
 
-public class MainActivity extends BaseActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View, MacDevice {
     private BottomNavigationView bottomNavigationView;
 
     private MainContract.Presenter mPresenter;
 
     @Override
     protected void onDestroy() {
-        Log.e("SERJ","MainActivity -- onDestroy");
+        Log.e("SERJ", "MainActivity -- onDestroy");
         mPresenter.onDestroy();
         super.onDestroy();
     }
@@ -33,7 +36,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         setContentView(R.layout.management_activity);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mPresenter = new MainPresenter(this, new MainModel(App.getDataManager(this)));
-
 
 
 //        start fragment info
@@ -71,5 +73,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     private void goFragment(Fragment fragment) {
         MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).commit();
+    }
+
+    @Override
+    public String getMacDevice() {
+        @SuppressLint("WifiManagerPotentialLeak")
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        return wifiManager.getConnectionInfo().getMacAddress();
     }
 }
