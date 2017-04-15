@@ -71,6 +71,10 @@
     <string name="error_apply_wan">Error. Try Again.</string>
     <string name="menu_block_list">Block list</string>
     <string name="no_blocked_devices">No blocked devices</string>
+    <string name="success_unblock">Success unblock - </string>
+
+    <string name="error_toast">Error. Try Again.</string>
+    <string name="dialog_unblock">UnBlock</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

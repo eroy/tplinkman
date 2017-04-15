@@ -28,6 +28,8 @@ public interface ClientContract {
         void getWifiStationNameInfo(String strWifiStation);
 
         void updateClientList();
+
+        void blockClient(int position);
     }
 
 }

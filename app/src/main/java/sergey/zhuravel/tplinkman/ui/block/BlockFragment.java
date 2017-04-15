@@ -1,6 +1,7 @@
 package sergey.zhuravel.tplinkman.ui.block;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -100,5 +102,36 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
     public void addBlockedList(List<Blocked> list) {
         mBlockAdapter.addClients(list);
     }
+
+    @Override
+    public void clearBlockedList() {
+        mBlockAdapter.clearClients();
+    }
+
+
+    @Override
+    public void showSuccessToast(String mac) {
+        String text = getString(R.string.success_unblock) + " " + mac;
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorToast() {
+        Toast.makeText(getActivity(), getString(R.string.error_toast), Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void showConfirmUnBlockDialog(String mac, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Do you want unblocked " + mac + " ?");
+
+        builder.
+                setPositiveButton(R.string.dialog_unblock, (dialog, which) ->
+                        mPresenter.setUnBlockClient(mac, position))
+                .setNegativeButton(R.string.cancel, (dialog, which) ->
+                        dialog.dismiss()).setCancelable(false).show();
+    }
+
 
 }

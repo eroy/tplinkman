@@ -1,11 +1,18 @@
 package sergey.zhuravel.tplinkman.ui.client;
 
 
+import android.app.AlertDialog;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,7 +61,6 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
 
         mPresenter = new ClientPresenter(this, new ClientModel(App.getDataManager(getActivity())));
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mClientAdapter = new ClientAdapter(mPresenter);
@@ -64,8 +70,11 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
 
         mPresenter.updateClientList();
 
+
+        initSwipeBlock();
         return view;
     }
+
 
     @Override
     public void addClientToList(List<Client> list) {
@@ -105,5 +114,77 @@ public class ClientFragment extends BaseFragment implements ClientContract.View 
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void initSwipeBlock() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            int xMarkMargin;
+            Drawable xMark;
+            boolean initiated;
+
+            private void init() {
+                xMark = ContextCompat.getDrawable(getActivity(), R.drawable.ic_block_white_24dp);
+                xMarkMargin = (int) getActivity().getResources().getDimension(R.dimen.ic_clear_margin);
+                initiated = true;
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Do you want blocked this user ?");
+
+                builder.setPositiveButton("Block", (dialog, which) -> {
+
+                    mPresenter.blockClient(viewHolder.getLayoutPosition());
+                    mClientAdapter.notifyDataSetChanged();
+
+                }).setNegativeButton("Cancel", (dialog, which) -> {
+                    mClientAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+
+                }).setCancelable(false).show();
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                View itemView = viewHolder.itemView;
+
+
+                if (!initiated) {
+                    init();
+                }
+                // draw x mark
+                int itemHeight = itemView.getBottom() - itemView.getTop();
+                int intrinsicWidth = xMark.getIntrinsicWidth();
+                int intrinsicHeight = xMark.getIntrinsicWidth();
+
+                int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
+                int xMarkRight = itemView.getRight() - xMarkMargin;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
+                int xMarkBottom = xMarkTop + intrinsicHeight;
+                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+
+                xMark.draw(c);
+
+
+                //Setting Swipe Text
+                Paint paint = new Paint();
+                paint.setColor(Color.parseColor("#327780"));
+                paint.setTextSize(40);
+                paint.setTextAlign(Paint.Align.CENTER);
+                c.drawText("Block", xMarkLeft + 20, xMarkTop + 80, paint);
+
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
 
 }

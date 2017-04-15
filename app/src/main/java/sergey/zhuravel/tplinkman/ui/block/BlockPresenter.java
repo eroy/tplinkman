@@ -65,6 +65,33 @@ public class BlockPresenter implements BlockContract.Presenter {
 
     }
 
+    @Override
+    public void setConfirmUnBlock(int position) {
+        String mac = mMacList.get(position);
+        mView.showConfirmUnBlockDialog(mac, position);
+    }
+
+    @Override
+    public void setUnBlockClient(String mac, int position) {
+        mCompositeSubscription.add(mModel.setUnblockClient(ApiConstant.INFO_WIFI_FILTER, position)
+                .subscribe(s -> {
+
+                            if (s.contains(TypeConstant.CLIENT_UNBLOCK)) {
+                                mView.showSuccessToast(mac);
+
+                            } else {
+                                mView.showErrorToast();
+                            }
+
+
+                        },
+                        throwable -> Log.e("UnBlock-error-po", throwable.getMessage())));
+
+        mCurrentPage = 1;
+        mView.clearBlockedList();
+        getWifiFilterInfo();
+    }
+
     private List<Blocked> getMacAndDescrByStr(String str, List<String> listMac) {
         List<Blocked> data = new ArrayList<>();
         for (String mac : listMac) {

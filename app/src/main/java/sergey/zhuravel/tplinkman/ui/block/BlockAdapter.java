@@ -30,6 +30,11 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     }
 
 
+    public void clearClients() {
+        mListBlockedClient.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_blocked, parent, false);
@@ -43,6 +48,8 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
         holder.mTvMac.setText(blocked.getMac());
         holder.mTvDescrp.setText(blocked.getDescription());
 
+
+        holder.mRlBlocked.setOnClickListener(v -> mPresenter.setConfirmUnBlock(position));
 
     }
 
@@ -66,5 +73,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             mTvDescrp = (TextView) view.findViewById(R.id.tvDescrp);
             mRlBlocked = (LinearLayout) view.findViewById(R.id.rlBlocked);
         }
+
     }
 }

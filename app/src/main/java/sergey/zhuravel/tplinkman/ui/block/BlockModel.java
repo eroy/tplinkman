@@ -11,6 +11,8 @@ import rx.schedulers.Schedulers;
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.api.InfoOldService;
 import sergey.zhuravel.tplinkman.api.InfoService;
+import sergey.zhuravel.tplinkman.api.SettingOldService;
+import sergey.zhuravel.tplinkman.api.SettingService;
 import sergey.zhuravel.tplinkman.manager.DataManager;
 import sergey.zhuravel.tplinkman.utils.LinkGenerate;
 import sergey.zhuravel.tplinkman.utils.Utils;
@@ -23,6 +25,9 @@ public class BlockModel implements BlockContract.Model {
     private String mReferer;
     private InfoOldService mInfoOldService;
 
+    private SettingService mSettingService;
+    private SettingOldService mSettingOldService;
+
     public BlockModel(DataManager dataManager) {
         mCookie = null;
         mReferer = null;
@@ -31,7 +36,8 @@ public class BlockModel implements BlockContract.Model {
 
         mInfoService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getInfoService();
         mInfoOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getInfoOldService();
-
+        mSettingService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getSettingService();
+        mSettingOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getSettingOldService();
 
         if (dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
@@ -61,4 +67,26 @@ public class BlockModel implements BlockContract.Model {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
+    private Observable<Response<ResponseBody>> getObsUnblockClient(String referer, int id) {
+        if (mDataManager.getKey().length() > 0) {
+            return mSettingService.setUnBlockClient(mCookie, referer, id);
+        } else {
+            return mSettingOldService.setUnBlockClient(mCookie, referer, id);
+        }
+    }
+
+
+    @Override
+    public Observable<String> setUnblockClient(String linkReferer, int id) {
+        String referer = mReferer + linkReferer;
+
+        return getObsUnblockClient(referer, id)
+                .retry(3)
+                .flatMap(Utils::replaceResponseToText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }

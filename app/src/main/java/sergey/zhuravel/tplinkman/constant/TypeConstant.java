@@ -23,4 +23,6 @@ public class TypeConstant {
     public static final String WAN_STATIC = "staticIpInf";
     public static final String WAN_PPTP = "pptpInf";
     public static final String WAN_PPPOE = "pppoeInf";
+
+    public static final String CLIENT_UNBLOCK = "WlanMacFilterRpm.htm";
 }

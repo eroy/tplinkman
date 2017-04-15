@@ -10,6 +10,7 @@ public interface BlockContract {
     interface Model {
         Observable<List<String>> getInfoWifiFilter(String link, String type, int page);
 
+        Observable<String> setUnblockClient(String linkReferer, int id);
 
     }
 
@@ -17,12 +18,23 @@ public interface BlockContract {
         void noBlockedTextAccessibility(boolean visible);
 
         void addBlockedList(List<Blocked> list);
+
+        void clearBlockedList();
+
+        void showSuccessToast(String mac);
+
+        void showErrorToast();
+
+        void showConfirmUnBlockDialog(String mac, int position);
     }
 
     interface Presenter {
         void onDestroy();
 
+        void setConfirmUnBlock(int position);
         void getWifiFilterInfo();
+
+        void setUnBlockClient(String mac, int position);
 
     }
 }

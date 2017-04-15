@@ -53,4 +53,9 @@ public interface SettingOldService {
                                                    @Query(GetValueConst.PPPOENAME) String username,
                                                    @Query(GetValueConst.PPPOEPASS) String pass,
                                                    @Query(GetValueConst.PPPOEPASSCONF) String passConf);
+
+    @GET(ApiConstant.WIFI_FILTER)
+    Observable<Response<ResponseBody>> setUnBlockClient(@Header(GetValueConst.AUTH) String cookie,
+                                                        @Header(GetValueConst.REFERER) String referer,
+                                                        @Query(GetValueConst.DELETE) int id);
 }

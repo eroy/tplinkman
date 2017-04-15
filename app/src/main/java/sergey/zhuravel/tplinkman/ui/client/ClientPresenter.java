@@ -24,11 +24,12 @@ public class ClientPresenter implements ClientContract.Presenter {
     private ClientContract.Model mModel;
     private CompositeSubscription mCompositeSubscription;
     private int mCurrentPage = 1;
+    private List<Client> mClientList;
 
     public ClientPresenter(ClientContract.View mView, ClientContract.Model mModel) {
         this.mView = mView;
         this.mModel = mModel;
-
+        mClientList = new ArrayList<>();
         mCompositeSubscription = RxUtils.getNewCompositeSubIfUnsubscribed(mCompositeSubscription);
     }
 
@@ -62,6 +63,8 @@ public class ClientPresenter implements ClientContract.Presenter {
 
                     List<Client> cl = getClient(strings.get(0), strWifiStation);
 
+                    mClientList.addAll(cl);
+
                     mView.addClientToList(cl);
 
 
@@ -81,6 +84,13 @@ public class ClientPresenter implements ClientContract.Presenter {
                         e -> Log.e("TIMER", e.getMessage())));
     }
 
+    @Override
+    public void blockClient(int position) {
+        Client client = mClientList.get(position);
+        Log.e("BLOCK", client.getMac());
+
+
+    }
 
     private List<Client> getClient(String strWifiStationName, String strWifiStation) {
         List<Client> clients = new ArrayList<>();
