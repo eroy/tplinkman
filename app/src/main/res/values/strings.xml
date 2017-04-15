@@ -6,9 +6,9 @@
     <string name="chanel">Chanel</string>
     <string name="regional">Regional</string>
     <string name="password">Password</string>
-    <string name="info_build">Build:</string>
-    <string name="info_version">Version:</string>
-    <string name="info_mac">Mac address:</string>
+    <string name="info_build">Build</string>
+    <string name="info_version">Version</string>
+    <string name="info_mac">Mac address</string>
     <string name="info_ssid">SSID:</string>
     <string name="info_pass">Password wifi:</string>
 
@@ -72,9 +72,15 @@
     <string name="menu_block_list">Block list</string>
     <string name="no_blocked_devices">No blocked devices</string>
     <string name="success_unblock">Success unblock - </string>
+    <string name="success_block">Success block - </string>
+    <string name="mac_is_not_valid">Mac address is not valid!</string>
 
     <string name="error_toast">Error. Try Again.</string>
     <string name="dialog_unblock">UnBlock</string>
+    <string name="dialog_block">Block</string>
+    <string name="dialog_title_block">Block device</string>
+    <string name="do_you_want_unblocked">Do you want unblocked</string>
+    <string name="reason_for_blocking">Reason for blocking</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>
