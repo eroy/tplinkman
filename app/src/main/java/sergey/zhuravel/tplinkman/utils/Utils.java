@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -172,15 +174,38 @@ public class Utils {
 
                     break;
                 case TypeConstant.INFO_WIFI_STATION:
+
                     String[] responseWifi = text.split("\\(");
                     String[] responseWifi1 = responseWifi[2].split("\\)");
                     information.add(responseWifi1[0]);
+
+                    String[] respPage = text.split("wlanHostPara");
+                    String[] respPage1 = respPage[1].split("\\)");
+                    String[] respPage2 = respPage1[0].split(",");
+
+                    information.add(respPage2[1]);
+
                     break;
                 case TypeConstant.INFO_WIFI_STATION_NAME:
 
                     String[] responseWifiName = text.split("\\(");
                     String[] responseWifiName1 = responseWifiName[1].split("\\)");
                     information.add(responseWifiName1[0]);
+                    break;
+
+                case TypeConstant.INFO_WIFI_FILTER:
+
+                    String[] responseWifiFilter = text.split("wlanFilterList");
+                    String[] responseWifiFilter1 = responseWifiFilter[1].split("\\)");
+                    information.add(responseWifiFilter1[0]);
+
+                    String[] responsePage = text.split("wlanFilterPara");
+                    String[] responsePage1 = responsePage[1].split("\\)");
+                    String[] responsePage2 = responsePage1[0].split(",");
+
+                    information.add(responsePage2[3]);
+
+
                     break;
 
             }
@@ -217,6 +242,17 @@ public class Utils {
         }
         return hrSize;
 
+    }
+
+    public static List<String> getMacByString(String str) {
+        List<String> list = new ArrayList<>();
+        Pattern pattern = Pattern.compile("([0-9A-Fa-f]{2}[-]){5}([0-9A-Fa-f]{2})");
+        Matcher matcherName = pattern.matcher(str);
+        while (matcherName.find()) {
+            list.add(matcherName.group(0));
+        }
+
+        return list;
     }
 
     public static String getRegionName(String number) {

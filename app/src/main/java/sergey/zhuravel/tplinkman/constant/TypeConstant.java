@@ -14,6 +14,7 @@ public class TypeConstant {
     public static final String INFO_STATUS = "info_status";
     public static final String INFO_WIFI_STATION = "info_wifi_station";
     public static final String INFO_WIFI_STATION_NAME = "info_wifi_station_name";
+    public static final String INFO_WIFI_FILTER = "info_wifi_filter";
     public static final String INFO_KEY = "info_key";
     public static final String INFO_INPUT_VALIDATE = "info_input_validate";
 

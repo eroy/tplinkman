@@ -4,6 +4,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Query;
 import rx.Observable;
 import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.constant.GetValueConst;
@@ -59,4 +60,9 @@ public interface InfoOldService {
     @GET(ApiConstant.INFO_WAN_TYPE)
     Observable<Response<ResponseBody>> getInfoWanType(@Header(GetValueConst.AUTH) String cookie,
                                                       @Header(GetValueConst.REFERER) String referer);
+
+    @GET(ApiConstant.INFO_WIFI_FILTER)
+    Observable<Response<ResponseBody>> getInfoWifiFilter(@Header(GetValueConst.AUTH) String cookie,
+                                                         @Header(GetValueConst.REFERER) String referer,
+                                                         @Query(GetValueConst.PAGE) int page);
 }

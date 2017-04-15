@@ -17,6 +17,7 @@ public class GetValueConst {
     public static final String PPPOENAME = "acc";
     public static final String PPPOEPASS = "psw";
     public static final String PPPOEPASSCONF = "confirm";
+    public static final String PAGE = "Page";
 
 
 }

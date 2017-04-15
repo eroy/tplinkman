@@ -2,10 +2,11 @@ package sergey.zhuravel.tplinkman.ui.base;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import sergey.zhuravel.tplinkman.R;
 
 public class BaseFragment extends Fragment {
 
@@ -21,6 +22,11 @@ public class BaseFragment extends Fragment {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(homeEnable);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
         }
+
+    }
+
+    public void navigateToNextFragment(Fragment fragment) {
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).addToBackStack(null).commit();
 
     }
 }

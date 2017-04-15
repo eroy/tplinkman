@@ -31,6 +31,7 @@ public class ApiConstant {
     public static final String INFO_WAN_PPTP = "userRpm/PPTPCfgRpm.htm";
     public static final String INFO_WAN_PPPOE = "userRpm/PPPoECfgRpm.htm";
     public static final String INFO_WAN_TYPE = "userRpm/WanCfgRpm.htm";
+    public static final String INFO_WIFI_FILTER = "userRpm/WlanMacFilterRpm.htm";
 
     /*settings url*/
     public static final String LOGOUT = "userRpm/LogoutRpm.htm";
@@ -40,6 +41,7 @@ public class ApiConstant {
     public static final String WAN_STATIC = "userRpm/WanStaticIpCfgRpm.htm?wantype=1&mtu=1500&Save=Save";
     public static final String WAN_PPTP = "userRpm/PPTPCfgRpm.htm?wantype=7&Save=Save";
     public static final String WAN_PPPOE = "userRpm/PPPoECfgRpm.htm?wantype=2&Save=Save";
+    public static final String WIFI_FILTER = "userRpm/WlanMacFilterRpm.htm?Save=Save";
 
     /*settings referer url*/
     public static final String REBOOT_REFERER = "userRpm/SysRebootRpm.htm";

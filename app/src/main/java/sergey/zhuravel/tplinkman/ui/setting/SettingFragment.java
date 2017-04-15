@@ -3,7 +3,6 @@ package sergey.zhuravel.tplinkman.ui.setting;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +36,9 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
 
         mPresenter = new SettingPresenter(this, new SettingModel(App.getDataManager(getActivity())));
 
-        mRlWireless.setOnClickListener(v -> navigateNextFragment(new WirelessFragment()));
+        mRlWireless.setOnClickListener(v -> navigateToNextFragment(new WirelessFragment()));
         mRlReboot.setOnClickListener(v -> showAlertDialog());
-        mRlWan.setOnClickListener(v -> navigateNextFragment(new InternetFragment()));
+        mRlWan.setOnClickListener(v -> navigateToNextFragment(new InternetFragment()));
 
         return view;
     }
@@ -67,10 +66,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
                 .show();
     }
 
-    private void navigateNextFragment(Fragment fragment) {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).addToBackStack(null).commit();
 
-    }
 
     @Override
     public void navigateToStartActivity() {

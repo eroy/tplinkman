@@ -45,7 +45,7 @@
     <string name="dialog_applay">Applying new parameters …</string>
     <string name="setting_apply">Settings successfully applied</string>
     <string name="error">Error</string>
-    <string name="local_device">Local device</string>
+    <string name="local_device">Connected device</string>
     <string name="not_found">Not found</string>
     <string name="ip_address">IP address</string>
     <string name="remote_conect_to">Remote connect to …</string>
@@ -69,6 +69,8 @@
 
     <string name="success_apply_wan">Success apply new type wan.</string>
     <string name="error_apply_wan">Error. Try Again.</string>
+    <string name="menu_block_list">Block list</string>
+    <string name="no_blocked_devices">No blocked devices</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>
