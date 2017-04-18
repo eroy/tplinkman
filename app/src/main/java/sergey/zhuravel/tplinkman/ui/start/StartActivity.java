@@ -29,6 +29,7 @@ import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
 import sergey.zhuravel.tplinkman.ui.main.MainActivity;
 import sergey.zhuravel.tplinkman.utils.NetworkUtils;
+import sergey.zhuravel.tplinkman.utils.Vendors;
 
 public class StartActivity extends BaseActivity implements StartContract.View {
 
@@ -138,8 +139,7 @@ public class StartActivity extends BaseActivity implements StartContract.View {
 
     private void setLocalIp() {
         List<String> ips = getGateway();
-
-        if (ips.size() != 0) {
+        if (ips.size() != 0 && Vendors.isTpLink(ips.get(1))) {
             textNotFountVisible(false);
             mIp.setText(ips.get(0) + " (" + ips.get(1) + ")");
         } else {
@@ -147,6 +147,7 @@ public class StartActivity extends BaseActivity implements StartContract.View {
             mIp.setText("");
         }
     }
+
 
     private void setRefreshLayout() {
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
