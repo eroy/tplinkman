@@ -24,6 +24,7 @@ import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.constant.TypeConstant;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
+import sergey.zhuravel.tplinkman.utils.IpFormatting;
 
 
 public class InternetFragment extends BaseFragment implements InternetContract.View {
@@ -127,6 +128,11 @@ public class InternetFragment extends BaseFragment implements InternetContract.V
 
         mFabTypeInternet = (FloatingActionButton) view.findViewById(R.id.internet_fab);
 
+        IpFormatting.automaticIPAddressFormatting(mEtIp);
+        IpFormatting.automaticIPAddressFormatting(mEtGateway);
+        IpFormatting.automaticIPAddressFormatting(mEtMask);
+        IpFormatting.automaticIPAddressFormatting(mEtDns1);
+        IpFormatting.automaticIPAddressFormatting(mEtDns2);
 
         initToolbar(mToolbar, "Internet Settings", true);
     }

@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -62,9 +63,10 @@ public class StartActivity extends BaseActivity implements StartContract.View {
         setRefreshLayout();
 
         mIp.setOnClickListener(v -> {
-            mPresenter.validateAndInput("192.168.0.1", "admin", "trifle_best");
+            showConnectionDialog(getGateway().get(0));
+//            mPresenter.validateAndInput("192.168.0.1", "admin", "trifle_best");
         });
-        mFabAddNewConnect.setOnClickListener(v -> showRemoteConnectionDialog());
+        mFabAddNewConnect.setOnClickListener(v -> showConnectionDialog(null));
 
     }
 
@@ -103,24 +105,31 @@ public class StartActivity extends BaseActivity implements StartContract.View {
         return result;
     }
 
-    private void showRemoteConnectionDialog() {
+    private void showConnectionDialog(String ip) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.remote_conect_to);
         View viewDialog = getLayoutInflater().inflate(R.layout.dialog_remote, null);
         dialog.setView(viewDialog);
 
+        AppCompatCheckBox cbSave = (AppCompatCheckBox) viewDialog.findViewById(R.id.cb_save);
         AppCompatEditText etName = (AppCompatEditText) viewDialog.findViewById(R.id.input_name);
         AppCompatEditText etIp = (AppCompatEditText) viewDialog.findViewById(R.id.input_ip);
         AppCompatEditText etUsername = (AppCompatEditText) viewDialog.findViewById(R.id.input_user);
         AppCompatEditText etPassword = (AppCompatEditText) viewDialog.findViewById(R.id.input_password);
 
         IpFormatting.automaticIPAddressFormatting(etIp);
-
+        if (ip != null) {
+            etIp.setText(ip);
+        }
 
         etUsername.setText("admin");
         etPassword.setText("trifle_best");
 
+
         dialog.setPositiveButton(R.string.connect, (dialog1, which) -> {
+            if (cbSave.isChecked()) {
+//            save to db
+            }
 
             mPresenter.validateAndInput(etIp.getText().toString(),
                     etUsername.getText().toString(),
