@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -46,7 +45,6 @@ public class StartActivity extends BaseActivity implements StartContract.View {
     private RelativeLayout mRlHistory;
     private ProgressDialog mProgressDialog;
 
-    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +94,8 @@ public class StartActivity extends BaseActivity implements StartContract.View {
 
         if (mWifi.isConnected()) {
             result.add(Formatter.formatIpAddress(wifiManager.getDhcpInfo().gateway));
-            result.add(wifiInfo.getMacAddress());
+            result.add(wifiInfo.getBSSID());
+
         }
         return result;
     }

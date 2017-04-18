@@ -34,9 +34,7 @@ public class StartPresenter implements StartContract.Presenter {
                     .doOnUnsubscribe(() -> mView.hideProgressDialog())
                     .subscribe(key -> {
                                 if (key.equals("old")) {
-                                    Log.e("SERJ-key", "input for old version router");
                                     validatePasswordOld(ip, username, password);
-//                                input for old version router
                                 } else {
                                     if (key.length() < 10) {
                                         mView.showDialogRepeat();
@@ -54,7 +52,6 @@ public class StartPresenter implements StartContract.Presenter {
 
 
     private void validatePassword(String ip, String username, String password, String key) {
-        Log.e("SERJ", key);
         mCompositeSubscription.add(mModel.inputValidate(ip, username, password, key)
                 .subscribe(validate -> {
                             if (validate.contains("statusPara")) {
