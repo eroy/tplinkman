@@ -12,7 +12,7 @@ public interface MainContract {
     }
 
     interface View {
-        void setToast(String message);
+        void showLogoutToast();
 
         void navigateToStartActivity();
     }

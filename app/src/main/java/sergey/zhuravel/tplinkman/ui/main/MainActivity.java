@@ -7,7 +7,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.widget.Toast;
 
 import sergey.zhuravel.tplinkman.App;
@@ -26,7 +25,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mac
 
     @Override
     protected void onDestroy() {
-        Log.e("SERJ", "MainActivity -- onDestroy");
         mPresenter.setLogout();
         super.onDestroy();
     }
@@ -69,8 +67,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mac
     }
 
     @Override
-    public void setToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showLogoutToast() {
+        Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
     }
 
     private void goFragment(Fragment fragment) {

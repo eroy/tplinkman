@@ -81,6 +81,7 @@
     <string name="dialog_title_block">Block device</string>
     <string name="do_you_want_unblocked">Do you want unblocked</string>
     <string name="reason_for_blocking">Reason for blocking</string>
+    <string name="logout_success">Logout success</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>
