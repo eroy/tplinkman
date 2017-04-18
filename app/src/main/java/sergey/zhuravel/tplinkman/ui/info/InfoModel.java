@@ -34,7 +34,7 @@ public class InfoModel implements InfoContract.Model {
         mInfoOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getInfoOldService();
 
 
-        if (dataManager.getKey().length() > 0) {
+        if (dataManager.getKey() != null && dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
             mCookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
         } else {
@@ -45,7 +45,7 @@ public class InfoModel implements InfoContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsFirm(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoFirmware(mCookie, referer);
         } else {
             return mInfoOldService.getInfoFirmware(mCookie, referer);
@@ -53,7 +53,7 @@ public class InfoModel implements InfoContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsMac(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoMac(mCookie, referer);
         } else {
             return mInfoOldService.getInfoMac(mCookie, referer);
@@ -85,7 +85,7 @@ public class InfoModel implements InfoContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsWifiName(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWifiName(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWifiName(mCookie, referer);
@@ -106,7 +106,7 @@ public class InfoModel implements InfoContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsWifiPass(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWifiPass(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWifiPass(mCookie, referer);
@@ -125,7 +125,7 @@ public class InfoModel implements InfoContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsStatus(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoStatus(mCookie, referer);
         } else {
             return mInfoOldService.getInfoStatus(mCookie, referer);
@@ -144,7 +144,7 @@ public class InfoModel implements InfoContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsWifiStation(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWifiStation(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWifiStation(mCookie, referer);

@@ -1,6 +1,8 @@
 package sergey.zhuravel.tplinkman.ui.main;
 
 
+import android.util.Log;
+
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
@@ -27,7 +29,7 @@ public class MainModel implements MainContract.Model {
         mSettingService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getSettingService();
         mSettingOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getSettingOldService();
 
-        if (dataManager.getKey().length() > 0) {
+        if (dataManager.getKey() != null && dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
             mCookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
         } else {
@@ -37,9 +39,11 @@ public class MainModel implements MainContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsLogout(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
+            Log.e("setloout", "new - " + referer);
             return mSettingService.setLogout(mCookie, referer);
         } else {
+            Log.e("setloout", "old - " + referer);
             return mSettingOldService.setLogout(mCookie, referer);
         }
     }
@@ -50,7 +54,7 @@ public class MainModel implements MainContract.Model {
 
         return getObsLogout(referer)
                 .retry(3)
-                .flatMap(Utils::replaceResponseToText)
+                .flatMap(Utils::replaceResponseToCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

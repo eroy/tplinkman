@@ -36,7 +36,7 @@ public class InternetModel implements InternetContract.Model {
         mInfoService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getInfoService();
         mInfoOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getInfoOldService();
 
-        if (dataManager.getKey().length() > 0) {
+        if (dataManager.getKey() != null && dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
             mCookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
         } else {
@@ -47,7 +47,7 @@ public class InternetModel implements InternetContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsWanType(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWanType(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWanType(mCookie, referer);
@@ -67,7 +67,7 @@ public class InternetModel implements InternetContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsDynamic(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWanDynamic(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWanDynamic(mCookie, referer);
@@ -87,7 +87,7 @@ public class InternetModel implements InternetContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsStatic(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWanStatic(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWanStatic(mCookie, referer);
@@ -107,7 +107,7 @@ public class InternetModel implements InternetContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsPptp(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWanPptp(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWanPptp(mCookie, referer);
@@ -126,7 +126,7 @@ public class InternetModel implements InternetContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsPppoe(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWanPppoe(mCookie, referer);
         } else {
             return mInfoOldService.getInfoWanPppoe(mCookie, referer);
@@ -146,7 +146,7 @@ public class InternetModel implements InternetContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsWanDynamic(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setWanDynamic(mCookie, referer);
         } else {
             return mSettingOldService.setWanDynamic(mCookie, referer);
@@ -166,7 +166,7 @@ public class InternetModel implements InternetContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsWanStatic(String referer, String ip, String mask, String gateway, String dns1, String dns2) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setWanStatic(mCookie, referer, ip, mask, gateway, dns1, dns2);
         } else {
             return mSettingOldService.setWanStatic(mCookie, referer, ip, mask, gateway, dns1, dns2);
@@ -186,7 +186,7 @@ public class InternetModel implements InternetContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsWanPptp(String referer, String username, String pass, String server) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setWanPptp(mCookie, referer, username, pass, pass, server);
         } else {
             return mSettingOldService.setWanPptp(mCookie, referer, username, pass, pass, server);
@@ -206,7 +206,7 @@ public class InternetModel implements InternetContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsWanPppoe(String referer, String username, String pass) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setWanPppoe(mCookie, referer, username, pass, pass);
         } else {
             return mSettingOldService.setWanPppoe(mCookie, referer, username, pass, pass);

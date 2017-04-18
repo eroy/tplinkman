@@ -21,19 +21,26 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onDestroy() {
-        setLogout();
         mModel.clearSaveAll();
+        mView.navigateToStartActivity();
 
         mView = null;
         mModel = null;
         RxUtils.unsubscribeIfNotNull(mCompositeSubscription);
+        Log.e("SERJ", "MainPresenter -- onDestroy");
     }
 
-    private void setLogout() {
+
+    @Override
+    public void setLogout() {
+        Log.e("SERJ", "setlogout");
         mCompositeSubscription.add(mModel.setLogout(ApiConstant.LOGOUT)
-                .filter(s -> s.contains("logout"))
-                .subscribe(s -> mView.setToast("Logout successful"),
-                        throwable -> Log.e("SERJ", throwable.getMessage())));
+                .subscribe(s -> {
+                            Log.e("LOGOUT", "logout succes");
+
+                            onDestroy();
+                        },
+                        throwable -> Log.e("LOGOUT-error", throwable.getMessage())));
     }
 
 }

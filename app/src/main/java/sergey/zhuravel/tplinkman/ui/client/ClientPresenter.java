@@ -47,6 +47,8 @@ public class ClientPresenter implements ClientContract.Presenter {
     public void getWifiStationInfo() {
         mCompositeSubscription.add(mModel.getInfoWifiStation(ApiConstant.INFO_WIFI_STATION, TypeConstant.INFO_WIFI_STATION)
                 .subscribe(strings -> {
+
+
                     if (Integer.parseInt(strings.get(1)) == mCurrentPage) {
                         getWifiStationNameInfo(strings.get(0));
 
@@ -54,7 +56,7 @@ public class ClientPresenter implements ClientContract.Presenter {
                         ++mCurrentPage;
                         getWifiStationInfo();
                     }
-                }, throwable -> Log.e("SERJ", throwable.getMessage())));
+                }, throwable -> Log.e("getWifiStationInfo-e", throwable.getMessage())));
     }
 
     @Override
@@ -69,7 +71,7 @@ public class ClientPresenter implements ClientContract.Presenter {
                     mView.addClientToList(cl);
 
 
-                }, throwable -> Log.e("SERJ", throwable.getMessage())));
+                }, throwable -> Log.e("getWifiStationNameInfo-", throwable.getMessage())));
     }
 
     @Override

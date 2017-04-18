@@ -14,10 +14,13 @@ public interface MainContract {
     interface View {
         void setToast(String message);
 
+        void navigateToStartActivity();
     }
 
     interface Presenter {
         void onDestroy();
+
+        void setLogout();
     }
 
 }

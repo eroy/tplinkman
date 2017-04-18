@@ -26,7 +26,7 @@ public class SettingModel implements SettingContract.Model {
         mSettingService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getSettingService();
         mSettingOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getSettingOldService();
 
-        if (dataManager.getKey().length() > 0) {
+        if (dataManager.getKey() != null && dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
             mCookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
         } else {
@@ -36,7 +36,7 @@ public class SettingModel implements SettingContract.Model {
     }
 
     private Observable<Response<ResponseBody>> getObsReboot(String referer) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setReboot(mCookie, referer);
         } else {
             return mSettingOldService.setReboot(mCookie, referer);

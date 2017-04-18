@@ -69,6 +69,10 @@ public class DataManager {
     }
 
     public void clearAll() {
+        this.ip = null;
+        this.key = null;
+        this.username = null;
+        this.pass = null;
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.clear();
         editor.apply();

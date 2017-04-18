@@ -2,6 +2,7 @@ package sergey.zhuravel.tplinkman.ui.main;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,7 @@ import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
 import sergey.zhuravel.tplinkman.ui.client.ClientFragment;
 import sergey.zhuravel.tplinkman.ui.info.InfoFragment;
 import sergey.zhuravel.tplinkman.ui.setting.SettingFragment;
+import sergey.zhuravel.tplinkman.ui.start.StartActivity;
 
 
 public class MainActivity extends BaseActivity implements MainContract.View, MacDevice {
@@ -25,7 +27,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mac
     @Override
     protected void onDestroy() {
         Log.e("SERJ", "MainActivity -- onDestroy");
-        mPresenter.onDestroy();
+        mPresenter.setLogout();
         super.onDestroy();
     }
 
@@ -73,6 +75,12 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mac
 
     private void goFragment(Fragment fragment) {
         MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.frame_man, fragment).commit();
+    }
+
+    @Override
+    public void navigateToStartActivity() {
+        startActivity(new Intent(this, StartActivity.class));
+        finish();
     }
 
     @Override

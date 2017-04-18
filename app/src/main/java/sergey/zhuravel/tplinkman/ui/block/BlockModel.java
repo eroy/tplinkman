@@ -39,7 +39,7 @@ public class BlockModel implements BlockContract.Model {
         mSettingService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp(), dataManager.getKey())).getSettingService();
         mSettingOldService = App.getApiManager(LinkGenerate.baseLink(dataManager.getIp())).getSettingOldService();
 
-        if (dataManager.getKey().length() > 0) {
+        if (dataManager.getKey() != null && dataManager.getKey().length() > 0) {
             mReferer = LinkGenerate.refererNew(mDataManager.getIp(), mDataManager.getKey());
             mCookie = LinkGenerate.cookie(mDataManager.getUsername(), mDataManager.getPass());
         } else {
@@ -50,7 +50,7 @@ public class BlockModel implements BlockContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsWifiFilter(String referer, int page) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mInfoService.getInfoWifiFilter(mCookie, referer, page);
         } else {
             return mInfoOldService.getInfoWifiFilter(mCookie, referer, page);
@@ -70,7 +70,7 @@ public class BlockModel implements BlockContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsUnblockClient(String referer, int id) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setUnBlockClient(mCookie, referer, id);
         } else {
             return mSettingOldService.setUnBlockClient(mCookie, referer, id);
@@ -91,7 +91,7 @@ public class BlockModel implements BlockContract.Model {
 
 
     private Observable<Response<ResponseBody>> getObsBlockClient(String referer, String mac, String reason) {
-        if (mDataManager.getKey().length() > 0) {
+        if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
             return mSettingService.setBlockClient(mCookie, referer, mac, reason);
         } else {
             return mSettingOldService.setBlockClient(mCookie, referer, mac, reason);

@@ -39,6 +39,19 @@ public class Utils {
         });
     }
 
+    public static Observable<String> replaceResponseToCode(Response<ResponseBody> response) {
+        return Observable.fromCallable(() -> {
+
+            String code = String.valueOf(response.code());
+
+            return code;
+
+
+        });
+
+    }
+
+
     public static Observable<String> replaceResponseKeyToText(Response<ResponseBody> response) {
         return Observable.fromCallable(() -> {
             StringBuffer message = new StringBuffer();
@@ -183,7 +196,7 @@ public class Utils {
                     String[] respPage1 = respPage[1].split("\\)");
                     String[] respPage2 = respPage1[0].split(",");
 
-                    information.add(respPage2[1]);
+                    information.add(respPage2[1].replace(" ", ""));
 
                     break;
                 case TypeConstant.INFO_WIFI_STATION_NAME:
