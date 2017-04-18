@@ -8,9 +8,9 @@ import android.text.TextWatcher;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MacFormating {
+public class MacFormatting {
 
-    public static void automaticMacAddressFormating(AppCompatEditText etMac) {
+    public static void automaticMacAddressFormatting(AppCompatEditText etMac) {
         etMac.addTextChangedListener(new TextWatcher() {
             String mPreviousMac = null;
 

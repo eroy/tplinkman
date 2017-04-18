@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/remote_ip"
-            android:inputType="phone"
+            android:inputType="number|numberDecimal"
             android:maxLength="15"
             android:maxLines="1" />
 

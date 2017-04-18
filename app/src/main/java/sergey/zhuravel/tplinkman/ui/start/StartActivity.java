@@ -17,6 +17,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
 import sergey.zhuravel.tplinkman.ui.main.MainActivity;
-import sergey.zhuravel.tplinkman.utils.NetworkUtils;
+import sergey.zhuravel.tplinkman.utils.IpFormatting;
 import sergey.zhuravel.tplinkman.utils.Vendors;
 
 public class StartActivity extends BaseActivity implements StartContract.View {
@@ -53,8 +54,9 @@ public class StartActivity extends BaseActivity implements StartContract.View {
         setContentView(R.layout.activity_start);
 
         initView();
-        initProgressDialog();
         mPresenter = new StartPresenter(this, new StartModel(App.getDataManager(this)));
+        initProgressDialog();
+
 
         setLocalIp();
         setRefreshLayout();
@@ -111,6 +113,8 @@ public class StartActivity extends BaseActivity implements StartContract.View {
         AppCompatEditText etIp = (AppCompatEditText) viewDialog.findViewById(R.id.input_ip);
         AppCompatEditText etUsername = (AppCompatEditText) viewDialog.findViewById(R.id.input_user);
         AppCompatEditText etPassword = (AppCompatEditText) viewDialog.findViewById(R.id.input_password);
+
+        IpFormatting.automaticIPAddressFormatting(etIp);
 
 
         etUsername.setText("admin");
@@ -173,11 +177,13 @@ public class StartActivity extends BaseActivity implements StartContract.View {
 
     @Override
     public void showProgressDialog() {
+        Log.e("DIALOG", "show");
         mProgressDialog.show();
     }
 
     @Override
     public void hideProgressDialog() {
+        Log.e("DIALOG", "dismiss");
         mProgressDialog.dismiss();
     }
 
@@ -189,15 +195,9 @@ public class StartActivity extends BaseActivity implements StartContract.View {
     }
 
     @Override
-    public boolean isReachableHost(String host) {
-        if (NetworkUtils.isReachable(host)) {
-            return true;
-        } else {
-            showDialogMessage(getString(R.string.host_is_unreachable));
-            return false;
-        }
+    public void showDialogHostUnreachable() {
+        showDialogMessage(getString(R.string.host_is_unreachable));
     }
-
 
     @Override
     public void showDialogErrorInput() {

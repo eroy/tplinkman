@@ -25,7 +25,7 @@ import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.model.Blocked;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 import sergey.zhuravel.tplinkman.ui.main.MacDevice;
-import sergey.zhuravel.tplinkman.utils.MacFormating;
+import sergey.zhuravel.tplinkman.utils.MacFormatting;
 
 
 public class BlockFragment extends BaseFragment implements BlockContract.View {
@@ -158,7 +158,7 @@ public class BlockFragment extends BaseFragment implements BlockContract.View {
         AppCompatEditText etDesc = (AppCompatEditText) viewDialog.findViewById(R.id.input_reason);
 
 
-        MacFormating.automaticMacAddressFormating(etMac);
+        MacFormatting.automaticMacAddressFormatting(etMac);
 
 
         dialog.setPositiveButton(R.string.dialog_block, (dialog1, which) -> {

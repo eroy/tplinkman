@@ -23,11 +23,12 @@ public interface StartContract {
 
         void navigateToMainActivity();
 
-        boolean isReachableHost(String host);
 
         void showDialogErrorInput();
 
         void showDialogRepeat();
+
+        void showDialogHostUnreachable();
     }
 
     interface Presenter {
