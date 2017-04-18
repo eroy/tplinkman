@@ -1,8 +1,6 @@
 package sergey.zhuravel.tplinkman.ui.main;
 
 
-import android.util.Log;
-
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
@@ -40,10 +38,8 @@ public class MainModel implements MainContract.Model {
 
     private Observable<Response<ResponseBody>> getObsLogout(String referer) {
         if (mDataManager.getKey() != null && mDataManager.getKey().length() > 0) {
-            Log.e("setloout", "new - " + referer);
             return mSettingService.setLogout(mCookie, referer);
         } else {
-            Log.e("setloout", "old - " + referer);
             return mSettingOldService.setLogout(mCookie, referer);
         }
     }
