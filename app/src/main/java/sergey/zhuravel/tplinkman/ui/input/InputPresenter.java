@@ -1,4 +1,4 @@
-package sergey.zhuravel.tplinkman.ui.start;
+package sergey.zhuravel.tplinkman.ui.input;
 
 
 import android.util.Log;
@@ -7,12 +7,12 @@ import rx.subscriptions.CompositeSubscription;
 import sergey.zhuravel.tplinkman.utils.NetworkUtils;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
 
-public class StartPresenter implements StartContract.Presenter {
-    private StartContract.View mView;
-    private StartContract.Model mModel;
+public class InputPresenter implements InputContract.Presenter {
+    private InputContract.View mView;
+    private InputContract.Model mModel;
     private CompositeSubscription mCompositeSubscription;
 
-    public StartPresenter(StartContract.View mView, StartContract.Model mModel) {
+    public InputPresenter(InputContract.View mView, InputContract.Model mModel) {
         this.mView = mView;
         this.mModel = mModel;
 

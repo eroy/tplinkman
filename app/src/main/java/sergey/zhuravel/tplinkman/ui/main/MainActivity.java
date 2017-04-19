@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.management_activity);
+        setContentView(R.layout.main_activity);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mPresenter = new MainPresenter(this, new MainModel(App.getDataManager(this)));
 

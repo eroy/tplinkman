@@ -13,8 +13,8 @@ import android.widget.Toast;
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
+import sergey.zhuravel.tplinkman.ui.input.InputFragment;
 import sergey.zhuravel.tplinkman.ui.internet.InternetFragment;
-import sergey.zhuravel.tplinkman.ui.start.StartActivity;
 import sergey.zhuravel.tplinkman.ui.wireless.WirelessFragment;
 
 public class SettingFragment extends BaseFragment implements SettingContract.View {
@@ -70,7 +70,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
 
     @Override
     public void navigateToStartActivity() {
-        startActivity(new Intent(getActivity(), StartActivity.class));
+        startActivity(new Intent(getActivity(), InputFragment.class));
         getActivity().finish();
     }
 

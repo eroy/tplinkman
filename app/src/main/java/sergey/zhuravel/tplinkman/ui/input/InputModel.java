@@ -1,4 +1,4 @@
-package sergey.zhuravel.tplinkman.ui.start;
+package sergey.zhuravel.tplinkman.ui.input;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -11,12 +11,12 @@ import sergey.zhuravel.tplinkman.utils.LinkGenerate;
 import sergey.zhuravel.tplinkman.utils.Utils;
 
 
-public class StartModel implements StartContract.Model {
+public class InputModel implements InputContract.Model {
 
     private DataManager mDataManager;
     private InputService mInputService;
 
-    public StartModel(DataManager dataManager) {
+    public InputModel(DataManager dataManager) {
         this.mDataManager = dataManager;
     }
 

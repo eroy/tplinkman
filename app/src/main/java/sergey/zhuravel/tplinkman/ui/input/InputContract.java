@@ -1,9 +1,9 @@
-package sergey.zhuravel.tplinkman.ui.start;
+package sergey.zhuravel.tplinkman.ui.input;
 
 
 import rx.Observable;
 
-public interface StartContract {
+public interface InputContract {
     interface Model {
         Observable<String> getKey(String ip, String username, String password);
 
