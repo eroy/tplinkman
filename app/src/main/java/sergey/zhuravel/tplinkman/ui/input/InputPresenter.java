@@ -4,6 +4,7 @@ package sergey.zhuravel.tplinkman.ui.input;
 import android.util.Log;
 
 import rx.subscriptions.CompositeSubscription;
+import sergey.zhuravel.tplinkman.model.RouterSession;
 import sergey.zhuravel.tplinkman.utils.NetworkUtils;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
 
@@ -89,5 +90,24 @@ public class InputPresenter implements InputContract.Presenter {
                         throwable -> Log.e("SERJ-validate-error", throwable.getMessage())));
     }
 
+    @Override
+    public void saveSession(String ip, String username, String password, String nameConnection) {
+        mModel.saveSession(new RouterSession(ip, username, password, nameConnection));
+        getSession();
+    }
+
+    @Override
+    public void getSession() {
+        mCompositeSubscription.add(mModel.getSessions().subscribe(routerSessions -> {
+                    if (routerSessions.size() != 0) {
+                        mView.sessionHistoryAccessibility(true);
+                        mView.addSession(routerSessions);
+                    } else {
+                        mView.sessionHistoryAccessibility(false);
+                    }
+                }
+
+        ));
+    }
 }
 

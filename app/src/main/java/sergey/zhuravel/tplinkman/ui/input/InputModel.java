@@ -1,5 +1,7 @@
 package sergey.zhuravel.tplinkman.ui.input;
 
+import java.util.List;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -7,6 +9,8 @@ import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.api.InputService;
 import sergey.zhuravel.tplinkman.constant.ApiConstant;
 import sergey.zhuravel.tplinkman.manager.DataManager;
+import sergey.zhuravel.tplinkman.manager.RealmManager;
+import sergey.zhuravel.tplinkman.model.RouterSession;
 import sergey.zhuravel.tplinkman.utils.LinkGenerate;
 import sergey.zhuravel.tplinkman.utils.Utils;
 
@@ -15,9 +19,11 @@ public class InputModel implements InputContract.Model {
 
     private DataManager mDataManager;
     private InputService mInputService;
+    private RealmManager mRealmManager;
 
-    public InputModel(DataManager dataManager) {
+    public InputModel(DataManager dataManager, RealmManager realmManager) {
         this.mDataManager = dataManager;
+        this.mRealmManager = realmManager;
     }
 
 
@@ -75,5 +81,19 @@ public class InputModel implements InputContract.Model {
         mDataManager.saveData(ip, username, password);
     }
 
+    @Override
+    public void saveSession(RouterSession routerSession) {
+        mRealmManager.saveSession(routerSession);
+    }
+
+    @Override
+    public Observable<List<RouterSession>> getSessions() {
+        return mRealmManager.getSessions();
+    }
+
+    @Override
+    public void deleteSession(String ip) {
+        mRealmManager.deleteSession(ip);
+    }
 
 }

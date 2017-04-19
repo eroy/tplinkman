@@ -15,6 +15,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.util.Log;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
+import sergey.zhuravel.tplinkman.model.RouterSession;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 import sergey.zhuravel.tplinkman.ui.main.MainActivity;
 import sergey.zhuravel.tplinkman.utils.IpFormatting;
@@ -49,15 +52,24 @@ public class InputFragment extends BaseFragment implements InputContract.View {
     private RelativeLayout mRlHistory;
     private ProgressDialog mProgressDialog;
 
+    private InputAdapter mInputAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.input_fragment, container, false);
 
         initView(view);
-        mPresenter = new InputPresenter(this, new InputModel(App.getDataManager(getActivity())));
+        mPresenter = new InputPresenter(this, new InputModel(App.getDataManager(getActivity()), App.getRealmManager()));
+
+        mRvHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRvHistory.setItemAnimator(new DefaultItemAnimator());
+        mInputAdapter = new InputAdapter(mPresenter);
+        mRvHistory.setAdapter(mInputAdapter);
+
         initProgressDialog();
 
+        mPresenter.getSession();
 
         setLocalIp();
         setRefreshLayout();
@@ -84,11 +96,24 @@ public class InputFragment extends BaseFragment implements InputContract.View {
     }
 
     @Override
+    public void sessionHistoryAccessibility(boolean visible) {
+        if (visible) {
+            mRlHistory.setVisibility(View.VISIBLE);
+        } else {
+            mRlHistory.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         mPresenter.onDestroy();
         super.onDestroy();
     }
 
+    @Override
+    public void addSession(List<RouterSession> routerSessions) {
+        mInputAdapter.addSession(routerSessions);
+    }
 
     private List<String> getGateway() {
         List<String> result = new ArrayList<>();
@@ -128,8 +153,13 @@ public class InputFragment extends BaseFragment implements InputContract.View {
 
 
         dialog.setPositiveButton(R.string.connect, (dialog1, which) -> {
+
             if (cbSave.isChecked()) {
-//            save to db
+                String ipHost = etIp.getText().toString();
+                String username = etUsername.getText().toString();
+                String pass = etPassword.getText().toString();
+                String nameConnection = etName.getText().toString();
+                mPresenter.saveSession(ipHost, username, pass, nameConnection);
             }
 
             mPresenter.validateAndInput(etIp.getText().toString(),

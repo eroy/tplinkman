@@ -1,7 +1,10 @@
 package sergey.zhuravel.tplinkman.ui.input;
 
 
+import java.util.List;
+
 import rx.Observable;
+import sergey.zhuravel.tplinkman.model.RouterSession;
 
 public interface InputContract {
     interface Model {
@@ -14,6 +17,12 @@ public interface InputContract {
         void savePreference(String ip, String key, String username, String password);
 
         void savePreference(String ip, String username, String password);
+
+        void saveSession(RouterSession routerSession);
+
+        Observable<List<RouterSession>> getSessions();
+
+        void deleteSession(String ip);
     }
 
     interface View {
@@ -29,12 +38,19 @@ public interface InputContract {
         void showDialogRepeat();
 
         void showDialogHostUnreachable();
+
+        void addSession(List<RouterSession> routerSessions);
+
+        void sessionHistoryAccessibility(boolean visible);
     }
 
     interface Presenter {
         void validateAndInput(String ip, String username, String password);
 
+        void saveSession(String ip, String username, String password, String nameConnection);
         void onDestroy();
+
+        void getSession();
     }
 
 }
