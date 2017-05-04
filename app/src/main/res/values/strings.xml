@@ -83,6 +83,7 @@
     <string name="reason_for_blocking">Reason for blocking</string>
     <string name="logout_success">Logout success</string>
     <string name="save_connection">Save connection</string>
+    <string name="dialog_save">Save</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

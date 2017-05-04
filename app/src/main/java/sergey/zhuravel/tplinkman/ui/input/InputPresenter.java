@@ -3,15 +3,21 @@ package sergey.zhuravel.tplinkman.ui.input;
 
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import sergey.zhuravel.tplinkman.model.RouterSession;
 import sergey.zhuravel.tplinkman.utils.NetworkUtils;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
 
 public class InputPresenter implements InputContract.Presenter {
+
     private InputContract.View mView;
     private InputContract.Model mModel;
     private CompositeSubscription mCompositeSubscription;
+
 
     public InputPresenter(InputContract.View mView, InputContract.Model mModel) {
         this.mView = mView;
@@ -24,6 +30,8 @@ public class InputPresenter implements InputContract.Presenter {
     public void onDestroy() {
         mView = null;
         mModel = null;
+
+
         RxUtils.unsubscribeIfNotNull(mCompositeSubscription);
     }
 
@@ -102,6 +110,8 @@ public class InputPresenter implements InputContract.Presenter {
                     if (routerSessions.size() != 0) {
                         mView.sessionHistoryAccessibility(true);
                         mView.addSession(routerSessions);
+
+
                     } else {
                         mView.sessionHistoryAccessibility(false);
                     }
@@ -109,5 +119,17 @@ public class InputPresenter implements InputContract.Presenter {
 
         ));
     }
+
+    @Override
+    public void isPing(String ip) {
+        mCompositeSubscription.add(Observable.interval(5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.io())
+                .subscribe(v -> mView.setVisibleRouter(NetworkUtils.isPing(ip)),
+                        e -> Log.e("TIMER", e.getMessage())));
+
+
+    }
+
 }
 

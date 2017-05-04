@@ -19,6 +19,21 @@ public class NetworkUtils {
 
     }
 
+    public static boolean isPing(String ip) {
+        if (validateIP(ip)) {
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                Process ipProcess = runtime.exec("/system/bin/ping -c 2 " + ip);
+                int exitValue = ipProcess.waitFor();
+                return (exitValue == 0);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
 
     public static Observable<Boolean> isHostReachable(String ip) {
         return Observable.fromCallable(() -> {

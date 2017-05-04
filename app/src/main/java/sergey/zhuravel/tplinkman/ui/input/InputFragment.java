@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ import sergey.zhuravel.tplinkman.ui.main.MainActivity;
 import sergey.zhuravel.tplinkman.utils.IpFormatting;
 import sergey.zhuravel.tplinkman.utils.Vendors;
 
-public class InputFragment extends BaseFragment implements InputContract.View {
+public class InputFragment extends BaseFragment implements InputContract.View, AdapterView.OnItemClickListener {
 
     private InputContract.Presenter mPresenter;
 
@@ -64,8 +65,9 @@ public class InputFragment extends BaseFragment implements InputContract.View {
 
         mRvHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvHistory.setItemAnimator(new DefaultItemAnimator());
-        mInputAdapter = new InputAdapter(mPresenter);
+        mInputAdapter = new InputAdapter(mPresenter, this);
         mRvHistory.setAdapter(mInputAdapter);
+
 
         initProgressDialog();
 
@@ -79,8 +81,14 @@ public class InputFragment extends BaseFragment implements InputContract.View {
         });
         mFabAddNewConnect.setOnClickListener(v -> showConnectionDialog(null));
 
+
         return view;
 
+    }
+
+    @Override
+    public void setVisibleRouter(boolean visibleRouter) {
+        mInputAdapter.setVisibleRouter(visibleRouter);
     }
 
     private void initView(View view) {
@@ -257,5 +265,62 @@ public class InputFragment extends BaseFragment implements InputContract.View {
                 .setCancelable(false)
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        RouterSession routerSession = mInputAdapter.getmRouterSessionList().get(position);
+
+        showEditConnectDialog(routerSession);
+
+    }
+
+    private void showEditConnectDialog(RouterSession routerSession) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        View viewDialog = getActivity().getLayoutInflater().inflate(R.layout.dialog_remote, null);
+        dialog.setView(viewDialog);
+
+        AppCompatCheckBox cbSave = (AppCompatCheckBox) viewDialog.findViewById(R.id.cb_save);
+        AppCompatEditText etName = (AppCompatEditText) viewDialog.findViewById(R.id.input_name);
+        AppCompatEditText etIp = (AppCompatEditText) viewDialog.findViewById(R.id.input_ip);
+        AppCompatEditText etUsername = (AppCompatEditText) viewDialog.findViewById(R.id.input_user);
+        AppCompatEditText etPassword = (AppCompatEditText) viewDialog.findViewById(R.id.input_password);
+
+        IpFormatting.automaticIPAddressFormatting(etIp);
+        cbSave.setVisibility(View.GONE);
+
+        etIp.setText(routerSession.getIp());
+        etName.setText(routerSession.getNameConnection());
+        etUsername.setText(routerSession.getUsername());
+        etPassword.setText(routerSession.getPassword());
+
+
+        dialog.setPositiveButton(R.string.connect, (dialog1, which) -> {
+
+            mPresenter.validateAndInput(etIp.getText().toString(),
+                    etUsername.getText().toString(),
+                    etPassword.getText().toString());
+
+        });
+
+        dialog.setNeutralButton(R.string.dialog_save, (dialog1, which) -> {
+            String ipHost = etIp.getText().toString();
+            String username = etUsername.getText().toString();
+            String pass = etPassword.getText().toString();
+            String nameConnection = etName.getText().toString();
+            mPresenter.saveSession(ipHost, username, pass, nameConnection);
+
+            mPresenter.getSession();
+        });
+        dialog.setNegativeButton(R.string.cancel, (dialog1, which) ->
+                dialog1.dismiss());
+
+
+        dialog
+                .setCancelable(false)
+                .create()
+                .show();
+
+
     }
 }

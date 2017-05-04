@@ -42,6 +42,8 @@ public interface InputContract {
         void addSession(List<RouterSession> routerSessions);
 
         void sessionHistoryAccessibility(boolean visible);
+
+        void setVisibleRouter(boolean visibleRouter);
     }
 
     interface Presenter {
@@ -51,6 +53,8 @@ public interface InputContract {
         void onDestroy();
 
         void getSession();
+
+        void isPing(String ip);
     }
 
 }
