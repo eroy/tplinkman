@@ -55,6 +55,8 @@ public interface InputContract {
         void getSession();
 
         void isPing(String ip);
+
+        void deleteSession(String ip);
     }
 
 }

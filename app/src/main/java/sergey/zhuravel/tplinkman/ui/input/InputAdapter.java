@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,18 +20,21 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
     private List<RouterSession> mRouterSessionList;
     private InputContract.Presenter mPresenter;
     private boolean mStatusRouter;
-    private AdapterView.OnItemClickListener mOnItemClickListener;
 
 
-    public InputAdapter(InputContract.Presenter mPresenter, AdapterView.OnItemClickListener onItemClickListener) {
+    public InputAdapter(InputContract.Presenter mPresenter) {
         this.mPresenter = mPresenter;
         mRouterSessionList = new ArrayList<>();
-        this.mOnItemClickListener = onItemClickListener;
     }
 
     public void addSession(List<RouterSession> routerSessions) {
         removeAll();
         mRouterSessionList.addAll(routerSessions);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        mRouterSessionList.remove(position);
         notifyDataSetChanged();
     }
 
@@ -60,9 +62,9 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
         }
 
         holder.mRlClient.setOnClickListener(v ->
-                mOnItemClickListener.onItemClick(null, v, position, v.getId()));
+                mPresenter.validateAndInput(routerSession.getIp(), routerSession.getUsername(), routerSession.getPassword()));
 
-//        mPresenter.isPing(routerSession.getIp());
+
         if (mStatusRouter) {
             holder.mImgVisible.setImageResource(R.drawable.greendot);
         } else {

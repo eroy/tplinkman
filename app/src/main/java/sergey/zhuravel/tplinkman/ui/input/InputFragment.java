@@ -6,6 +6,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -18,12 +24,12 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,7 +44,7 @@ import sergey.zhuravel.tplinkman.ui.main.MainActivity;
 import sergey.zhuravel.tplinkman.utils.IpFormatting;
 import sergey.zhuravel.tplinkman.utils.Vendors;
 
-public class InputFragment extends BaseFragment implements InputContract.View, AdapterView.OnItemClickListener {
+public class InputFragment extends BaseFragment implements InputContract.View {
 
     private InputContract.Presenter mPresenter;
 
@@ -65,7 +71,7 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
 
         mRvHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvHistory.setItemAnimator(new DefaultItemAnimator());
-        mInputAdapter = new InputAdapter(mPresenter, this);
+        mInputAdapter = new InputAdapter(mPresenter);
         mRvHistory.setAdapter(mInputAdapter);
 
 
@@ -76,14 +82,70 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
         setLocalIp();
         setRefreshLayout();
 
+
         mIp.setOnClickListener(v -> {
             showConnectionDialog(getGateway().get(0));
         });
         mFabAddNewConnect.setOnClickListener(v -> showConnectionDialog(null));
 
-
+        initSwipe();
         return view;
 
+    }
+
+    private void initSwipe() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            Paint p = new Paint();
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                RouterSession routerSession = mInputAdapter.getmRouterSessionList().get(position);
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    showDeleteDialog(position, routerSession.getIp());
+                } else {
+                    showEditConnectDialog(routerSession);
+                }
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                Bitmap icon;
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if (dX > 0) {
+                        p.setColor(Color.parseColor("#388E3C"));
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_mode_edit_white_24dp);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
+                    } else {
+                        p.setColor(Color.parseColor("#D32F2F"));
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_sweep_white_24dp);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRvHistory);
     }
 
     @Override
@@ -141,7 +203,6 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
 
     private void showConnectionDialog(String ip) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-//        dialog.setTitle(R.string.remote_conect_to);
         View viewDialog = getActivity().getLayoutInflater().inflate(R.layout.dialog_remote, null);
         dialog.setView(viewDialog);
 
@@ -225,13 +286,11 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
 
     @Override
     public void showProgressDialog() {
-        Log.e("DIALOG", "show");
         mProgressDialog.show();
     }
 
     @Override
     public void hideProgressDialog() {
-        Log.e("DIALOG", "dismiss");
         mProgressDialog.dismiss();
     }
 
@@ -267,16 +326,34 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
                 .show();
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        RouterSession routerSession = mInputAdapter.getmRouterSessionList().get(position);
 
-        showEditConnectDialog(routerSession);
+    private void showDeleteDialog(int position, String ip) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setMessage(R.string.do_you_want_delete);
+
+        dialog.setPositiveButton(R.string.dialog_yes, (dialog1, which) -> {
+
+            mInputAdapter.removeItem(position);
+            mPresenter.deleteSession(ip);
+
+        });
+
+        dialog.setNegativeButton(R.string.dialog_no, (dialog1, which) -> {
+            mInputAdapter.notifyDataSetChanged();
+            dialog1.dismiss();
+        });
+        dialog
+                .setCancelable(false)
+                .create()
+                .show();
 
     }
 
     private void showEditConnectDialog(RouterSession routerSession) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        dialog.setTitle(getString(R.string.edit_session) + " " + routerSession.getNameConnection());
+
         View viewDialog = getActivity().getLayoutInflater().inflate(R.layout.dialog_remote, null);
         dialog.setView(viewDialog);
 
@@ -295,15 +372,8 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
         etPassword.setText(routerSession.getPassword());
 
 
-        dialog.setPositiveButton(R.string.connect, (dialog1, which) -> {
+        dialog.setPositiveButton(R.string.dialog_save, (dialog1, which) -> {
 
-            mPresenter.validateAndInput(etIp.getText().toString(),
-                    etUsername.getText().toString(),
-                    etPassword.getText().toString());
-
-        });
-
-        dialog.setNeutralButton(R.string.dialog_save, (dialog1, which) -> {
             String ipHost = etIp.getText().toString();
             String username = etUsername.getText().toString();
             String pass = etPassword.getText().toString();
@@ -311,10 +381,14 @@ public class InputFragment extends BaseFragment implements InputContract.View, A
             mPresenter.saveSession(ipHost, username, pass, nameConnection);
 
             mPresenter.getSession();
-        });
-        dialog.setNegativeButton(R.string.cancel, (dialog1, which) ->
-                dialog1.dismiss());
 
+        });
+
+        dialog.setNegativeButton(R.string.cancel, (dialog1, which) ->
+        {
+            mInputAdapter.notifyDataSetChanged();
+            dialog1.dismiss();
+        });
 
         dialog
                 .setCancelable(false)

@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import sergey.zhuravel.tplinkman.model.RouterSession;
@@ -38,7 +39,12 @@ public class InputPresenter implements InputContract.Presenter {
 
     @Override
     public void validateAndInput(String ip, String username, String password) {
+
         mCompositeSubscription.add(NetworkUtils.isHostReachable(ip)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> mView.showProgressDialog())
+                .doOnUnsubscribe(() -> mView.hideProgressDialog())
                 .subscribe(reachable -> {
                     if (reachable) {
                         mCompositeSubscription.add(mModel.getKey(ip, username, password)
@@ -54,6 +60,7 @@ public class InputPresenter implements InputContract.Presenter {
                                                     validatePassword(ip, username, password, key);
                                                 }
                                             }
+
                                         },
                                         throwable -> Log.e("SERJ-key-error", throwable.getMessage())));
 
@@ -102,6 +109,11 @@ public class InputPresenter implements InputContract.Presenter {
     public void saveSession(String ip, String username, String password, String nameConnection) {
         mModel.saveSession(new RouterSession(ip, username, password, nameConnection));
         getSession();
+    }
+
+    @Override
+    public void deleteSession(String ip) {
+        mModel.deleteSession(ip);
     }
 
     @Override

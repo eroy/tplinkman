@@ -1,5 +1,7 @@
 package sergey.zhuravel.tplinkman.utils;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +42,7 @@ public class NetworkUtils {
             if (validateIP(ip)) {
                 Runtime runtime = Runtime.getRuntime();
                 try {
-                    Process ipProcess = runtime.exec("/system/bin/ping -c 3 " + ip);
+                    Process ipProcess = runtime.exec("/system/bin/ping -c 2 " + ip);
                     int exitValue = ipProcess.waitFor();
                     return (exitValue == 0);
                 } catch (IOException | InterruptedException e) {
