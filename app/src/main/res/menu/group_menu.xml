@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/reboot"
+        android:title="@string/reboot_routers" />
+
+    <item
+        android:id="@+id/block_mac"
+        android:title="@string/block_mac_address" />
+
+    <item
+        android:id="@+id/delete_group"
+        android:title="@string/delete_group" />
+
+</menu>

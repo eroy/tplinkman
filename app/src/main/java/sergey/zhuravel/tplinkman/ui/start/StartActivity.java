@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.ui.base.BaseActivity;
 import sergey.zhuravel.tplinkman.ui.input.InputFragment;
+import sergey.zhuravel.tplinkman.ui.man.ManFragment;
 
 public class StartActivity extends BaseActivity {
 
@@ -65,7 +66,7 @@ public class StartActivity extends BaseActivity {
     }
 
     private void navigateToManagementFragment() {
-//        to do
+        replaceFragment(new ManFragment());
     }
 
     private void navigateToInputFragment() {

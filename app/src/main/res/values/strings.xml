@@ -87,7 +87,16 @@
     <string name="do_you_want_delete">Do you want delete this session?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="dialog_add">Add</string>
     <string name="edit_session">Edit session</string>
+    <string name="add_host_to_group">Add host to</string>
+    <string name="default_group">Default group</string>
+    <string name="add_new_group">Add new group</string>
+    <string name="group_name">Group name</string>
+    <string name="delete_group">Delete group</string>
+    <string name="reboot_routers">Reboot routers</string>
+    <string name="block_mac_address">Block mac address</string>
+    <string name="you_dont_del_this_group">You don\'t delete this group</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>
