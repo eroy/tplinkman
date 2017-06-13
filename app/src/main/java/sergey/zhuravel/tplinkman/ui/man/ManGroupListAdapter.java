@@ -211,9 +211,9 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
 
     private void removeGroup(int groupId) {
         String groupName = (String) getGroup(groupId);
-        mPresenter.removeManRouter(groupName);
         mMapItem.remove(mListGroupName.get(groupId));
         mListGroupName.remove(groupId);
+        mPresenter.removeManRouter(groupName);
         notifyDataSetChanged();
     }
 
@@ -275,6 +275,14 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
                 .setCancelable(false)
                 .create()
                 .show();
+    }
+
+    private void showDialogChooseSession() {
+
+    }
+
+    public int getCount() {
+        return mListGroupName.size();
     }
 
     @Override

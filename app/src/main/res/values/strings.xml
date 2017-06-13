@@ -98,6 +98,7 @@
     <string name="reboot_routers">Reboot routers</string>
     <string name="block_mac_address">Block mac address</string>
     <string name="you_dont_del_this_group">You don\'t delete this group</string>
+    <string name="you_haven_t_created_groups_yet">You haven\'t created groups yet.\n\nClick \"+\" for create new group!</string>
 
     <string-array name="typeWan">
         <item>Dynamic IP</item>

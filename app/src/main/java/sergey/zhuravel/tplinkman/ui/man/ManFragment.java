@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class ManFragment extends BaseFragment implements ManContract.View {
     private ExpandableListView mListGroup;
     private ManGroupListAdapter mGroupAdapter;
     private FloatingActionButton mAddFab;
+    private TextView mTextNoGroup;
 
 
     public ManFragment() {
@@ -88,6 +90,16 @@ public class ManFragment extends BaseFragment implements ManContract.View {
     @Override
     public void addGroup(String groupName) {
         mGroupAdapter.addGroup(groupName);
+
+    }
+
+    @Override
+    public void showTextNoGroupAccessibility() {
+        if (mGroupAdapter.getCount() > 0) {
+            mTextNoGroup.setVisibility(View.GONE);
+        } else {
+            mTextNoGroup.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -99,7 +111,7 @@ public class ManFragment extends BaseFragment implements ManContract.View {
     private void initView(View view) {
         mListGroup = (ExpandableListView) view.findViewById(R.id.exListView);
         mAddFab = (FloatingActionButton) view.findViewById(R.id.add_fab);
-
+        mTextNoGroup = (TextView) view.findViewById(R.id.text_no_group);
     }
 
     @Override

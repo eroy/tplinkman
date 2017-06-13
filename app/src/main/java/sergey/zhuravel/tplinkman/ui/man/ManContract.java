@@ -26,6 +26,7 @@ public interface ManContract {
 
         void addChildToGroup(ManRouter manRouter);
 
+        void showTextNoGroupAccessibility();
     }
 
     interface Presenter {

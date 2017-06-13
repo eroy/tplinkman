@@ -31,6 +31,7 @@ public class ManPresenter implements ManContract.Presenter {
                         .subscribe(manRouter -> {
                             mView.addGroup(manRouter.getGroupName());
                             mView.addChildToGroup(manRouter);
+                            mView.showTextNoGroupAccessibility();
                         })));
     }
 
@@ -51,7 +52,7 @@ public class ManPresenter implements ManContract.Presenter {
         } else {
             mModel.saveManRouter(new ManRouter(groupName));
         }
-
+        mView.showTextNoGroupAccessibility();
     }
 
     @Override
@@ -62,6 +63,7 @@ public class ManPresenter implements ManContract.Presenter {
     @Override
     public void removeManRouter(String groupName) {
         mModel.removeManRouter(groupName);
+        mView.showTextNoGroupAccessibility();
     }
 
     @Override
