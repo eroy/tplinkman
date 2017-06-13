@@ -5,6 +5,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import rx.Observable;
+import sergey.zhuravel.tplinkman.model.ManRouter;
 import sergey.zhuravel.tplinkman.model.RouterSession;
 
 
@@ -34,4 +35,23 @@ public class RealmManager {
             results.deleteAllFromRealm();
         });
     }
+
+
+    public void saveManRouter(ManRouter manRouter) {
+        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(manRouter));
+    }
+
+    public Observable<List<ManRouter>> getManRouter() {
+        return Observable.fromCallable(() -> mRealm.where(ManRouter.class).findAll());
+    }
+
+    public void deleteManRouter(String groupName) {
+        mRealm.executeTransaction(realm -> {
+            RealmResults<ManRouter> results = realm.where(ManRouter.class).equalTo("groupName", groupName).findAll();
+            results.deleteAllFromRealm();
+        });
+    }
+
+
+
 }

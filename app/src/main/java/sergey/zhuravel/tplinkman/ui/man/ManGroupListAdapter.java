@@ -3,7 +3,6 @@ package sergey.zhuravel.tplinkman.ui.man;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.PopupMenu;
@@ -130,7 +129,7 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
 
                     return true;
                 case R.id.delete_group:
-                    removeGroup(groupId, v);
+                    removeGroup(groupId);
                     return true;
                 default:
                     return false;
@@ -188,14 +187,20 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
-    private void removeGroup(int groupId, View view) {
-        if (groupId != 0) {
-            mMapItem.remove(mListGroupName.get(groupId));
-            mListGroupName.remove(groupId);
-            notifyDataSetChanged();
-        } else {
-            Snackbar.make(view, mContext.getString(R.string.you_dont_del_this_group), Snackbar.LENGTH_SHORT).show();
-        }
+    public void addChildToGroup(String nameGroup, List<RouterSession> routerList) {
+        int groupId = getGroupPositionByName(nameGroup);
+        List<RouterSession> newList = new ArrayList<>();
+        newList.addAll(mMapItem.get(mListGroupName.get(groupId)));
+        newList.addAll(routerList);
+        setChildGroup(groupId, newList);
+        notifyDataSetChanged();
+    }
+
+    private void removeGroup(int groupId) {
+        mMapItem.remove(mListGroupName.get(groupId));
+        mListGroupName.remove(groupId);
+        notifyDataSetChanged();
+
     }
 
     private void addChild(int groupId, RouterSession newRouteSession) {

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
 import sergey.zhuravel.tplinkman.model.RouterSession;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
@@ -36,7 +37,7 @@ public class ManFragment extends BaseFragment implements ManContract.View {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_man, container, false);
-        mPresenter = new ManPresenter(this, new ManModel());
+        mPresenter = new ManPresenter(this, new ManModel(App.getDataManager(getActivity()), App.getRealmManager()));
 
         initView(view);
         initAdapter();
@@ -69,12 +70,21 @@ public class ManFragment extends BaseFragment implements ManContract.View {
     }
 
     private void initAdapter() {
-        HashMap<String, List<RouterSession>> mapItem = new HashMap<>();
-        mapItem.put(getString(R.string.default_group), new ArrayList<>());
-        List<String> groupNameList = new ArrayList<>(mapItem.keySet());
-
-        mGroupAdapter = new ManGroupListAdapter(groupNameList, mapItem, getActivity(), mPresenter);
+        mGroupAdapter = new ManGroupListAdapter(new ArrayList<>(), new HashMap<>(), getActivity(), mPresenter);
         mListGroup.setAdapter(mGroupAdapter);
+
+        mPresenter.getManRouters();
+    }
+
+
+    @Override
+    public void addGroup(String groupName) {
+        mGroupAdapter.addGroup(groupName);
+    }
+
+    @Override
+    public void addChildToGroup(String groupName, List<RouterSession> list) {
+        mGroupAdapter.addChildToGroup(groupName, list);
     }
 
 
