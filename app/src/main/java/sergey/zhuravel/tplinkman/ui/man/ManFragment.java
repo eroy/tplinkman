@@ -12,11 +12,10 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import sergey.zhuravel.tplinkman.App;
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.model.RouterSession;
+import sergey.zhuravel.tplinkman.model.ManRouter;
 import sergey.zhuravel.tplinkman.ui.base.BaseFragment;
 
 public class ManFragment extends BaseFragment implements ManContract.View {
@@ -56,7 +55,10 @@ public class ManFragment extends BaseFragment implements ManContract.View {
         AppCompatEditText name = (AppCompatEditText) viewDialog.findViewById(R.id.et_name);
 
         dialog.setPositiveButton(R.string.dialog_add, (dialog1, which) -> {
-            mGroupAdapter.addGroup(name.getText().toString());
+            String groupName = name.getText().toString();
+            mGroupAdapter.addGroup(groupName);
+
+            mPresenter.saveManRouters(groupName, null);
 
         });
 
@@ -83,8 +85,8 @@ public class ManFragment extends BaseFragment implements ManContract.View {
     }
 
     @Override
-    public void addChildToGroup(String groupName, List<RouterSession> list) {
-        mGroupAdapter.addChildToGroup(groupName, list);
+    public void addChildToGroup(ManRouter manRouter) {
+        mGroupAdapter.addChildToGroup(manRouter);
     }
 
 

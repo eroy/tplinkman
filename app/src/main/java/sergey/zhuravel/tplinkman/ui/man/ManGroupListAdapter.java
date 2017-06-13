@@ -19,20 +19,21 @@ import java.util.HashMap;
 import java.util.List;
 
 import sergey.zhuravel.tplinkman.R;
-import sergey.zhuravel.tplinkman.model.RouterSession;
+import sergey.zhuravel.tplinkman.model.ManRouter;
+import sergey.zhuravel.tplinkman.model.ManSession;
 import sergey.zhuravel.tplinkman.utils.IpFormatting;
 
 
 public class ManGroupListAdapter extends BaseExpandableListAdapter {
 
     private List<String> mListGroupName;
-    private HashMap<String, List<RouterSession>> mMapItem;
+    private HashMap<String, List<ManSession>> mMapItem;
 
 
     private Context mContext;
     private ManContract.Presenter mPresenter;
 
-    public ManGroupListAdapter(List<String> mListGroupName, HashMap<String, List<RouterSession>> mMapItem, Context mContext, ManContract.Presenter mPresenter) {
+    public ManGroupListAdapter(List<String> mListGroupName, HashMap<String, List<ManSession>> mMapItem, Context mContext, ManContract.Presenter mPresenter) {
         this.mListGroupName = mListGroupName;
         this.mMapItem = mMapItem;
         this.mContext = mContext;
@@ -40,7 +41,7 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
     }
 
 
-    private void setChildGroup(int groupId, List<RouterSession> list) {
+    private void setChildGroup(int groupId, List<ManSession> list) {
         mMapItem.put(mListGroupName.get(groupId), list);
         notifyDataSetChanged();
     }
@@ -163,7 +164,8 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
             String username = etUsername.getText().toString();
             String pass = etPassword.getText().toString();
             String nameConnection = etName.getText().toString();
-            RouterSession routerSession = new RouterSession(ipHost, username, pass, nameConnection);
+
+            ManSession routerSession = new ManSession(ipHost, username, pass, nameConnection);
 
             addChild(groupId, routerSession);
 
@@ -187,11 +189,11 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
-    public void addChildToGroup(String nameGroup, List<RouterSession> routerList) {
-        int groupId = getGroupPositionByName(nameGroup);
-        List<RouterSession> newList = new ArrayList<>();
+    public void addChildToGroup(ManRouter routerList) {
+        int groupId = getGroupPositionByName(routerList.getGroupName());
+        List<ManSession> newList = new ArrayList<>();
         newList.addAll(mMapItem.get(mListGroupName.get(groupId)));
-        newList.addAll(routerList);
+        newList.addAll(routerList.getManSessions());
         setChildGroup(groupId, newList);
         notifyDataSetChanged();
     }
@@ -203,11 +205,14 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
 
     }
 
-    private void addChild(int groupId, RouterSession newRouteSession) {
-        List<RouterSession> newList = new ArrayList<>();
+    private void addChild(int groupId, ManSession newRouteSession) {
+        List<ManSession> newList = new ArrayList<>();
         newList.addAll(mMapItem.get(mListGroupName.get(groupId)));
         newList.add(newRouteSession);
         setChildGroup(groupId, newList);
+
+        String groupName = (String) getGroup(groupId);
+        mPresenter.saveManRouters(groupName, newRouteSession);
         notifyDataSetChanged();
     }
 
@@ -220,7 +225,7 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.man_child_view, null);
         }
 
-        RouterSession routerSession = (RouterSession) getChild(groupPosition, childPosition);
+        ManSession routerSession = (ManSession) getChild(groupPosition, childPosition);
 
         TextView textGroup = (TextView) convertView.findViewById(R.id.textChild);
         LinearLayout llChild = (LinearLayout) convertView.findViewById(R.id.ll_child);
@@ -235,10 +240,10 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private void removeChild(int groupPosition, RouterSession routerSession) {
-        List<RouterSession> newList = new ArrayList<>();
-        List<RouterSession> list = mMapItem.get(mListGroupName.get(groupPosition));
-        for (RouterSession r : list) {
+    private void removeChild(int groupPosition, ManSession routerSession) {
+        List<ManSession> newList = new ArrayList<>();
+        List<ManSession> list = mMapItem.get(mListGroupName.get(groupPosition));
+        for (ManSession r : list) {
             if (!r.equals(routerSession)) {
                 newList.add(r);
             }

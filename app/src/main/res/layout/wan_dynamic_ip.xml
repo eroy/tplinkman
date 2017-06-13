@@ -104,15 +104,15 @@
 
 
         <Button
-            android:textStyle="bold"
-            android:textColor="@color/accent"
             android:id="@+id/save"
             style="@style/Widget.AppCompat.ActionButton.CloseMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="@string/enter_settings"
-            android:layout_alignParentRight="true"
+            android:textColor="@color/accent"
+            android:textStyle="bold"
 
             />
     </RelativeLayout>

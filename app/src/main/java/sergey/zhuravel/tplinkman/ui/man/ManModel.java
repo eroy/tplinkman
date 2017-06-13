@@ -25,12 +25,17 @@ public class ManModel implements ManContract.Model {
 
     @Override
     public Observable<List<ManRouter>> getManRouters() {
-        return mRealmManager.getManRouter();
+        return mRealmManager.getManRoutersList();
     }
 
     @Override
     public void removeManRouter(String id) {
         mRealmManager.deleteManRouter(id);
+    }
+
+    @Override
+    public ManRouter getManRouter(String groupName) {
+        return mRealmManager.getManRouter(groupName);
     }
 
 }

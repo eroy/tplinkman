@@ -22,14 +22,14 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:textSize="@dimen/size_wan_et"
                     android:id="@+id/etIP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/ip"
                     android:inputType="phone"
                     android:maxLength="15"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/size_wan_et" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -38,15 +38,15 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:textSize="@dimen/size_wan_et"
-
                     android:id="@+id/etMask"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/mask"
                     android:inputType="phone"
                     android:maxLength="15"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/size_wan_et" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -55,15 +55,15 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:textSize="@dimen/size_wan_et"
-
                     android:id="@+id/etGateway"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/gateway"
                     android:inputType="phone"
                     android:maxLength="15"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/size_wan_et" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -84,15 +84,15 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:textSize="@dimen/size_wan_et"
-
                     android:id="@+id/etDns1"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/dns1"
                     android:inputType="phone"
                     android:maxLength="15"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/size_wan_et" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -101,15 +101,15 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:textSize="@dimen/size_wan_et"
-
                     android:id="@+id/etDns2"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/dns2"
                     android:inputType="phone"
                     android:maxLength="15"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/size_wan_et" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

@@ -41,7 +41,7 @@ public class RealmManager {
         mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(manRouter));
     }
 
-    public Observable<List<ManRouter>> getManRouter() {
+    public Observable<List<ManRouter>> getManRoutersList() {
         return Observable.fromCallable(() -> mRealm.where(ManRouter.class).findAll());
     }
 
@@ -51,6 +51,12 @@ public class RealmManager {
             results.deleteAllFromRealm();
         });
     }
+
+
+    public ManRouter getManRouter(String name) {
+        return mRealm.where(ManRouter.class).equalTo("groupName", name).findFirst();
+    }
+
 
 
 

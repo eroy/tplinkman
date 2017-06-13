@@ -1,7 +1,5 @@
 package sergey.zhuravel.tplinkman.model;
 
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -11,14 +9,18 @@ public class ManRouter extends RealmObject {
 
     @PrimaryKey
     private String groupName;
-    private RealmList<RouterSession> listSession;
+    private RealmList<ManSession> manSessions;
 
     public ManRouter() {
     }
 
-    public ManRouter(String groupName, RealmList<RouterSession> listSession) {
+    public ManRouter(String groupName) {
         this.groupName = groupName;
-        this.listSession = listSession;
+    }
+
+    public ManRouter(String groupName, RealmList<ManSession> manSessions) {
+        this.groupName = groupName;
+        this.manSessions = manSessions;
     }
 
     public String getGroupName() {
@@ -29,12 +31,11 @@ public class ManRouter extends RealmObject {
         this.groupName = groupName;
     }
 
-    public List<RouterSession> getListSession() {
-        return listSession;
+    public RealmList<ManSession> getManSessions() {
+        return manSessions;
     }
 
-    public void setListSession(RealmList<RouterSession> listSession) {
-        this.listSession = listSession;
+    public void setManSessions(RealmList<ManSession> manSessions) {
+        this.manSessions = manSessions;
     }
-
 }

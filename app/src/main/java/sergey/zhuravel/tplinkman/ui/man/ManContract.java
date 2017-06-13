@@ -5,7 +5,7 @@ import java.util.List;
 
 import rx.Observable;
 import sergey.zhuravel.tplinkman.model.ManRouter;
-import sergey.zhuravel.tplinkman.model.RouterSession;
+import sergey.zhuravel.tplinkman.model.ManSession;
 
 public interface ManContract {
 
@@ -16,18 +16,22 @@ public interface ManContract {
 
         void removeManRouter(String id);
 
+        ManRouter getManRouter(String groupName);
+
 
     }
 
     interface View {
         void addGroup(String groupName);
 
-        void addChildToGroup(String groupName, List<RouterSession> list);
+        void addChildToGroup(ManRouter manRouter);
 
     }
 
     interface Presenter {
         void getManRouters();
         void onDestroy();
+
+        void saveManRouters(String groupName, ManSession routerSession);
     }
 }

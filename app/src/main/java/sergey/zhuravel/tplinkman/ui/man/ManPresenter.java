@@ -1,13 +1,11 @@
 package sergey.zhuravel.tplinkman.ui.man;
 
 
-import java.util.List;
-
 import io.realm.RealmList;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 import sergey.zhuravel.tplinkman.model.ManRouter;
-import sergey.zhuravel.tplinkman.model.RouterSession;
+import sergey.zhuravel.tplinkman.model.ManSession;
 import sergey.zhuravel.tplinkman.utils.RxUtils;
 
 public class ManPresenter implements ManContract.Presenter {
@@ -32,16 +30,30 @@ public class ManPresenter implements ManContract.Presenter {
                         .from(manRouters)
                         .subscribe(manRouter -> {
                             mView.addGroup(manRouter.getGroupName());
-                            mView.addChildToGroup(manRouter.getGroupName(), manRouter.getListSession());
+                            mView.addChildToGroup(manRouter);
                         })));
     }
 
-    public void saveManRouters(String groupName, List<RouterSession> list) {
-        RealmList<RouterSession> realmList = new RealmList<>();
-        realmList.addAll(list);
-        ManRouter manRouter = new ManRouter(groupName, realmList);
-        mModel.saveManRouter(manRouter);
+    @Override
+    public void saveManRouters(String groupName, ManSession routerSession) {
+        ManRouter manRouter = mModel.getManRouter(groupName);
+        if (manRouter != null) {
+            if (routerSession != null) {
+                RealmList<ManSession> manSessionList = new RealmList<>();
+                manSessionList.addAll(manRouter.getManSessions());
+                manSessionList.add(routerSession);
+                ManRouter man = new ManRouter();
+                man.setGroupName(manRouter.getGroupName());
+                man.setManSessions(manSessionList);
+                mModel.saveManRouter(man);
+            }
+
+        } else {
+            mModel.saveManRouter(new ManRouter(groupName));
+        }
+
     }
+
 
     @Override
     public void onDestroy() {
