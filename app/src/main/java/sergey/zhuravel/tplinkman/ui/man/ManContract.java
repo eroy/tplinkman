@@ -14,7 +14,7 @@ public interface ManContract {
 
         Observable<List<ManRouter>> getManRouters();
 
-        void removeManRouter(String id);
+        void removeManRouter(String groupName);
 
         ManRouter getManRouter(String groupName);
 
@@ -33,5 +33,11 @@ public interface ManContract {
         void onDestroy();
 
         void saveManRouters(String groupName, ManSession routerSession);
+
+        ManRouter getManRouterByName(String groupName);
+
+        void removeManRouter(String groupName);
+
+        void removeManSession(String groupName, ManSession routerSession);
     }
 }

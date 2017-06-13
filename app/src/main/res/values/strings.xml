@@ -85,6 +85,7 @@
     <string name="save_connection">Save connection</string>
     <string name="dialog_save">Save</string>
     <string name="do_you_want_delete">Do you want delete this session?</string>
+    <string name="do_you_want_delete_group">Do you want delete this group?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_add">Add</string>

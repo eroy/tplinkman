@@ -130,7 +130,7 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
 
                     return true;
                 case R.id.delete_group:
-                    removeGroup(groupId);
+                    showDialogRemoveGroup(groupId);
                     return true;
                 default:
                     return false;
@@ -198,11 +198,23 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
+    private void showDialogRemoveGroup(int groupId) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        dialog.setMessage(R.string.do_you_want_delete_group);
+        dialog.setPositiveButton(R.string.dialog_yes, (dialog1, which) -> removeGroup(groupId));
+        dialog.setNegativeButton(R.string.dialog_no, (dialog1, which) -> dialog1.dismiss());
+        dialog
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
     private void removeGroup(int groupId) {
+        String groupName = (String) getGroup(groupId);
+        mPresenter.removeManRouter(groupName);
         mMapItem.remove(mListGroupName.get(groupId));
         mListGroupName.remove(groupId);
         notifyDataSetChanged();
-
     }
 
     private void addChild(int groupId, ManSession newRouteSession) {
@@ -232,7 +244,7 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
         textGroup.setTypeface(null, Typeface.BOLD);
         textGroup.setText(routerSession.getIp());
         llChild.setOnClickListener(v -> {
-            removeChild(groupPosition, routerSession);
+            showDialogRemoveChild(groupPosition, routerSession);
 
         });
 
@@ -249,6 +261,20 @@ public class ManGroupListAdapter extends BaseExpandableListAdapter {
             }
         }
         setChildGroup(groupPosition, newList);
+
+        String groupName = (String) getGroup(groupPosition);
+        mPresenter.removeManSession(groupName, routerSession);
+    }
+
+    private void showDialogRemoveChild(int groupPosition, ManSession routerSession) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        dialog.setMessage(R.string.do_you_want_delete);
+        dialog.setPositiveButton(R.string.dialog_yes, (dialog1, which) -> removeChild(groupPosition, routerSession));
+        dialog.setNegativeButton(R.string.dialog_no, (dialog1, which) -> dialog1.dismiss());
+        dialog
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     @Override

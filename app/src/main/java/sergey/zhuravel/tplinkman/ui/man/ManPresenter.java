@@ -54,6 +54,32 @@ public class ManPresenter implements ManContract.Presenter {
 
     }
 
+    @Override
+    public ManRouter getManRouterByName(String groupName) {
+        return mModel.getManRouter(groupName);
+    }
+
+    @Override
+    public void removeManRouter(String groupName) {
+        mModel.removeManRouter(groupName);
+    }
+
+    @Override
+    public void removeManSession(String groupName, ManSession routerSession) {
+        ManRouter manRouter = mModel.getManRouter(groupName);
+        if (manRouter != null) {
+            if (routerSession != null) {
+                RealmList<ManSession> manSessionList = new RealmList<>();
+                manSessionList.addAll(manRouter.getManSessions());
+                manSessionList.remove(routerSession);
+
+                ManRouter man = new ManRouter();
+                man.setGroupName(manRouter.getGroupName());
+                man.setManSessions(manSessionList);
+                mModel.saveManRouter(man);
+            }
+        }
+    }
 
     @Override
     public void onDestroy() {

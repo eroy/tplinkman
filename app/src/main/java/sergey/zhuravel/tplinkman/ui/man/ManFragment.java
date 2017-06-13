@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,12 +55,16 @@ public class ManFragment extends BaseFragment implements ManContract.View {
         dialog.setView(viewDialog);
         AppCompatEditText name = (AppCompatEditText) viewDialog.findViewById(R.id.et_name);
 
+
         dialog.setPositiveButton(R.string.dialog_add, (dialog1, which) -> {
             String groupName = name.getText().toString();
-            mGroupAdapter.addGroup(groupName);
-
-            mPresenter.saveManRouters(groupName, null);
-
+            ManRouter manRouter = mPresenter.getManRouterByName(groupName);
+            if (manRouter != null) {
+                Toast.makeText(getActivity(), "This name is used", Toast.LENGTH_SHORT).show();
+            } else {
+                mGroupAdapter.addGroup(groupName);
+                mPresenter.saveManRouters(groupName, null);
+            }
         });
 
         dialog.setNegativeButton(R.string.cancel, (dialog1, which) -> {
@@ -69,6 +74,7 @@ public class ManFragment extends BaseFragment implements ManContract.View {
                 .setCancelable(false)
                 .create()
                 .show();
+
     }
 
     private void initAdapter() {

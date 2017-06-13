@@ -29,8 +29,8 @@ public class ManModel implements ManContract.Model {
     }
 
     @Override
-    public void removeManRouter(String id) {
-        mRealmManager.deleteManRouter(id);
+    public void removeManRouter(String groupName) {
+        mRealmManager.deleteManRouter(groupName);
     }
 
     @Override
